@@ -10,7 +10,22 @@ labels:
   pairs:
     environment: latest
 
-
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: app-latest
+#   namespace: flux-system
+# spec:
+#   interval: 5m
+#   path: ./apps/my-app/overlays/latest
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: gitops-config
+#     namespace: flux-system
+#   targetNamespace: my-namespace
+# ---
 
 # patches:
 #   - patch: |-
