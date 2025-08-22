@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "kubernetes://schema/source.toolkit.fluxcd.io/v1@gitrepository": "file:///Users/kyle_hunter/projects/github/flux/apps/base/2-app-chart-updater.yaml"
-    }
-}

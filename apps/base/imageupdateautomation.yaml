@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imageupdateautomation-image-v1beta2.json
 ---
 # Clones, updates, and commits new versions to app charts
 apiVersion: image.toolkit.fluxcd.io/v1beta2
@@ -9,6 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: git-repository
+  git:
     commit:
       author:
         email: fluxcdbot@issues.ltc.bcit.ca
