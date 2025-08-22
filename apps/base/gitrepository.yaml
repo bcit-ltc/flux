@@ -14,4 +14,4 @@ spec:
   # Config/secret to authenticate/authorize repository write access
   provider: github
   secretRef:
-    name: github-app-auth
+    name: flux-chart-updater
