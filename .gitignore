@@ -2,3 +2,7 @@ basic-auth-template.yaml
 dockerconfigjson-template.yaml
 scripts/*.sh
 !/init/*
+components/registry-credentials
+components/ssl-certificates
+components/vault-auth
+components/sops-vault-token

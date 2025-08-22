@@ -1,0 +1,15 @@
+---
+# Watches for new app registry image tags
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: image-repository
+spec:
+
+  # `app-name` is substituted by the component `config-matcher`
+  image: ghcr.io/bcit-ltc/app-name
+  interval: 1h
+
+  # ghcr.io packages should be public, so this isn't needed
+  # secretRef:
+  #   name: dependabot

@@ -5,16 +5,16 @@ resources:
   - ../base
 
 # Prefix all resources with this name
-namePrefix: infrastructure-documentation-
+namePrefix: qcon-api-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: infrastructure-documentation
+namespace: qcon-api
 
 # Generate an appName that is re-used as a variable for other resources
 configMapGenerator:
   - name: app-name
     literals:
-      - appName="infrastructure-documentation"
+      - appName="qcon-api"
 
     # This config resource is not added to the cluster
     options:

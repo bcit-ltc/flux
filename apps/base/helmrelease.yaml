@@ -1,10 +1,11 @@
+---
+# Deploys new chart releases
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: helmrelease
-  namespace: namespace
+  name: helm-release
 spec:
-  interval: 10m
+  interval: 1h
   chartRef:
     kind: OCIRepository
-    name: ocirepository
+    name: oci-repository

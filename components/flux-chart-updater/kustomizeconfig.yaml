@@ -1,0 +1,17 @@
+---
+nameReference:
+
+# Update Kustomization and VaultStaticSecret names with the corresponding VaultStaticSecret name
+# - kind: VaultStaticSecret
+#   fieldSpecs:
+#     - kind: Kustomization
+#       path: spec/decryption/secretRef/name
+#     - kind: VaultStaticSecret
+#       path: spec/destination/name
+
+# Update the GitRepository spec.secretRef name with the corresponding component secret's name
+- kind: Secret
+  fieldSpecs:
+    - kind: GitRepository
+      path: spec/secretRef/name
+      

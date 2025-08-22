@@ -1,14 +1,11 @@
-# Create a secret for the sops decryption key
-#
+# Create a secret for the GitHub App "Flux Chart Updater" to allow commits to the `helm-charts` repository
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - token.yaml
-
+  - flux-chart-updater.yaml
 
 # Teach kustomize how to update generated names
-#
 configurations:
   - kustomizeconfig.yaml

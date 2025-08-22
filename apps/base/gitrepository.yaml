@@ -1,0 +1,16 @@
+---
+# App chart source repo
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-repository
+spec:
+  interval: 1h
+  url: https://github.com/bcit-ltc/helm-charts.git
+  ref:
+    branch: main
+
+  # Config/secret to authenticate/authorize repository write access
+  provider: github
+  secretRef:
+    name: github-app-auth

@@ -1,3 +1,5 @@
+---
+# Namespace resource; name is updated by app kustomizations
 apiVersion: v1
 kind: Namespace
 metadata:

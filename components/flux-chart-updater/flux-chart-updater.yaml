@@ -1,0 +1,22 @@
+# ---
+# Used by the Flux GitRepository `spec.provider`` configuration
+# apiVersion: secrets.hashicorp.com/v1beta1
+# kind: VaultStaticSecret
+# metadata:
+#   name: github-app-auth
+# spec:
+#   type: kv-v2
+#   vaultAuthRef: vault-auth
+#   refreshAfter: 6h
+#   mount: ltc-infrastructure
+#   path: flux/github-app-auth
+#   destination:
+#     name: github-app-auth
+#     create: true
+# ---
+#
+#
+# Secret applied manually for now...
+#
+#
+---

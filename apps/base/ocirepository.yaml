@@ -1,9 +1,13 @@
+---
+# Watches `oci/{appName}` registries for new chart versions
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: ocirepository
+  name: oci-repository
 spec:
   interval: 5m0s
-  url: oci://ghcr.io/bcit-ltc/oci/appName
+
+  # `app-name` is substituted by the component `config-matcher`
+  url: oci://ghcr.io/bcit-ltc/oci/app-name
   ref:
     semver: ">= 1.0.0"

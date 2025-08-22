@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# resources:
+#   - ../../../apps
+  # - ../../../infrastructure
+
+labels:
+- includeSelectors: true
+  pairs:
+    environment: latest
+
+# Current nodes:
+# prod-manager-09.ltc.bcit.ca   Ready    control-plane,etcd,master   56m   v1.32.7+rke2r1
+# prod-manager-10.ltc.bcit.ca   Ready    control-plane,etcd,master   54m   v1.32.7+rke2r1
+# prod-manager-11.ltc.bcit.ca   Ready    control-plane,etcd,master   53m   v1.32.7+rke2r1
+# prod-worker-09.ltc.bcit.ca    Ready    <none>                      53m   v1.32.7+rke2r1
+# prod-worker-10.ltc.bcit.ca    Ready    <none>                      52m   v1.32.7+rke2r1
+# prod-worker-11.ltc.bcit.ca    Ready    <none>                      52m   v1.32.7+rke2r1
+
+# Create a single resource for this environment that can be used by replacements.
+#
+configMapGenerator:
+  - name: flux-env
+    literals:
+      - fluxEnv=latest
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+
+patches:
+
+  # Update image selection policy with a regex filter: {semverTag}-rc.{gitShortSha}+{timeStamp}
+  #     eg. 2.4.10-rc.7731b9b1+1684912629
+  - target:
+      kind: ImagePolicy
+    patch: |-
+      - op: replace
+        path: /spec/filterTags/pattern
+        value: '^(?<semver>(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*))-rc\.(?<commit>[0-9a-fA-F]{7,40})\+(?<timestamp>\d+)$'
+      - op: add
+        path: /spec/filterTags/extract
+        value: '$timestamp'
+      - op: replace
+        path: /spec/policy
+        value: {"numerical": {"order": "asc"}}
+

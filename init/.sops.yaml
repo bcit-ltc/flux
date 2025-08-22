@@ -1,0 +1,5 @@
+creation_rules:
+  - path_regex: ".*\\.yaml"
+    encrypted_regex: ^(data|stringData)$
+    hc_vault_transit_uri: "https://vault.ltc.bcit.ca:8200/v1/sops/keys/gitops-key"
+  - hc_vault_transit_uri: "https://vault.ltc.bcit.ca:8200/v1/sops/keys/gitops-key"
