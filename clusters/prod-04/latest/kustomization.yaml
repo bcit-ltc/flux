@@ -42,5 +42,6 @@ patches:
   - target:
       kind: OCIRepository
     patch: |-
-      - op: remove
+      - op: replace
         path: /spec/ref
+        value: {"tag": "1.1.5"}
