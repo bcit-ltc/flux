@@ -11,8 +11,9 @@ spec:
   ref:
     branch: main
 
-  sparseCheckout:
-  - charts
+  # not in current schema
+  # sparseCheckout:
+  # - charts
 
   # Config/secret to authenticate/authorize repository write access
   provider: github
