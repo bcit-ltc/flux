@@ -9,14 +9,14 @@ replacements:
       fieldPath: data.appName
     targets:
 
-      # Update the GitRepository URL based on the app name (stored in app ConfigMap).
-      - select:
-          kind: GitRepository
-        fieldPaths:
-          - spec.url
-        options:
-          delimiter: "/"
-          index: 6
+      # # Update the GitRepository sparseCheckout value based on the app name (stored in app ConfigMap).
+      # - select:
+      #     kind: GitRepository
+      #   fieldPaths:
+      #     - spec.sparseCheckout
+      #   options:
+      #     delimiter: "/"
+      #     index: 1
 
       # Update the OCIRepository URL based on the app name (stored in app ConfigMap).
       - select:
