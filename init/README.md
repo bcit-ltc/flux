@@ -2,15 +2,33 @@
 
 Basic installation follows the instructions from [Fluxcd.io](https://fluxcd.io/flux/installation/bootstrap/github/#github-organization).
 
-1. Navigate to repo root
+1. Export a GitHub personal access token with `repo` permissions. The `LTC TechOps` user was created to bootstrap Flux owned by the `bcit-ltc` organization.
+
+```bash
+export GITHUB_TOKEN=<gh-token>
+```
+
+1. Set your cluster context and set a corresponding environment
+
+```bash
+export CLUSTER=prod-xx
+kubectl config set-context ... # make sure your context matches your `~/.kube/config`
+export CLUSTER_ENV=latest|stable|review|web     # (choose one)
+```
+
+1. Ensure the `flux-system` namespace exists
+
+```bash
+kubectl create ns flux-system
+```
 
 1. Install Flux on the cluster
 
 ```bash
 flux bootstrap github \
 --token-auth \
---owner=ltc-infrastructure \
---repository=flux-config \
+--owner=bcit-ltc \
+--repository=flux \
 --branch=main \
 --components-extra=image-reflector-controller,image-automation-controller \
 --path=clusters/${CLUSTER}
