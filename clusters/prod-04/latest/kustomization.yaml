@@ -37,3 +37,11 @@ patches:
         path: /spec/policy
         value: {"numerical": {"order": "asc"}}
 
+  # Update oci repository ref selection to target all *.rc images
+  #     eg. 2.4.10-rc.7731b9b1+1684912629
+  - target:
+      kind: OCIRepository
+    patch: |-
+      - op: replace
+        path: /spec/ref
+        value: {"tag": "latest"}
