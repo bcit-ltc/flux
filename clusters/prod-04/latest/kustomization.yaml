@@ -42,6 +42,5 @@ patches:
   - target:
       kind: OCIRepository
     patch: |-
-      - op: replace
+      - op: remove
         path: /spec/ref
-        value: {"tag": "latest"}
