@@ -29,7 +29,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/filterTags/pattern
-        value: '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)-rc.*$'
+        value: '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)-.*$'
       - op: replace
         path: /spec/policy
         value: {"numerical": {"order": "asc"}}
