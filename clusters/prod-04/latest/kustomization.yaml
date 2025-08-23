@@ -34,6 +34,13 @@ patches:
         path: /spec/policy
         value: {"numerical": {"order": "asc"}}
 
+  - target:
+      kind: ImageRepository
+    patch: |-
+      - op: add
+        path: /spec/exclusionList
+        value: ["^review-.*$"]
+
     # patch: |-
     #   - op: add
     #     path: /spec/filterTags/extract
