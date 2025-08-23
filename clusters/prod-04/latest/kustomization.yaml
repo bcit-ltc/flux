@@ -61,5 +61,8 @@ patches:
       kind: OCIRepository
     patch: |-
       - op: replace
-        path: /spec/ref
-        value: {"semver": ">=1.0.0"}
+        path: /spec/ref/semver
+        value: ">=1.0.0-0"
+      - op: add
+        path: /spec/ref/semverFilter
+        value: ".*-rc.*"
