@@ -29,10 +29,13 @@ patches:
     patch: |-
       - op: replace
         path: /spec/filterTags/pattern
-        value: '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)-.*$'
-      # - op: replace
-      #   path: /spec/policy
-      #   value: {"semver": ">=1.0.0"}
+        value: '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)[-][r][c][.](?<commit_hash>.{7}).(?P<timestamp>.*)$'
+      - op: add
+        path: /spec/filterTags/extract
+        value: '$timestamp'
+      - op: add
+        path: /spec/policy
+        value: {"alphabetical": {"order": "asc"}}
 
   - target:
       kind: ImageRepository
@@ -40,12 +43,6 @@ patches:
       - op: add
         path: /spec/exclusionList
         value: ["^review-.*$"]
-
-    # patch: |-
-    #   - op: add
-    #     path: /spec/filterTags/extract
-    #     value: '$timestamp'
-
 
   # Update oci repository ref selection to target all *.rc images
   #     eg. 2.4.10-rc.7731b9b1+1684912629
