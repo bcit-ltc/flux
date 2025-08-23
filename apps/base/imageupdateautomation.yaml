@@ -6,7 +6,7 @@ kind: ImageUpdateAutomation
 metadata:
   name: image-automation
 spec:
-  interval: 48h
+  interval: 24h
   sourceRef:
     kind: GitRepository
     name: git-repository
