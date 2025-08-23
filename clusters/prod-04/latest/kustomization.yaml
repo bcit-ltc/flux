@@ -62,7 +62,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/ref/semver
-        value: "*"
-      - op: add
-        path: /spec/ref/semverFilter
-        value: ".*-rc.*"
+        value: ">=1.0.0-0"
+      # - op: add
+      #   path: /spec/ref/semverFilter
+      #   value: ".*-rc.*"
