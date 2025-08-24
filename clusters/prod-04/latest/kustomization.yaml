@@ -43,7 +43,7 @@ patches:
     patch: |-
       - op: add
         path: /spec/exclusionList
-        value: ["^review-.*$"]
+        value: ["^sha256-.*$"]
 
   # Remove image update automation for app workloads ("latest" does not update the Chart repo)
   - target:
