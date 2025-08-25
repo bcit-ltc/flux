@@ -6,7 +6,7 @@ kind: OCIRepository
 metadata:
   name: oci-repository
 spec:
-  interval: 1h
+  interval: 6h
 
   # `app-name` is substituted by the component `config-matcher`
   url: oci://ghcr.io/bcit-ltc/oci/app-name

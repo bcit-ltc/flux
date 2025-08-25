@@ -27,8 +27,5 @@ components:
   # Update resources based on the app-name stored in the ConfigMap
   - ../../components/config-matcher
 
-# Secrets for GitHub App "Flux Chart Updater" to enable ImageUpdateAutomation to update app helm charts
-  - ../../components/flux-chart-updater
-
   # Required for VaultAuth role and serviceaccounts
   # - ../../components/generators/vault-auth
