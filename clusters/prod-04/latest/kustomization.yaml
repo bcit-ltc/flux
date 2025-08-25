@@ -22,39 +22,6 @@ configMapGenerator:
 
 patches:
 
-  # Update image selection policy with a regex filter: {semverTag}-rc.{gitShortSha}.{timeStamp}
-  #     eg. 1.0.9-rc.d4ea12f.1684912629
-  - target:
-      kind: ImagePolicy
-    patch: |-
-      - op: replace
-        path: /spec/filterTags/pattern
-        value: '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)[-][r][c][.](?<commit_hash>.{7}).(?P<timestamp>.*)$'
-      - op: add
-        path: /spec/filterTags/extract
-        value: '$timestamp'
-      - op: add
-        path: /spec/policy
-        value: {"alphabetical": {"order": "asc"}}
-
-  # Limit image repository results to only tags starting with semver
-  - target:
-      kind: ImageRepository
-    patch: |-
-      - op: add
-        path: /spec/exclusionList
-        value: ["^sha256-.*$"]
-
-  # Remove image update automation for app workloads ("latest" does not update the Chart repo)
-  - target:
-      kind: ImageUpdateAutomation
-    patch: |
-      $patch: delete
-      kind: ImageUpdateAutomation
-      metadata:
-        name: DOES NOT MATTER
-
-
   # Update oci repository ref selection to target all *.rc images
   #     eg. 2.4.10-rc.7731b9b1+1684912629
   - target:
@@ -63,6 +30,6 @@ patches:
       - op: replace
         path: /spec/ref/semver
         value: ">=1.0.0-0"
-      # - op: add
-      #   path: /spec/ref/semverFilter
-      #   value: ".*-rc.*"
+      - op: add
+        path: /spec/ref/semverFilter
+        value: ".*-rc.*"
