@@ -89,3 +89,10 @@ else
 fi
 
 echo "Done."
+
+# If this fails, try:
+
+#     kubectl delete ValidatingWebhookConfiguration longhorn-webhook-validator
+#     kubectl delete MutatingWebhookConfiguration longhorn-webhook-mutator
+
+# Then run again.
