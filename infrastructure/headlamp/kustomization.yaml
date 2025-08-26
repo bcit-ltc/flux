@@ -2,19 +2,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base
+  # - ../../base
+  - headlamp.yaml
 
 # Prefix all resources with this name
-namePrefix: backstage-
+namePrefix: headlamp-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: backstage
+namespace: kube-system
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="backstage"
+      - releaseName="headlamp"
 
     # This config resource is not added to the cluster
     options:
@@ -22,7 +23,7 @@ configMapGenerator:
         config.kubernetes.io/local-config: "true"
 
 # Source Chart Repo
-  # url: oci://ghcr.io/backstage/charts/backstage
+  # url: https://kubernetes-sigs.github.io/headlamp/
 
 # patches:
 #   - target:
@@ -30,7 +31,7 @@ configMapGenerator:
 #     patch: |-
 #       - op: add
 #         path: /spec/values
-#         value: {"values":{"hostname":"backstage.ltc.bcit.ca","ingress":{"tls":{"source":"secret"}},"replicas":"-1"}}
+#         value: {"values":{"hostname":"headlamp2.ltc.bcit.ca","ingress":{"tls":{"source":"secret"}},"replicas":"-1"}}
 
 components:
   # - ../../components/generators/ssl-certificates

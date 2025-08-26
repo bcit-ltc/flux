@@ -7,6 +7,12 @@ nameReference:
     - kind: HelmRelease
       path: spec/chartRef/name
 
+# Update the HelmRelease spec.chartRef.name with the name of the corresponding OCIRepository
+- kind: HelmRepository
+  fieldSpecs:
+    - kind: HelmRelease
+      path: spec/chart/spec/sourceRef/name
+
 # Add the namespace to the HelmRelease chartRef
 namespace:
 - kind: HelmRelease
