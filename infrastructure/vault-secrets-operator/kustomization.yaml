@@ -2,19 +2,49 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  # - namespace.yaml - namespace created by flux bootstrap
-  - helmrepository.yaml
-  - helmrelease.yaml
-  - vault-connection.yaml
+  - ../../base
 
+# Prefix all resources with this name
 namePrefix: vault-secrets-operator-
 
+# Replace base Namespace name and add all resources to this namespace
 namespace: vault-secrets-operator-system
 
-# update generated vault-connection name
-configurations:
-  - kustomizeconfig.yaml
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="vault-secrets-operator"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+patches:
+  - target:
+      kind: HelmRelease
+
+# Not sure if this is needed or the VaultConnection...
+    patch: |-
+      - op: add
+        path: /spec/values
+        value: {"values":{"defaultVaultConnection":{"enabled":true,"address":"https://vault.ltc.bcit.ca:8200"}}}
+
+# Source Chart Repo
+  # url: https://helm.releases.hashicorp.com
+  - target:
+      kind: OCIRepository
+    patch: |-
+      - op: replace
+        path: /spec/verify/matchOIDCIdentity/0/subject
+        value: "^https://github.com/bcit-ltc/oci/vault-secrets-operator.*$"
 
 components:
+  # - ../../components/generators/ssl-certificates
+
+  # Update resources based on ConfigMap above
+  - ../../components/config-matcher
+
   # Required for VaultAuth role and serviceaccounts
-  - ../../components/generators/vault-auth
+  # - ../../components/generators/vault-auth

@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../base
+  - ../../base
 
 # Prefix all resources with this name
 namePrefix: qcon-api-
@@ -10,25 +10,30 @@ namePrefix: qcon-api-
 # Replace base Namespace name and add all resources to this namespace
 namespace: qcon-api
 
-# Generate an appName that is re-used as a variable for other resources
+# Generate a re-usable name variable for other resources
 configMapGenerator:
-  - name: app-name
+  - name: release-name
     literals:
-      - appName="qcon-api"
+      - releaseName="qcon-api"
 
     # This config resource is not added to the cluster
     options:
       annotations:
         config.kubernetes.io/local-config: "true"
 
+patches:
+  - target:
+      kind: OCIRepository
+    patch: |-
+      - op: replace
+        path: /spec/verify/matchOIDCIdentity/0/subject
+        value: "^https://github.com/bcit-ltc/oci/qcon-api.*$"
+
 components:
   # - ../../components/generators/ssl-certificates
 
-  # Update resources based on the app-name stored in the ConfigMap
+  # Update resources based on ConfigMap above
   - ../../components/config-matcher
-
-# Secrets for GitHub App "Flux Chart Updater" to enable ImageUpdateAutomation to update app helm charts
-  # - ../../components/flux-chart-updater
 
   # Required for VaultAuth role and serviceaccounts
   # - ../../components/generators/vault-auth

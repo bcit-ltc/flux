@@ -5,20 +5,11 @@ kind: Component
 replacements:
   - source:
       kind: ConfigMap
-      name: app-name
-      fieldPath: data.appName
+      name: release-name
+      fieldPath: data.releaseName
     targets:
 
-      # # Update the GitRepository sparseCheckout value based on the app name (stored in app ConfigMap).
-      # - select:
-      #     kind: GitRepository
-      #   fieldPaths:
-      #     - spec.sparseCheckout
-      #   options:
-      #     delimiter: "/"
-      #     index: 1
-
-      # Update the OCIRepository URL based on the app name (stored in app ConfigMap).
+      # Update the OCIRepository URL based on the name stored in the release's ConfigMap.
       - select:
           kind: OCIRepository
         fieldPaths:
@@ -27,19 +18,10 @@ replacements:
           delimiter: "/"
           index: 5
 
-      # Update the ImageRepository image based on the app name (stored in app ConfigMap).
-      - select:
-          kind: ImageRepository
-        fieldPaths:
-          - spec.image
-        options:
-          delimiter: "/"
-          index: 2
-
-      # Update the HelmRelease chartRef to include a namespace based on the app name (stored in app ConfigMap).
+      # Update the HelmRelease chartRef to include a namespace based on the name stored in the release's ConfigMap.
       - select:
           kind: HelmRelease
         fieldPaths:
-          - spec.chartRef.namespace
+          - spec.releaseName
         options:
           create: true

@@ -7,11 +7,6 @@ nameReference:
     - path: spec/kubernetes/serviceAccount
       kind: VaultAuthGlobal
 
-- kind: HelmRepository
-  fieldSpecs:
-  - path: spec/chart/spec/sourceRef/name
-    kind: HelmRelease
-
 - kind: VaultConnection
   fieldSpecs:
     - path: spec/vaultConnectionRef

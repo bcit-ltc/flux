@@ -5,12 +5,12 @@ commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
 resources:
-  - flux
-  # - ./longhorn
+  # - flux
+  - ./longhorn
 
   # longhorn uninstall requires a patch:
   #   `kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag`
   # CRD's must also be deleted manually right after removing longhorn
   #   `./longhorn/uninstall-crds.sh`
 
-  - ./vault-secrets-operator
+  # - ./vault-secrets-operator

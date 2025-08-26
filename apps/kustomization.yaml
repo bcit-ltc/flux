@@ -1,9 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  - ./course-workload-estimator
-  - ./infrastructure-documentation
-
 commonAnnotations:
   config.fluxcd.io/workload-type: app
+
+resources:
+  # - ./qcon-api
+  - ./infrastructure-documentation
+  - ./course-workload-estimator
