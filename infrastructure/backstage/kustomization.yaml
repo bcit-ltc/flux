@@ -24,13 +24,23 @@ configMapGenerator:
 # Source Chart Repo
   # url: oci://ghcr.io/backstage/charts/backstage
 
-# patches:
+patches:
 #   - target:
 #       kind: HelmRelease
 #     patch: |-
 #       - op: add
 #         path: /spec/values
 #         value: {"values":{"hostname":"backstage.ltc.bcit.ca","ingress":{"tls":{"source":"secret"}},"replicas":"-1"}}
+
+  - target:
+      kind: OCIRepository
+    patch: |-
+      - op: replace
+        path: /spec/url
+        value: "oci://ghcr.io/backstage/charts/backstage"
+      - op: replace
+        path: /spec/ref
+        value: { "tag": "2.6.1" }
 
 components:
   # - ../../components/generators/ssl-certificates

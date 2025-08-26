@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: helm-release
+spec:
+  interval: 24h
+  releaseName: longhorn
+  chart:
+    spec:
+      chart: longhorn
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: helm-repository
+      interval: 24h
+  values:
+    defaultSettings:
+      storageMinimalAvailablePercentage: 10
+      upgradeChecker: false

@@ -2,7 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base
+  - helmrelease.yaml
+  - helmrepository.yaml
+  - namespace.yaml
 
 # Prefix all resources with this name
 namePrefix: longhorn-
@@ -24,13 +26,23 @@ configMapGenerator:
 # Source Chart Repo
   # url: https://releases.rancher.com/server-charts/stable
 
-patches:
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: add
-        path: /spec/values
-        value: {"defaultSettings":{"storageMinimalAvailablePercentage":10,"upgradeChecker":false}}
+# patches:
+#   - target:
+#       kind: HelmRelease
+#     patch: |-
+#       - op: add
+#         path: /spec/values
+#         value: {"defaultSettings":{"storageMinimalAvailablePercentage":10,"upgradeChecker":false}}
+
+#   - target:
+#       kind: OCIRepository
+#     patch: |-
+#       - op: replace
+#         path: /spec/url
+#         value: "oci://ghcr.io/backstage/charts/backstage"
+#       - op: replace
+#         path: /spec/ref
+#         value: { "tag": "2.6.1" }
 
 components:
   # - ../../components/generators/ssl-certificates
