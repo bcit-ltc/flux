@@ -21,14 +21,6 @@ configMapGenerator:
       annotations:
         config.kubernetes.io/local-config: "true"
 
-patches:
-  - target:
-      kind: OCIRepository
-    patch: |-
-      - op: replace
-        path: /spec/verify/matchOIDCIdentity/0/subject
-        value: "^https://github.com/bcit-ltc/oci/qcon-api.*$"
-
 components:
   # - ../../components/generators/ssl-certificates
 

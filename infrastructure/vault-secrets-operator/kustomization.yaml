@@ -21,6 +21,9 @@ configMapGenerator:
       annotations:
         config.kubernetes.io/local-config: "true"
 
+# Source Chart Repo
+  # url: https://helm.releases.hashicorp.com
+
 patches:
   - target:
       kind: HelmRelease
@@ -30,15 +33,6 @@ patches:
       - op: add
         path: /spec/values
         value: {"values":{"defaultVaultConnection":{"enabled":true,"address":"https://vault.ltc.bcit.ca:8200"}}}
-
-# Source Chart Repo
-  # url: https://helm.releases.hashicorp.com
-  - target:
-      kind: OCIRepository
-    patch: |-
-      - op: replace
-        path: /spec/verify/matchOIDCIdentity/0/subject
-        value: "^https://github.com/bcit-ltc/oci/vault-secrets-operator.*$"
 
 components:
   # - ../../components/generators/ssl-certificates

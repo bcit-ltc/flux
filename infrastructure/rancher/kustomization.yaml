@@ -21,6 +21,9 @@ configMapGenerator:
       annotations:
         config.kubernetes.io/local-config: "true"
 
+# Source Chart Repo
+  # url: https://releases.rancher.com/server-charts/stable
+
 patches:
   - target:
       kind: HelmRelease
@@ -28,15 +31,6 @@ patches:
       - op: add
         path: /spec/values
         value: {"values":{"hostname":"rancher2.ltc.bcit.ca","ingress":{"tls":{"source":"secret"}},"replicas":"-1"}}
-
-# Source Chart Repo
-  # url: https://releases.rancher.com/server-charts/stable
-  - target:
-      kind: OCIRepository
-    patch: |-
-      - op: replace
-        path: /spec/verify/matchOIDCIdentity/0/subject
-        value: "^https://github.com/bcit-ltc/oci/rancher.*$"
 
 components:
   # - ../../components/generators/ssl-certificates
