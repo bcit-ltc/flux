@@ -20,9 +20,9 @@ spec:
     defaultSettings:
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
-      taintToleration: "server0Label=true:NoSchedule"
+      taintToleration: "key=value:NoSchedule"
 
-# setup backup target=Azure:
+# TODO: setup backup target=Azure:
 # https://longhorn.io/docs/1.9.1/snapshots-and-backups/backup-and-restore/set-backup-target/#set-up-azure-blob-storage-backupstore
 
 # patches:
