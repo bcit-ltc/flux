@@ -30,8 +30,9 @@ flux bootstrap github \
 --owner=bcit-ltc \
 --repository=flux \
 --branch=main \
-# --components-extra=image-reflector-controller,image-automation-controller \
 --path=clusters/${CLUSTER}
+
+# --components-extra=image-reflector-controller,image-automation-controller \
 ```
 
 1. (optional) Adjust the flux controllers by adding the following patches to the `flux-system/kustomization.yaml` file.

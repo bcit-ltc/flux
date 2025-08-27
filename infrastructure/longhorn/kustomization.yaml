@@ -26,6 +26,10 @@ configMapGenerator:
 # Source Chart Repo
   # url: https://releases.rancher.com/server-charts/stable
 
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
 # patches:
 #   - target:
 #       kind: HelmRelease
@@ -33,16 +37,6 @@ configMapGenerator:
 #       - op: add
 #         path: /spec/values
 #         value: {"defaultSettings":{"storageMinimalAvailablePercentage":10,"upgradeChecker":false}}
-
-#   - target:
-#       kind: OCIRepository
-#     patch: |-
-#       - op: replace
-#         path: /spec/url
-#         value: "oci://ghcr.io/backstage/charts/backstage"
-#       - op: replace
-#         path: /spec/ref
-#         value: { "tag": "2.6.1" }
 
 components:
   # - ../../components/generators/ssl-certificates
