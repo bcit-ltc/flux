@@ -30,7 +30,7 @@ flux bootstrap github \
 --owner=bcit-ltc \
 --repository=flux \
 --branch=main \
---components-extra=image-reflector-controller,image-automation-controller \
+# --components-extra=image-reflector-controller,image-automation-controller \
 --path=clusters/${CLUSTER}
 ```
 
