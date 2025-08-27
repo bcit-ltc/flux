@@ -7,7 +7,7 @@ spec:
   releaseName: longhorn
   chart:
     spec:
-      chart: longhorn/longhorn
+      chart: longhorn
       # Set version here
       #   - caveat: requires patch
       #     `kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag`
