@@ -6,3 +6,5 @@ components/registry-credentials
 components/ssl-certificates
 components/vault-auth
 components/sops-vault-token
+components/flux-chart-updater
+infrastructure/rancher/tls-rancher-ingress.yaml

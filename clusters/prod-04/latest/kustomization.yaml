@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../apps
-  - ../../../infrastructure
+  # - ../../../infrastructure
 
 labels:
 - includeSelectors: true

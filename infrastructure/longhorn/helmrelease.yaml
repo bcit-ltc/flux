@@ -20,7 +20,8 @@ spec:
     defaultSettings:
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
-      taintToleration: "key=value:NoSchedule"
+      node-taint:
+        - "CriticalAddonsOnly=true:NoExecute"
 
 # TODO: setup backup target=Azure:
 # https://longhorn.io/docs/1.9.1/snapshots-and-backups/backup-and-restore/set-backup-target/#set-up-azure-blob-storage-backupstore
@@ -35,4 +36,3 @@ spec:
 #       - op: add
 #         path: /spec/values/defaultSettings/backupTargetCredentialSecret
 #         value: s3access
-
