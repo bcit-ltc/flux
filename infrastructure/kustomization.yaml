@@ -4,9 +4,9 @@ kind: Kustomization
 commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
-resources:
+# resources:
   # - ./flux
-  - ./longhorn
+  # - ./longhorn
   # - ./headlamp
   # - ./backstage
 

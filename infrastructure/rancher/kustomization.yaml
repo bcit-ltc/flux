@@ -39,3 +39,10 @@ configurations:
 
   # Required for VaultAuth role and serviceaccounts
   # - ../../components/generators/vault-auth
+
+
+# helm install rancher rancher-stable/rancher \
+#   --namespace cattle-system \
+#   --set hostname=rancher3.ltc.bcit.ca \
+#   --set bootstrapPassword=admin \
+#   --set ingress.tls.source=secret
