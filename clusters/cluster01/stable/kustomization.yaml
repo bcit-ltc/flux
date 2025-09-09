@@ -1,0 +1,93 @@
+# Kustomization for `stable` environment
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../../apps
+  - ../../../infrastructure
+
+# Add this to all resources
+nameSuffix: -stable
+
+labels:
+- includeSelectors: true
+  pairs:
+    environment: stable
+
+# Generate a re-usable environment variable for other resources
+configMapGenerator:
+  - name: flux-env
+    literals:
+      - fluxEnv="stable"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+patches:
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: add
+        path: /spec/postRenderers
+        value:
+          - kustomize:
+              patches:
+                - target:
+                    name: .*
+                  patch: |
+                    - op: add
+                      path: /metadata/labels/environment
+                      value: stable
+
+  # Patch resources with environment-specific values
+  - target:
+      kind: VaultAuthGlobal
+    patch: |-
+      - op: replace
+        path: /spec/kubernetes/mount
+        value: kubernetes-stable
+      - op: replace
+        path: /spec/kubernetes/audiences
+        value: [stable]
+
+replacements:
+  - source:
+      kind: ConfigMap
+      name: flux-env
+      fieldPath: data.fluxEnv
+    targets:
+
+      # Replace the secrets's environment placeholder with the correct path
+      # - path should match {appName}/{environment}/{secretName}
+      - select:
+          kind: VaultStaticSecret
+        fieldPaths:
+          - spec.path
+        options:
+          delimiter: "/"
+          index: 1
+        reject:
+          - name: star-ltc-bcit-ca
+          - name: tls-rancher-ingress
+          - name: sops-vault-token
+
+      # Add the environment as a suffix to the default connection
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.vaultConnectionRef
+        options:
+          delimiter: "-"
+          index: 99
+
+      # Add the environment as a suffix to the global auth name
+      - select:
+          kind: VaultAuth
+        fieldPaths:
+          - spec.vaultAuthGlobalRef.name
+        options:
+          delimiter: "-"
+          index: 99          

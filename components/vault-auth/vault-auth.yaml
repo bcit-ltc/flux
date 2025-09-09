@@ -1,0 +1,15 @@
+# Vault secrets operator VaultAuth configuration
+#   - Requires `vault-config` kubernetes auths to match
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+spec:
+  kubernetes:
+    serviceAccount: service-account
+    role: vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system

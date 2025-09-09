@@ -1,0 +1,14 @@
+# This file is for teaching kustomize how to substitute names
+nameReference:
+
+# Update the chartRef name to match the OCIRepository name
+- kind: OCIRepository
+  fieldSpecs:
+    - kind: HelmRelease
+      path: spec/chartRef/name
+
+# Add the namespace to the HelmRelease chartRef
+namespace:
+- kind: HelmRelease
+  path: spec/chartRef/namespace
+  create: true

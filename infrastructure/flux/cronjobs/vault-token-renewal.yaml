@@ -1,0 +1,38 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vault-token-renewal
+spec:
+
+  # Run every Wednesday at midnight (7d period; token renewal period is 10d)
+  schedule: "0 0 * * 3"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: vault-token-renewal
+            image: alpine/curl
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - |
+              curl \
+              -fSsL \
+              --header "X-Vault-Token: $(printf $VAULT_TOKEN)" \
+              --request POST \
+              "$VAULT_ADDR/v1/auth/token/renew-self"
+
+            # Assumes `sops-vault-token` was created in `flux-system` namespace during bootstrapping
+            env:
+            - name: VAULT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sops-vault-token
+                  key: sops.vault-token
+            - name: VAULT_ADDR
+              value: "https://vault.ltc.bcit.ca:8200"
+
+          restartPolicy: OnFailure

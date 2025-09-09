@@ -1,0 +1,13 @@
+# Kustomization for `admin` environment
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# resources:
+#   - ../../../infrastructure/rancher
+
+labels:
+- includeSelectors: true
+  pairs:
+    environment: admin
+

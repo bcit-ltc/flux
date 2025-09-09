@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+  - vault-secrets.yaml
+
+# Prefix all resources with this name
+namePrefix: course-workload-estimator-
+
+# Replace base Namespace name and add all resources to this namespace
+namespace: course-workload-estimator
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="course-workload-estimator"
+
+    # Resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+# Order matters!
+components:
+
+  # Add TLS certificates for ingress
+  - ../../components/ssl-certificates
+
+  # Add Vault authentication (role and service accounts)
+  - ../../components/vault-auth
+
+  # Update resources based on release name (ConfigMap above)
+  - ../../components/config-matcher

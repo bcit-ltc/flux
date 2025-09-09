@@ -1,0 +1,8 @@
+# Prepare resources for Vault Secrets Operator
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - crb-sa-vault-tokenauth.yaml
+  - namespace.yaml

@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+# Prefix all resources with this name
+namePrefix: backstage-
+
+# Replace base Namespace name and add all resources to this namespace
+namespace: backstage
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="backstage"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+# Source Chart Repo
+  # url: oci://ghcr.io/backstage/charts/backstage
+
+patches:
+#   - target:
+#       kind: HelmRelease
+#     patch: |-
+#       - op: add
+#         path: /spec/values
+#         value: {"values":{"hostname":"backstage.ltc.bcit.ca","ingress":{"tls":{"source":"secret"}},"replicas":"-1"}}
+
+  - target:
+      kind: OCIRepository
+    patch: |-
+      - op: replace
+        path: /spec/url
+        value: "oci://ghcr.io/backstage/charts/backstage"
+      - op: replace
+        path: /spec/ref
+        value: { "tag": "2.6.1" }
+
+components:
+  # - ../../components/generators/ssl-certificates
+
+  # Update resources based on ConfigMap above
+  - ../../components/config-matcher
+
+  # Required for VaultAuth role and service accounts
+  # - ../../components/generators/vault-auth

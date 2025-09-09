@@ -1,0 +1,55 @@
+# Work in progress
+# see https://docs.armory.io/continuous-deployment/armory-admin/manual-service-account/
+#     https://medium.com/@th3b3ginn3r/understanding-service-accounts-in-kubernetes-e9d2abe19df8
+#     https://github.com/Angatar/kubectl/blob/master/README.md
+#     https://v1-25.docs.kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#manually-create-an-api-token-for-a-serviceaccount
+#
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: clear-terminating-pods
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: clear-terminating-service-account
+          automountServiceAccountToken: true
+          containers:
+          - name: clear-terminating-pods
+            image: jitesoft/kubectl
+            command:
+            - /bin/sh
+            - -c
+            - kubectl get pods --all-namespaces | grep Terminating | while read namespace pod rest; do kubectl delete pod $pod -n $namespace --force; done
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: clear-terminating-service-account
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  # "namespace" omitted since ClusterRoles are not namespaced
+  name: clear-terminating-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "delete", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: clear-terminating-binding
+subjects:
+- kind: ServiceAccount
+  name: clear-terminating-service-account
+  # namespaace added by kustomization
+roleRef:
+  kind: ClusterRole
+  name: clear-terminating-role
+  apiGroup: rbac.authorization.k8s.io

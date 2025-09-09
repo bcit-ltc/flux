@@ -1,0 +1,45 @@
+# Copy an app's `release-name` into various fields
+# - https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/replacements/
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+replacements:
+  - source:
+      kind: ConfigMap
+      name: release-name
+      fieldPath: data.releaseName
+    targets:
+
+      # Append the release name to the OCIRepository URL
+      - select:
+          kind: OCIRepository
+        fieldPaths:
+          - spec.url
+        options:
+          delimiter: "/"
+          index: 5
+
+      # Ensure the release name matches
+      - select:
+          kind: HelmRelease
+        fieldPaths:
+          - spec.releaseName
+
+      # Ensure the serviceaccount name matches the release name
+      - select:
+          kind: VaultAuth
+        fieldPaths:
+          - spec.kubernetes.serviceAccount
+
+      # Prefix the secret's path with the release name
+      # - this field also gets updated by the environment replacement in `clusters/cluster0X/{environment}`
+      - select:
+          kind: VaultStaticSecret
+        fieldPaths:
+          - spec.path
+        options:
+          delimiter: "/"
+          index: 0
+        reject:
+          - name: star-ltc-bcit-ca

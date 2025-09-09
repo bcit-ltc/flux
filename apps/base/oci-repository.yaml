@@ -1,0 +1,30 @@
+# Watches `oci/{chartName}` registries for new versions
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: oci-repository
+spec:
+  interval: 6h
+
+  # `chart-name` is substituted by the component `config-matcher`
+  url: oci://ghcr.io/bcit-ltc/oci/chart-name
+  ref:
+    semver: '>= 1.0.0'
+
+# Not quite ready for prime time: https://fluxcd.io/flux/cheatsheets/oci-artifacts/#signing-and-verification
+#
+  # verify:
+  #   provider: cosign
+  #   matchOIDCIdentity:
+  #     - issuer: "^https://token.actions.githubusercontent.com$"
+  #       subject: "^https://github.com/bcit-ltc/oci/chart-name.*$"
+
+# Use with kustomization patch:
+# patches:
+#   - target:
+#       kind: OCIRepository
+#     patch: |-
+#       - op: replace
+#         path: /spec/verify/matchOIDCIdentity/0/subject
+#         value: "^https://github.com/bcit-ltc/oci/chart-name.*$"

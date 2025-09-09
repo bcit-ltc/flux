@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  name: projectName
+  namespace: flux-system
+stringData:
+  .dockerconfigjson: '{"auths":{"bcit-ltc.ghcr.io":{"username":"projectname-deployabot","password":"project-token","auth":"somebase64hashseebelow"}}}'
+#
+# where auth=$(printf "$username:$password" | base64)
+#

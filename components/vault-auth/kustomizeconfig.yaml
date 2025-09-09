@@ -1,0 +1,14 @@
+# This file is for teaching kustomize how to substitute names
+---
+nameReference:
+
+- kind: VaultAuth
+  fieldSpecs:
+ 
+    # Update the role name to match the VaultAuth name
+    - kind: VaultAuth
+      path: spec/kubernetes/role
+
+    # Ensure the AuthRef name matches the VaultAuth name
+    - kind: VaultStaticSecret
+      path: spec/vaultAuthRef

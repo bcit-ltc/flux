@@ -1,0 +1,10 @@
+# This file is for teaching kustomize how to substitute names
+---
+nameReference:
+
+- kind: VaultStaticSecret
+  fieldSpecs:
+    - kind: Kustomization
+      path: spec/decryption/secretRef/name
+    - kind: VaultStaticSecret
+      path: spec/destination/name

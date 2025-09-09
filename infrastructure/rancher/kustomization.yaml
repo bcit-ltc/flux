@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - helm-release.yaml
+  - helm-repository.yaml
+  - namespace.yaml
+
+# Prefix all resources with this name
+namePrefix: rancher-
+
+# Replace base Namespace name and add all resources to this namespace
+namespace: cattle-system
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="rancher"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+# Source Chart Repo
+  # url: https://releases.rancher.com/server-charts/stable
+
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
+components:
+#   # - ../../components/generators/ssl-certificates
+
+#   # Update resources based on ConfigMap above
+  - ../../components/config-matcher

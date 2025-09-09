@@ -1,0 +1,38 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: helm-release
+spec:
+  interval: 24h
+  releaseName: longhorn
+  chart:
+    spec:
+      chart: longhorn
+      # Set version here
+      #   - caveat: requires patch
+      #     `kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag`
+      version: "1.9.1"
+      sourceRef:
+        kind: HelmRepository
+        name: helm-repository
+      interval: 24h
+  values:
+    defaultSettings:
+      storageMinimalAvailablePercentage: 10
+      upgradeChecker: false
+
+# TODO: setup backup target=Azure:
+# https://longhorn.io/docs/1.9.1/snapshots-and-backups/backup-and-restore/set-backup-target/#set-up-azure-blob-storage-backupstore
+
+# patches:
+#   - target:
+#       kind: HelmRelease
+#     patch: |-
+#       - op: add
+#         path: /spec/values/defaultSettings/backupTarget
+#         value: s3://admin-longhorn@us-west-2/latest/
+#       - op: add
+#         path: /spec/values/defaultSettings/backupTargetCredentialSecret
+#         value: s3access

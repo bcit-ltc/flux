@@ -1,0 +1,6 @@
+# Local .gitignore file for this repository
+
+# OSX Trash
+.DS_Store
+
+!/init/*

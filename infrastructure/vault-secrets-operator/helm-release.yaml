@@ -1,0 +1,21 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vault-secrets-operator
+spec:
+  interval: 24h
+  releaseName: vault-secrets-operator
+  chart:
+    spec:
+      chart: vault-secrets-operator
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: vault-secrets-operator
+      interval: 24h
+  # values:
+  #   defaultVaultConnection:
+  #     enabled: true
+  #     address: "https://vault.ltc.bcit.ca:8200"

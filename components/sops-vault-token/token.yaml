@@ -1,0 +1,15 @@
+# Generates a secret from Vault
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: sops-vault-token
+spec:
+  type: kv-v2
+  vaultAuthRef: vault-auth
+  refreshAfter: 6h
+  mount: ltc-infrastructure
+  path: flux/sops-vault-token
+  destination:
+    name: sops-vault-token
+    create: true

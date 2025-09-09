@@ -1,0 +1,42 @@
+# Kustomization for `latest` environment
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../../apps
+  # - ../../../infrastructure
+
+# Add this to all resources
+nameSuffix: -latest
+
+labels:
+- includeSelectors: true
+  pairs:
+    environment: latest
+
+# Generate a re-usable environment variable for other resources
+configMapGenerator:
+  - name: flux-env
+    literals:
+      - fluxEnv="latest"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+patches:
+
+  # Update oci repository ref selection to target all *.rc images
+  #     eg. 2.4.10-rc.7731b9b1.1684912629
+  - target:
+      kind: OCIRepository
+      annotationSelector: "config.fluxcd.io/workload-type=app"
+    patch: |-
+      - op: replace
+        path: /spec/ref/semver
+        value: ">=1.0.0-0"      # include --devel releases
+      - op: add
+        path: /spec/ref/semverFilter
+        value: ".*-rc.*"        # only select images with -rc suffix
