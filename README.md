@@ -1,6 +1,4 @@
-# FluxCD
-
-Flux GitOps system.
+# Flux GitOps system
 
 This project configures Kubernetes clusters to monitor and automatically deploy apps and services. See the [FluxCD documentation](https://fluxcd.io/flux/get-started/) for more information.
 
