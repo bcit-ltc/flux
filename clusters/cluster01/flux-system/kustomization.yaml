@@ -13,8 +13,8 @@ patches:
       name: flux-system
     patch: |-
       - op: replace
-          path: /spec/interval
-          value: 8h
+        path: /spec/interval
+        value: 8h
 
   # Increases flux kustomization interval to 2 days
   - target:
@@ -22,5 +22,5 @@ patches:
       name: flux-system
     patch: |-
       - op: replace
-          path: /spec/interval
-          value: 48h
+        path: /spec/interval
+        value: 48h

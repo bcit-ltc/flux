@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- gotk-components.yaml
-- gotk-sync.yaml
+  - gotk-components.yaml
+  - gotk-sync.yaml
 
 # Kustomize flux controllers
 patches:
@@ -24,3 +24,12 @@ patches:
       - op: replace
         path: /spec/interval
         value: 8h
+
+  # Increases flux kustomization interval to 2 days
+  - target:
+      kind: Kustomization
+      name: flux-system
+    patch: |-
+      - op: replace
+        path: /spec/interval
+        value: 48h
