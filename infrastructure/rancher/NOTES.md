@@ -91,16 +91,15 @@ This is a modified init procedure that adds SOPS decryption to the Flux controll
     //flux-system/kustomization.yaml
 
     # Kustomize flux controllers
-    #
     patches:
 
     # Adds global decryption strategy to `flux-system` Kustomization
     - target:
         kind: Kustomization
-        patch: |-
+    patch: |-
         - op: add
-            path: /spec/decryption
-            value: { provider: sops, secretRef: { name: sops-vault-token }}
+        path: /spec/decryption
+        value: { provider: sops, secretRef: { name: sops-vault-token }}
     ```
 
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization

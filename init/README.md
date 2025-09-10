@@ -70,23 +70,31 @@ Flux should now be installed. 🎉
     # Kustomize flux controllers
     patches:
 
+    # Adds global decryption strategy to `flux-system` Kustomization
+    - target:
+        kind: Kustomization
+    patch: |-
+        - op: add
+        path: /spec/decryption
+        value: { provider: sops, secretRef: { name: sops-vault-token }}
+
     # Increases flux git repository interval to 8 hours
     - target:
         kind: GitRepository
         name: flux-system
-        patch: |-
+    patch: |-
         - op: replace
-            path: /spec/interval
-            value: 8h
+        path: /spec/interval
+        value: 8h
 
     # Increases flux kustomization interval to 2 days
     - target:
         kind: Kustomization
         name: flux-system
-        patch: |-
+    patch: |-
         - op: replace
-            path: /spec/interval
-            value: 48h
+        path: /spec/interval
+        value: 48h
     ```
 
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
