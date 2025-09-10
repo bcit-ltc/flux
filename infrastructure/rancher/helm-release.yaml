@@ -9,7 +9,7 @@ spec:
   releaseName: rancher
   chart:
     spec:
-      chart: rancher-stable/rancher
+      chart: rancher
       version: "*"
       sourceRef:
         kind: HelmRepository
