@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: rancher-stable/rancher
-      version: "2.11.3"
+      version: "*"
       sourceRef:
         kind: HelmRepository
         name: helm-repository
