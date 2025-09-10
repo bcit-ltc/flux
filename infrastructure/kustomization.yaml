@@ -1,16 +1,18 @@
+# Kustomization for all infrastructure
+#
+# - deploy workloads by uncommenting resources below
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
-# resources:
+resources:
   # - ./flux
-  # - ./vault-secrets-operator
 
+  # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
+  - ./vault-secrets-operator
+
+  # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   # - ./longhorn
-  # longhorn uninstall requires a patch:
-  #   `kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag`
-  # CRD's must also be deleted manually right after removing longhorn
-  #   `./longhorn/uninstall-crds.sh`
-

@@ -3,6 +3,7 @@ set -euo pipefail
 
 # ===== CONFIG =====
 NAMESPACE="${NAMESPACE:-longhorn-system}"
+
 # Tune parallelism: override with JOBS=8 ./script.sh
 JOBS="${JOBS:-$(command -v nproc >/dev/null 2>&1 && nproc || sysctl -n hw.ncpu 2>/dev/null || echo 4)}"
 
@@ -65,6 +66,7 @@ else
 
     # Some CRDs are namespaced; we respect your constraint and scope to the Longhorn namespace
     if kubectl -n "$NAMESPACE" get "$crd" >/dev/null 2>&1; then
+
       # Patch all instances (parallel)
       mapfile -t inst < <(kubectl -n "$NAMESPACE" get "$crd" -o json \
         | jq -r '.items[].metadata.name' 2>/dev/null | sed '/^$/d')
