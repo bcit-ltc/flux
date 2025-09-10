@@ -3,3 +3,24 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+
+# Kustomize flux controllers
+patches:
+
+  # Increases flux git repository interval to 8 hours
+  - target:
+      kind: GitRepository
+      name: flux-system
+    patch: |-
+      - op: replace
+          path: /spec/interval
+          value: 8h
+
+  # Increases flux kustomization interval to 2 days
+  - target:
+      kind: Kustomization
+      name: flux-system
+    patch: |-
+      - op: replace
+          path: /spec/interval
+          value: 48h
