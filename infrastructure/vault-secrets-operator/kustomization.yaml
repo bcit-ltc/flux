@@ -26,6 +26,10 @@ configMapGenerator:
 # Source Chart Repo
   # url: https://github.com/hashicorp/vault-secrets-operator/tree/main/chart
 
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
 # Order matters!
 components:
 
