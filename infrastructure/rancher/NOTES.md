@@ -105,7 +105,7 @@ This is a modified init procedure that adds SOPS decryption to the Flux controll
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
 
     ```bash
-    git add . && git commit -m "adds sops decryption" && git push origin/main
+    git add . && git commit -m "adds sops decryption" && git push origin main
 
     flux reconcile kustomization flux-system --with-source
     ```
@@ -135,7 +135,7 @@ Flux with SOPS should now be installed. 🎉
     Or alternatively,
 
     ```bash
-    sops -d tls-rancher-ingress.enc.yaml | kubectl apply -f -
+    sops -d tls-rancher-ingress.enc.yaml | kubectl apply -n cattle-system -f -
     ```
 
 1. Deploy Rancher

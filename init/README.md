@@ -100,7 +100,7 @@ Flux should now be installed. 🎉
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
 
     ```bash
-    git add . && git commit -m "adds sops decryption" && git push origin/main
+    git add . && git commit -m "adds sops decryption" && git push origin main
 
     flux reconcile kustomization flux-system --with-source
     ```
