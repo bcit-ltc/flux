@@ -9,10 +9,12 @@ commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
 resources:
+
+  # automate sops token renewal
   # - ./flux
 
   # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
   - ./vault-secrets-operator
 
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
-  # - ./longhorn
+  - ./longhorn

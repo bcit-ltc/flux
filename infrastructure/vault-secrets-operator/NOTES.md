@@ -16,4 +16,6 @@ Deploy the necessary resources to prepare the cluster for VSO.
     - a service account and a token
     - a cluster role binding
 
-Follow the steps in the `vault` repo `modules/kubernetes-auth/NOTES.md` file to retrieve the service account token and configure the Vault Kubernetes auth method.
+1. Next, follow the steps in the `vault` repo `modules/kubernetes-auth/NOTES.md`
+
+    This provisions a service account token and configures Vault to accept connections using the Kubernetes auth method.

@@ -3,9 +3,10 @@ kind: Kustomization
 
 namePrefix: flux-
 
-resources:
-  - ./cronjobs
+# If enabling SOPS decryption, these cronjobs automate token renewal
+# resources:
+#   - ./cronjobs
 
 # components:
   # Vault token to decrypt secrets
-  # - ../../../components/sops-vault-token - created by flux bootstrap
+  # - ../../../components/sops-vault-token
