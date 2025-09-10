@@ -20,4 +20,5 @@ spec:
     ingress:
       tls:
         source: "secret"
+    agentTLSMode: "system-store"
     replicas: "-1"

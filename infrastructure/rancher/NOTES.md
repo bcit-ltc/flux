@@ -114,12 +114,6 @@ Flux with SOPS should now be installed. 🎉
 
 ## Rancher deployment
 
-1. If Flux is bootstrapped with SOPS decryption, now all that's needed is for the `resources` section of `admin/kustomization.yaml` to be uncommented.
-
-    Then commit and push the changes, and then reconcile the `flux-system` kustomization.
-
-### Alternate method
-
 1. Ensure the `cattle-system` namespace is present
 
     ```bash
@@ -129,14 +123,20 @@ Flux with SOPS should now be installed. 🎉
 1. Deploy the `tls-rancher-ingress` secret
 
     ```bash
-    vault kv get -mount=ltc-infrastructure "rancher/admin/tls-rancher-ingress" | kubectl apply -f -
-    ```
-
-    Or alternatively,
-
-    ```bash
     sops -d tls-rancher-ingress.enc.yaml | kubectl apply -n cattle-system -f -
     ```
+
+1. Uncomment the `rancher` resource in `admin/kustomization.yaml`. Then commit and push the changes, and then reconcile the `flux-system` kustomization.
+
+    ```bash
+    git add . && git commit -m "adds sops decryption" && git push origin/main
+
+    flux reconcile kustomization flux-system --with-source
+    ```
+
+### Alternate method
+
+Rather than using Flux, Rancher can be installed manually.
 
 1. Deploy Rancher
 
@@ -160,9 +160,3 @@ Flux with SOPS should now be installed. 🎉
     ```
 
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
-
-    ```bash
-    git add . && git commit -m "adds sops decryption" && git push origin/main
-
-    flux reconcile kustomization flux-system --with-source
-    ```

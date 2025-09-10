@@ -4,7 +4,7 @@ kind: Kustomization
 commonAnnotations:
   config.fluxcd.io/workload-type: app
 
-resources:
+# resources:
   # - ./qcon-api
-  - ./infrastructure-documentation
+  # - ./infrastructure-documentation
   # - ./course-workload-estimator
