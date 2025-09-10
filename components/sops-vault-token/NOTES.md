@@ -1,14 +1,16 @@
 # Optional SOPS configuration
 
+> See <https://fluxcd.io/flux/guides/mozilla-sops/>
+
+Flux can decrypt SOPS secrets on the fly" as they are applied to a cluster. These steps demonstrate how to configure the flux controllers to automatically decrypt SOPS secrets.
+
 ## Retrieve the SOPS token and patch
 
 1. Retrieve the "sops-vault-token" credentials
 
-    *If a new token is required, see the [SOPS token requirements](../../components/sops-vault-token/NOTES.md) section of the `sops-vault-token` component*
+    *If a new token is required, see the [SOPS token requirements](../../components/sops-vault-token/NOTES.md) section of `components/sops-vault-token`*
 
     ```bash
-    export VAULT_TOKEN={yourVaultToken}
-
     SOPS_TOKEN=$(vault kv get -mount="ltc-infrastructure" -field="sops.vault-token" "flux/sops-vault-token") \
       && echo "${SOPS_TOKEN}"
     ```
@@ -50,8 +52,6 @@
 The sops encrypt/decrypt token is able to renew itself, but if a new token is required, create and store like this:
 
   ```bash
-  export VAULT_TOKEN={yourVaultToken}
-
   vault token create -role=use-transit-gitops-key
 
   vault kv put -mount="ltc-infrastructure" sops.vault-token=$SOPS_TOKEN "flux/sops-vault-token"

@@ -17,8 +17,13 @@ spec:
       interval: 24h
   values:
     hostname: "rancher3.ltc.bcit.ca"
+    replicas: "-1"
+
+    # sets ingress secret to `tls-rancher-ingress`
     ingress:
       tls:
         source: "secret"
+
+    # Fixes agent CA configuration
+    # - https://github.com/rancher/rancher/issues/45628#issuecomment-2246152604
     agentTLSMode: "system-store"
-    replicas: "-1"
