@@ -4,9 +4,9 @@ kind: Kustomization
 commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
-resources:
+# resources:
   # - ./flux
-  - ./vault-secrets-operator
+  # - ./vault-secrets-operator
 
   # - ./longhorn
   # longhorn uninstall requires a patch:
