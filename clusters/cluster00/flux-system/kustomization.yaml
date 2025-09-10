@@ -5,13 +5,22 @@ resources:
 - gotk-sync.yaml
 
 # Kustomize flux controllers
-#
 patches:
 
-# Adds global decryption strategy to `flux-system` Kustomization
-- target:
-    kind: Kustomization
-  patch: |-
-    - op: add
-      path: /spec/decryption
-      value: { provider: sops, secretRef: { name: sops-vault-token } }
+  # Adds global decryption strategy to `flux-system` Kustomization
+  - target:
+      kind: Kustomization
+      name: flux-system
+    patch: |-
+      - op: add
+        path: /spec/decryption
+        value: { provider: sops, secretRef: { name: sops-vault-token } }
+
+  # Increases flux git repository interval to 8 hours
+  - target:
+      kind: GitRepository
+      name: flux-system
+    patch: |-
+      - op: replace
+        path: /spec/interval
+        value: 8h

@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD046 -->
+
 # Flux Installation
 
 These steps augment the instructions from [Fluxcd.io](https://fluxcd.io/flux/installation/bootstrap/github/#github-organization).
@@ -74,19 +75,19 @@ Flux should now be installed. 🎉
     - target:
         kind: GitRepository
         name: flux-system
-    patch: |-
+        patch: |-
         - op: replace
-        path: /spec/interval
-        value: 8h
+            path: /spec/interval
+            value: 8h
 
     # Increases flux kustomization interval to 2 days
     - target:
         kind: Kustomization
         name: flux-system
-    patch: |-
+        patch: |-
         - op: replace
-        path: /spec/interval
-        value: 48h
+            path: /spec/interval
+            value: 48h
     ```
 
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
@@ -131,14 +132,14 @@ To have Flux automatically decrypt SOPS secrets when they are applied to a clust
 
     ```bash
     SOPS_TOKEN=$(vault kv get -mount="ltc-infrastructure" -field="sops.vault-token" "flux/sops-vault-token") \
-      && echo ${SOPS_TOKEN}
+    && echo ${SOPS_TOKEN}
     ```
 
     **Create new token**
 
     ```bash
     SOPS_TOKEN=$(vault token create -role=use-transit-gitops-key -format=json | jq -r '.auth.client_token') \
-      && echo ${SOPS_TOKEN}
+    && echo ${SOPS_TOKEN}
     ```
 
 1. Create the `sops-vault-token` secret in the `flux-system` namespace
