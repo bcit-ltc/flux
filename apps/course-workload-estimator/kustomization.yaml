@@ -1,11 +1,10 @@
-# App kustomization
+# course-workload-estimator kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
   - ../base
-  - vault-secrets.yaml
 
 # Prefix all resources with this name
 namePrefix: course-workload-estimator-

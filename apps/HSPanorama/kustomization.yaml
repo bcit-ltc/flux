@@ -1,4 +1,4 @@
-# qcon-api kustomization
+# HSPanorama kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -7,16 +7,16 @@ resources:
   - ../base
 
 # Prefix all resources with this name
-namePrefix: qcon-api-
+namePrefix: HSPanorama-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: qcon-api
+namespace: HSPanorama
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="qcon-api"
+      - releaseName="HSPanorama"
 
     # Resource is not added to the cluster
     options:

@@ -1,4 +1,4 @@
-# qcon-api kustomization
+# legacy-sob kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -7,16 +7,16 @@ resources:
   - ../base
 
 # Prefix all resources with this name
-namePrefix: qcon-api-
+namePrefix: legacy-sob-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: qcon-api
+namespace: legacy-sob
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="qcon-api"
+      - releaseName="legacy-sob"
 
     # Resource is not added to the cluster
     options:
