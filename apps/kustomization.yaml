@@ -9,6 +9,8 @@ commonAnnotations:
   config.fluxcd.io/workload-type: app
 
 resources:
+  # - /course-production-site
+  # - /conversion-guide
   - ./course-workload-estimator
   - ./infrastructure-documentation
   # - /corgi
@@ -35,3 +37,4 @@ resources:
   # - /MRI-WebUI
   # - /qcon-api
   # - /SOH_PerinatalPal
+  # - /sugar-suite

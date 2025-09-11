@@ -6,6 +6,8 @@ Adds workloads to be deployed by Flux.
 
 - app container in GitHub Packages
 - OCI container (helm chart) in GitHub Packages
+- Flux CLI
+- Kubernetes CLI & cluster connection
 
 ## Adding an app
 
@@ -15,7 +17,7 @@ Adds workloads to be deployed by Flux.
 
 1. Replace all instances of `app` in the folder with ${appName}
 
-1. Add the folder to `apps/kustomization.yaml`
+1. Add the app name to `apps/kustomization.yaml`
 
 1. Commit and push the changes, and then reconcile the `flux-system` kustomization
 
