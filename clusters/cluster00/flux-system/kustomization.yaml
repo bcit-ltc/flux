@@ -23,7 +23,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/interval
-        value: 8h
+        value: 24h
 
   # Increases flux kustomization interval to 2 days
   - target:
