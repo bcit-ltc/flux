@@ -1,0 +1,17 @@
+# Generates a secret from Vault
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: tokens
+spec:
+  type: kv-v2
+  vaultAuthRef: vault-auth
+  refreshAfter: 6h
+  mount: apps
+
+  # path is prefixed by `{appName}/{environment}/`; double // required
+  path: //tokens
+  destination:
+    name: tokens
+    create: true
