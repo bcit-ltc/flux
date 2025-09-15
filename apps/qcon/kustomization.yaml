@@ -4,9 +4,9 @@ kind: Kustomization
 namePrefix: flux-
 
 resources:
-  - ./qcon-api
+  # - ./qcon-api
   - ./qcon-web
-  - ./qcon-guide
+  # - ./qcon-guide
 
 # components:
   # Vault token to decrypt secrets

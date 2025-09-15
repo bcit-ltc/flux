@@ -40,6 +40,6 @@ resources:
   # - /MRI-WebUI
   # - /openlab-scheduler
   # - /ptracker
-  # - /qcon
+  - ./qcon
   # - /SOH_PerinatalPal
   # - /sugar-suite
