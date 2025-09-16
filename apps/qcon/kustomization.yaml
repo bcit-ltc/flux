@@ -4,7 +4,7 @@ kind: Kustomization
 namePrefix: flux-
 
 resources:
-  # - ./qcon-api
+  - ./qcon-api
   - ./qcon-web
   # - ./qcon-guide
 
