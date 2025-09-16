@@ -1,0 +1,6 @@
+# Namespace resource; name is updated by kustomizations
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 0-app-template

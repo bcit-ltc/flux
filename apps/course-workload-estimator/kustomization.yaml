@@ -5,6 +5,7 @@ kind: Kustomization
 
 resources:
   - ../base
+  - namespace.yaml
 
 # Prefix all resources with this name
 namePrefix: course-workload-estimator-

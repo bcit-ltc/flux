@@ -10,7 +10,7 @@ resources:
 namePrefix: qcon-guide-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: qcon-guide
+namespace: qcon
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:

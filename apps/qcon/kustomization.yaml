@@ -5,7 +5,8 @@ resources:
   - ./qcon-api
   - ./qcon-web
   - ./qcon-guide
-
+  - namespace.yaml
+  
 # components:
   # Vault token to decrypt secrets
   # - ../../../components/sops-vault-token

@@ -5,12 +5,13 @@ kind: Kustomization
 
 resources:
   - ../base
+  - namespace.yaml
 
 # Prefix all resources with this name
 namePrefix: scheduler-api-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: scheduler-api
+namespace: openlab-scheduler
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:

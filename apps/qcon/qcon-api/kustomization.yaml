@@ -10,7 +10,7 @@ resources:
 namePrefix: qcon-api-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: qcon-api
+namespace: qcon
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
@@ -34,3 +34,13 @@ components:
 
   # Update resources based on release name (ConfigMap above)
   - ../../../components/config-matcher
+
+patches:
+  - target:
+      kind: Namespace
+      name: qcon-api
+    patch: |
+      $patch: delete
+      kind: Namespace
+      metadata:
+        name: DOES NOT MATTER

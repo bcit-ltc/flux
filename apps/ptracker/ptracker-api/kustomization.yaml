@@ -10,7 +10,7 @@ resources:
 namePrefix: ptracker-api-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: ptracker-api
+namespace: ptracker
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:

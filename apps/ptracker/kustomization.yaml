@@ -5,8 +5,9 @@ namePrefix: flux-
 
 resources:
   - ./ptracker-api
-  - ./ptracker-web
-  - ./ptracker-guide
+  # - ./ptracker-web
+  # - ./ptracker-guide
+  - namespace.yaml
 
 # components:
   # Vault token to decrypt secrets

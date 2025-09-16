@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./scheduler-api
   - ./scheduler-web
+  - namespace.yaml
 
 # components:
   # Vault token to decrypt secrets
