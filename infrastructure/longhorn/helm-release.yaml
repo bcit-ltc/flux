@@ -22,17 +22,5 @@ spec:
     defaultSettings:
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
-
-# TODO: setup backup target=Azure:
-# https://longhorn.io/docs/1.9.1/snapshots-and-backups/backup-and-restore/set-backup-target/#set-up-azure-blob-storage-backupstore
-
-# patches:
-#   - target:
-#       kind: HelmRelease
-#     patch: |-
-#       - op: add
-#         path: /spec/values/defaultSettings/backupTarget
-#         value: s3://admin-longhorn@us-west-2/latest/
-#       - op: add
-#         path: /spec/values/defaultSettings/backupTargetCredentialSecret
-#         value: s3access
+      backupTarget: https://rancherbki0sz5wd3.blob.core.windows.net/rancherbackup
+      backupTargetCredentialSecret: longhorn-azblob-secret

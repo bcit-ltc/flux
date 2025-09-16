@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: longhorn-azblob-secret
+    namespace: longhorn-system
+type: Opaque
+stringData:
+    AZBLOB_ACCOUNT_NAME: ENC[AES256_GCM,data:dfX5eteTzNXvZwIVr9iblQ4=,iv:RN91TSDejOYI4sKWSO8uhEoNsUoMEni/9R00sTCYoMo=,tag:dXNMBsnqcTblYyuQ7zocUg==,type:str]
+    AZBLOB_ACCOUNT_KEY: ENC[AES256_GCM,data:XNrePYEEi2uTkwlGRM5M+aKCll7EWj1t6mJ0gFuVNY8NrSm8wIoUS1aIfDh3Or8uDBXtrAkZ8s/a4LnnUObRXEGt6A/nGWlkuGsxn/9Ba9xs8o5bvdpO+A==,iv:rpeeV6hD+hH7NB4nFp2ItekbMNpGwvk/FMsgDTp7QyE=,tag:Ubq31ITNPckzEO0jEl0QOQ==,type:str]
+sops:
+    hc_vault:
+        - vault_address: https://vault.ltc.bcit.ca:8200
+          engine_path: sops
+          key_name: gitops-key
+          created_at: "2025-09-16T21:11:32Z"
+          enc: vault:v1:A/ghekwdN5PHQQ+oI549tbTGlzt7pFeG+sopphdc0WLQLKmiqCeTVuYVd3TqJKZaOJE7ucZVAYuzHdfaOQOqsgM6aWO670XV46cexBuVWVRanolhzCqIrxg6MB7TXXbpXlmmKTfYABtrecDwRz8KnkKdjhx4vUMKKdEpdbhMcIEomVwTBYWsnNedLYjOL51ByzQauYzuYKPMduIz6IaxGT1WuE+axOWGyru5CReDbeOEENEA62v77gNHX9oU5yVchy/IRGKZxJEwHARbD8cugTX0xTCpw6z+AEQUxE3uAl4MAVkX5yEdSvqMxrIoY+6wfGZWVA1n1mfka4FuSIflbg==
+    lastmodified: "2025-09-16T21:11:32Z"
+    mac: ENC[AES256_GCM,data:EfPWZ/ugeHYtTIaIWPQOIcLo5btbnRHyPFX7woftJhE/ro902XJSUsKiKs1P23e1EjpEBaTz2mXKO7M2L0z1BP79GrcEHhnJJPgt/h51ggX5EITU9PP43h3PK3R9fAJEfR64JrhPmQ4X5yqHDGzc9lGm8xviS+69ZF8arrVdNq4=,iv:f+h7efFxkAKpIIU7dr6KbyEjTsSdqf1I93I8LtCTN38=,tag:5QEAG2W/o6B0U+u8aXAcsg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
