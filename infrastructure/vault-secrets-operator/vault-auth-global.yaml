@@ -5,7 +5,8 @@ kind: VaultAuthGlobal
 metadata:
   name: vault-auth-global
 spec:
-  allowedNamespaces: {"*"}
+  allowedNamespaces:
+    - "*"
   defaultAuthMethod: kubernetes
   kubernetes:
     mount: kubernetes
