@@ -10,7 +10,7 @@ commonAnnotations:
 
 resources:
   - ./course-workload-estimator
-  # - ./infrastructure-documentation
+  - ./infrastructure-documentation
   # - /conversion-guide
   # - /corgi
   # - /course-production-site
