@@ -38,9 +38,9 @@ patches:
                 - target:
                     kind: .*
                   patch: |
-                    - op: add
-                      path: /metadata/labels/environment
-                      value: stable
+                    metadata:
+                      labels:
+                        environment: stable
 
   # Patch resources with environment-specific values
   - target:
