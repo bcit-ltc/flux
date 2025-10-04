@@ -29,16 +29,18 @@ configMapGenerator:
 patches:
   - target:
       kind: HelmRelease
-      annotationSelector: fluxcd.io/workload-type=app
     patch: |
       spec:
         postRenderers:
           - kustomize:
-              labels:
-                - pairs:
-                    environment: stable
-                  includeSelectors: false
-                  includeTemplates: true
+              patches:
+                - target:
+                    kind: .*
+                  patch: |
+                    metadata:
+                      labels:
+                        environment: stable
+
 
   # Patch resources with environment-specific values
   - target:
