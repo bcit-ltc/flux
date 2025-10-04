@@ -36,7 +36,7 @@ patches:
           - kustomize:
               patches:
                 - target:
-                    name: .*
+                    kind: .*
                   patch: |
                     - op: add
                       path: /metadata/labels/environment
