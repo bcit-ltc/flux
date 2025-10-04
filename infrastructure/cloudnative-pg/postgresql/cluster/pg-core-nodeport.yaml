@@ -9,7 +9,7 @@ spec:
   type: NodePort
   selector:
     cnpg.io/cluster: pg-core-env
-    role: primary                      # writer svc selector
+    cnpg.io/instanceRole: primary
   ports:
     - name: postgresql
       port: 5432

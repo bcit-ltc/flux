@@ -11,7 +11,7 @@ resources:
 nameSuffix: -stable
 
 labels:
-- includeSelectors: true
+- includeSelectors: false
   pairs:
     environment: stable
 
