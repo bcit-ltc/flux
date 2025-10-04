@@ -1,4 +1,12 @@
 ---
+apiVersion: v1
+data:
+  password: cU9lRzU5bHpqdGtSMWMwY0NLNEExV0RTNGJ3Y1FBZFg2
+  username: cG9zdGdyZXM=
+kind: Secret
+metadata:
+  name: init-secret
+---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -11,6 +19,8 @@ spec:
     initdb:
       database: postgres
       owner: postgres
+      secret: 
+        name: init-secret
 
   storage:
     size: 10Gi
