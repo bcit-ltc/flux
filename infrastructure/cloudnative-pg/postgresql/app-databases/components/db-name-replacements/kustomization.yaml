@@ -26,3 +26,9 @@ replacements:
         fieldPaths:
           - spec.name
           - spec.schemas.[name=schema].name
+
+      # Append the database name to the VaultDynamicSecret db-name annotation
+      - select:
+          kind: VaultDynamicSecret
+        fieldPaths:
+          - metadata.annotations.app/db-name

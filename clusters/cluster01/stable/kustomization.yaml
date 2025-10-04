@@ -94,3 +94,22 @@ replacements:
         options:
           delimiter: "-"
           index: 99          
+
+      # Add the environment as a suffix to the pg-core database
+      - select:
+          kind: Database
+        fieldPaths:
+          - spec.cluster.name
+        options:
+          delimiter: "-"
+          index: 99
+
+      # Add the environment to VaultDynamicSecrets db-host annotation
+      - select:
+          kind: VaultDynamicSecret
+        fieldPaths:
+          - metadata.annotations.app/db-host
+        options:
+          delimiter: "-"
+          index: 2
+
