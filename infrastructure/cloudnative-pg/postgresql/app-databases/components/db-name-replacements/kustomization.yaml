@@ -20,6 +20,12 @@ replacements:
           delimiter: "/"
           index: 1
 
+      # Ensure the serviceaccount name matches the database name
+      - select:
+          kind: VaultAuth
+        fieldPaths:
+          - spec.kubernetes.serviceAccount
+
       # Replace the database name in Database resources
       - select:
           kind: Database
