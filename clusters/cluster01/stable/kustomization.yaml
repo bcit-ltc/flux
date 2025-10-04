@@ -29,21 +29,21 @@ configMapGenerator:
 patches:
   - target:
       kind: HelmRelease
-    patch: |
-      spec:
-        postRenderers:
+    patch: |-
+      - op: add
+        path: /spec/postRenderers
+        value:
           - kustomize:
               patches:
                 - target:
                     kind: .*
                   patch: |
-                    apiVersion: v1          # placeholder; not used for matching
-                    kind: ConfigMap         # placeholder; not used for matching
+                    apiVersion: v1
+                    kind: ConfigMap   # placeholder; not used
                     metadata:
-                      name: placeholder     # placeholder; not used for matching
+                      name: placeholder
                       labels:
                         environment: stable
-
 
   # Patch resources with environment-specific values
   - target:
