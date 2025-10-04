@@ -19,8 +19,6 @@ spec:
     initdb:
       database: postgres
       owner: postgres
-      secret: 
-        name: init-secret
 
   storage:
     size: 10Gi
@@ -39,6 +37,10 @@ spec:
       # (Optionally) keep a broad rule during bring-up and remove later:
       - host  all  all  0.0.0.0/0   md5
       - host  all  all  ::0/0       md5
+
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: init-secret
 
   primaryUpdateStrategy: unsupervised
 
