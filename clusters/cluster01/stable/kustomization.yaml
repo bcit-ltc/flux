@@ -37,7 +37,10 @@ patches:
                 - target:
                     kind: .*
                   patch: |
+                    apiVersion: v1          # placeholder; not used for matching
+                    kind: ConfigMap         # placeholder; not used for matching
                     metadata:
+                      name: placeholder     # placeholder; not used for matching
                       labels:
                         environment: stable
 
