@@ -1,0 +1,10 @@
+# Watches helm chart repositories for new versions
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: helm-repository
+spec:
+  interval: 24h
+  url: https://cloudnative-pg.github.io/charts 
+  

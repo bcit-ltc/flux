@@ -12,3 +12,7 @@ nameReference:
     # Ensure the AuthRef name matches the VaultAuth name
     - kind: VaultStaticSecret
       path: spec/vaultAuthRef
+
+    # Ensure the AuthRef name matches the VaultAuth name
+    - kind: VaultDynamicSecret
+      path: spec/vaultAuthRef

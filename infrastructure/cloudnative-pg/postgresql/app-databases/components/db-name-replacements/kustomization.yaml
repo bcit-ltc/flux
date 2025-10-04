@@ -1,0 +1,28 @@
+# Copy an app's `database-name` into various fields
+# - https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/replacements/
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+replacements:
+  - source:
+      kind: ConfigMap
+      name: database-name
+      fieldPath: data.databaseName
+    targets:
+
+      # Append the database name to the VaultDynamicSecret path
+      - select:
+          kind: VaultDynamicSecret
+        fieldPaths:
+          - spec.path
+        options:
+          delimiter: "/"
+          index: 1
+
+      # Replace the database name in Database resources
+      - select:
+          kind: Database
+        fieldPaths:
+          - spec.name
+          - spec.schemas.[name=schema].name
