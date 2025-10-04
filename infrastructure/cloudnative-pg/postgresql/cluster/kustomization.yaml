@@ -8,4 +8,5 @@ namespace: postgres
 resources:
   - namespace.yaml
   - pg-core.yaml
+  - pg-core-nodeport.yaml
   # - pgbouncer-pooler.yaml

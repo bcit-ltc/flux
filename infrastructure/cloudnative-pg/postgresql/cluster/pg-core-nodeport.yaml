@@ -1,0 +1,17 @@
+# pg-core-stable-rw-nodeport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-core-rw-nodeport
+  labels:
+    app.kubernetes.io/name: pg-core-env
+spec:
+  type: NodePort
+  selector:
+    cnpg.io/cluster: pg-core-env
+    role: primary                      # writer svc selector
+  ports:
+    - name: postgresql
+      port: 5432
+      targetPort: 5432
+      nodePort: 31432                  # chooses a free port

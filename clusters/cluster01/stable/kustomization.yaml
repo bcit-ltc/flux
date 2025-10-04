@@ -113,3 +113,14 @@ replacements:
           delimiter: "-"
           index: 2
 
+      # Add the environment to VaultDynamicSecrets db-host annotation
+      - select:
+          kind: Service
+          name: pg-core-rw-nodeport
+        fieldPaths:
+          - metadata.labels.[app.kubernetes.io/name]
+          - spec.selector.[cnpg.io/cluster]
+        options:
+          delimiter: "-"
+          index: 2
+
