@@ -7,9 +7,22 @@ data:
     \set ON_ERROR_STOP 1
     -- variables: -v DB_NAME=... -v OWNER_ROLE=... -v APP_ROLE=...
 
-    -- Create roles if missing (PG16 supports IF NOT EXISTS)
-    SELECT format('CREATE ROLE IF NOT EXISTS %I LOGIN',   :'OWNER_ROLE') \gexec
-    SELECT format('CREATE ROLE IF NOT EXISTS %I NOLOGIN', :'APP_ROLE')   \gexec
+    -- Create roles if missing
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = :'OWNER_ROLE') THEN
+        EXECUTE format('CREATE ROLE %I LOGIN', :'OWNER_ROLE');
+      END IF;
+    END
+    $$;
+
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = :'APP_ROLE') THEN
+        EXECUTE format('CREATE ROLE %I NOLOGIN', :'APP_ROLE');
+      END IF;
+    END
+    $$;
 
     -- Make the app role owned by Vault's DB user so Vault can grant it
     \set vm 'vault_manager'
