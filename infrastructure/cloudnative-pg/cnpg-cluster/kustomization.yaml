@@ -10,9 +10,6 @@ resources:
   - vault-manager-secret.yaml
   # - pgbouncer-pooler.yaml
 
-# Prefix all resources with this name
-namePrefix: postgres-
-
 namespace: postgres
 
 configurations:
