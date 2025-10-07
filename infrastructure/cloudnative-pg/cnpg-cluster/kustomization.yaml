@@ -8,6 +8,7 @@ resources:
   - cluster.yaml
   - init-secret.yaml
   - vault-manager-secret.yaml
+  - postgres-vault-auth.yaml
   # - pgbouncer-pooler.yaml
 
 namespace: postgres
@@ -15,7 +16,3 @@ namespace: postgres
 configurations:
   - kustomizeconfig.yaml
 
-components:
-
-  # Required for VaultAuth role and service accounts
-  - ../../../components/vault-auth

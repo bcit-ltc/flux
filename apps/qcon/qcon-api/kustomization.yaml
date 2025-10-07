@@ -5,6 +5,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - tokens.yaml
+  - admin-credentials.yaml
   - db-credentials.yaml     # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name

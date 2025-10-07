@@ -9,4 +9,3 @@ nameReference:
         version: v1
         kind: Cluster
         path: spec/managed/roles/passwordSecret/name
-

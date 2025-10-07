@@ -1,0 +1,14 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: postgres-vault-auth
+spec:
+  kubernetes:
+    serviceAccount: pg-core-stable
+    role: postgres-vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system
+    
