@@ -6,23 +6,33 @@ data:
   default-privs.sql: |
     -- variables: -v DB_NAME=... -v OWNER_ROLE=... -v APP_ROLE=...
 
-    DO $$
-    BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :'OWNER_ROLE') THEN
-        EXECUTE format('CREATE ROLE %I LOGIN', :'OWNER_ROLE');
-      END IF;
+    -- Create OWNER_ROLE if missing
+    SELECT format(
+      $$DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
+          CREATE ROLE %I LOGIN;
+        END IF;
+      END$$;$$,
+      :'OWNER_ROLE', :'OWNER_ROLE'
+    ) \gexec
 
-      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :'APP_ROLE') THEN
-        EXECUTE format('CREATE ROLE %I NOLOGIN', :'APP_ROLE');
-      END IF;
-    END
-    $$;
+    -- Create APP_ROLE if missing
+    SELECT format(
+      $$DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
+          CREATE ROLE %I NOLOGIN;
+        END IF;
+      END$$;$$,
+      :'APP_ROLE', :'APP_ROLE'
+    ) \gexec
 
-    -- Make the app role owned by the Vault manager so it can be granted by Vault
+    -- Make the app role owned by Vault's DB user so Vault can grant it
     \set vm 'vault_manager'
     SELECT format('ALTER ROLE %I OWNER TO %I', :'APP_ROLE', :'vm') \gexec
 
-    -- Allow Vault's admin user to grant the app role
+    -- Allow Vault's DB user to grant the app role (belt-and-suspenders)
     SELECT format('GRANT %I TO %I WITH ADMIN OPTION', :'APP_ROLE', :'vm') \gexec
 
     -- Grant CONNECT at cluster level:
