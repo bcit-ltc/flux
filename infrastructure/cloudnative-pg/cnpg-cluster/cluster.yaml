@@ -1,0 +1,58 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-core
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
+  enableSuperuserAccess: true
+
+  storage:
+    size: 20Gi
+
+  superuserSecret:
+    name: init-secret
+
+  # Let CNPG manage an extra NodePort service for external access to the RW endpoint.
+  managed:
+    services:
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: pg-core-nodeport
+            spec:
+              type: NodePort
+              ports:
+                - name: postgres
+                  port: 5432
+                  targetPort: 5432
+                  nodePort: 31432
+
+    # Declarative role management (created/reconciled by CNPG)
+    roles:
+      - name: vault_manager
+        login: true
+        superuser: false
+        createrole: true
+        createdb: true
+        replication: false
+        passwordSecret:
+          name: vault-manager-secret
+
+  postgresql:
+    # Allow external Vault VM to connect (TLS required).
+    pg_hba:
+      # (Optional) keep a broad rule during bring-up and remove later:
+      - host  all  all  0.0.0.0/0   scram-sha-256
+      - host  all  all  ::0/0       scram-sha-256
+      # - hostssl postgres vault_manager <YOUR_VAULT_VM_CIDR> md5
+      # Optional: allow app owners from a trusted admin range
+      # - hostssl all obot_owner     <YOUR_ADMIN_CIDR> md5
+      # - hostssl all qcon_api_owner <YOUR_ADMIN_CIDR> md5
+
+    parameters:
+      max_connections: "200"
+      password_encryption: scram-sha-256    # Prefer modern hashing
+      # log_statement: ddl

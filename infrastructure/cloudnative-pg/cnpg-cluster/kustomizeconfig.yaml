@@ -1,0 +1,12 @@
+# This file is for teaching kustomize how to substitute names
+---
+nameReference:
+
+# Update the vault manager secret name
+  - kind: Secret
+    fieldSpecs:
+      - group: postgresql.cnpg.io
+        version: v1
+        kind: Cluster
+        path: spec/managed/roles/passwordSecret/name
+

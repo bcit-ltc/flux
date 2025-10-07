@@ -19,5 +19,8 @@ resources:
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   - ./longhorn
 
+  # Obot
+  # - ./obot
+  
   # Cloudnative-pg (PostgreSQL operator, cluster, and app databases)
-  # - ./cloudnative-pg
+  - ./cloudnative-pg

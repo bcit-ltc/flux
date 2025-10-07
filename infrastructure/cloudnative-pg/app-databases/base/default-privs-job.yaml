@@ -1,0 +1,50 @@
+# Configures default privileges for the database
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: default-privs
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: psql
+          image: ghcr.io/cloudnative-pg/postgresql:16
+          env:
+            - name: DB_NAME
+              valueFrom: { configMapKeyRef: { name: db-vars, key: DB_NAME } }
+            - name: OWNER_ROLE
+              valueFrom: { configMapKeyRef: { name: db-vars, key: OWNER_ROLE } }
+            - name: APP_ROLE
+              valueFrom: { configMapKeyRef: { name: db-vars, key: APP_ROLE } }
+            - name: PGHOST
+              value: pg-core-env-rw.postgres.svc.cluster.local
+            - name: PGUSER
+              valueFrom: { secretKeyRef: { name: init-secret, key: username } }
+            - name: PGPASSWORD
+              valueFrom: { secretKeyRef: { name: init-secret, key: password } }
+          volumeMounts:
+            - name: sql
+              mountPath: /sql
+          command:
+            - /bin/sh
+            - -ceu
+            - |
+              until psql -v ON_ERROR_STOP=1 -d postgres -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null; do
+                echo "waiting for database ${DB_NAME}..."; sleep 2
+              done
+              psql -v ON_ERROR_STOP=1 \
+                  -v DB_NAME="${DB_NAME}" \
+                  -v OWNER_ROLE="${OWNER_ROLE}" \
+                  -v APP_ROLE="${APP_ROLE}" \
+                  -f /sql/default-privs.sql \
+                  -d postgres
+      volumes:
+        - name: sql
+          configMap:
+            name: default-privs-sql
+            items:
+              - key: default-privs.sql
+                path: default-privs.sql

@@ -9,16 +9,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: cnpg-
+namePrefix: obot-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: cnpg-system
+namespace: obot-system
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="cloudnative-pg"
+      - releaseName="obot"
 
     # This config resource is not added to the cluster
     options:
@@ -26,12 +26,18 @@ configMapGenerator:
         config.kubernetes.io/local-config: "true"
 
 # Source Chart Repo
-  # url: https://cloudnative-pg.github.io/charts 
+  # url: https://releases.rancher.com/server-charts/stable
 
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
 
 components:
+  # - ../../components/generators/ssl-certificates
+
   # Update resources based on ConfigMap above
-  - ../../../components/config-matcher
+  - ../../components/config-matcher
+
+  # Required for VaultAuth role and service accounts
+  # - ../../components/generators/vault-auth
+

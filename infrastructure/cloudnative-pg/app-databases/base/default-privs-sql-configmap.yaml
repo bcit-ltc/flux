@@ -1,0 +1,47 @@
+# ConfigMap for default privileges SQL script
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-privs-sql
+data:
+  default-privs.sql: |
+    \set db      :'DB_NAME'
+    \set owner   :'OWNER_ROLE'
+    \set approle :'APP_ROLE'
+
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :'owner') THEN
+        EXECUTE format('CREATE ROLE %I LOGIN;', :'owner');
+      END IF;
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :'approle') THEN
+        EXECUTE format('CREATE ROLE %I NOLOGIN;', :'approle');
+      END IF;
+    END
+    $$;
+
+    -- Grant CONNECT can run from any DB:
+    SELECT format('GRANT CONNECT ON DATABASE %I TO %I', :'db', :'approle') \gexec
+
+    -- Switch to target DB for schema/default-privileges work:
+    \connect :db
+
+    -- Ensure schema exists (idempotent). If you prefer to keep schema mgmt elsewhere, you can drop this line.
+    SELECT format('CREATE SCHEMA IF NOT EXISTS %I', :'db') \gexec
+
+    -- USAGE on schema:
+    SELECT format('GRANT USAGE ON SCHEMA %I TO %I', :'db', :'approle') \gexec
+
+    -- Table/sequence privileges on existing objects:
+    SELECT format('GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA %I TO %I', :'db', :'approle') \gexec
+    SELECT format('GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA %I TO %I', :'db', :'approle') \gexec
+
+    -- Default privileges for future objects created by the OWNER_ROLE:
+    SELECT format('ALTER DEFAULT PRIVILEGES FOR ROLE %I IN SCHEMA %I GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO %I', :'owner', :'db', :'approle') \gexec
+    SELECT format('ALTER DEFAULT PRIVILEGES FOR ROLE %I IN SCHEMA %I GRANT USAGE, SELECT ON SEQUENCES TO %I', :'owner', :'db', :'approle') \gexec
+
+    -- Search path for the owner in this DB:
+    \connect postgres
+    SELECT format('ALTER ROLE %I IN DATABASE %I SET search_path = %I, public', :'owner', :'db', :'db') \gexec
+

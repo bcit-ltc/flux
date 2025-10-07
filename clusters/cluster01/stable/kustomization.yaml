@@ -95,7 +95,7 @@ replacements:
           delimiter: "-"
           index: 99          
 
-      # Add the environment as a suffix to the pg-core database
+      # Add the environment as a suffix to the postgres database
       - select:
           kind: Database
         fieldPaths:
@@ -104,23 +104,32 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Add the environment to VaultDynamicSecrets db-host annotation
+      # Add the environment as a suffix to the cluster
+      - select:
+          kind: Cluster
+        fieldPaths:
+          - spec.superuserSecret.name
+        options:
+          delimiter: "-"
+          index: 99
+
+      # Add the environment to VaultDynamicSecrets configs
       - select:
           kind: VaultDynamicSecret
         fieldPaths:
+          - spec.mount
+          - spec.path
           - metadata.annotations.app/db-host
         options:
           delimiter: "-"
           index: 2
 
-      # Add the environment to VaultDynamicSecrets db-host annotation
+      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
       - select:
-          kind: Service
-          name: pg-core-rw-nodeport
+          kind: Job
+          name: default-privs
         fieldPaths:
-          - metadata.labels.[app.kubernetes.io/name]
-          - spec.selector.[cnpg.io/cluster]
+          - spec.template.spec.containers.0.env.[name=PGHOST].value
         options:
           delimiter: "-"
           index: 2
-

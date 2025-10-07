@@ -1,0 +1,24 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+
+# prefix all resource names in this overlay
+namePrefix: qcon-api-
+
+configMapGenerator:
+  - name: db-vars
+    literals:
+      - DB_NAME=qcon_api
+      - OWNER_ROLE=qcon_api_owner
+      - APP_ROLE=qcon_api_app
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+# Use the db-vars to replace placeholders in SQL scripts
+components:
+  - ../../../../components/db-name-replacements

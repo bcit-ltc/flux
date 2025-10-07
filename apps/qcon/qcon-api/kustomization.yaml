@@ -5,6 +5,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - db-credentials.yaml     # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name
 namePrefix: qcon-api-
@@ -36,6 +37,8 @@ components:
   - ../../../components/config-matcher
 
 patches:
+
+  # Special patch for apps grouped under one namespace
   - target:
       kind: Namespace
       name: qcon-api
@@ -44,3 +47,13 @@ patches:
       kind: Namespace
       metadata:
         name: DOES NOT MATTER
+
+  - target:
+      kind: VaultDynamicSecret
+    patch: |-
+      - op: replace
+        path: /spec/path
+        value: creds/qcon-api
+      - op: replace
+        path: /metadata/annotations/app~1db-name
+        value: qcon_api

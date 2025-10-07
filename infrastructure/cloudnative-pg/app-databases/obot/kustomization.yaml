@@ -1,0 +1,24 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+
+# Prefix all resources with this name
+namePrefix: obot-
+
+configMapGenerator:
+  - name: db-vars
+    literals:
+      - DB_NAME=obot
+      - OWNER_ROLE=obot_owner
+      - APP_ROLE=obot_app
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+# Use the db-vars to replace placeholders in SQL scripts
+components:
+  - ../../../../components/db-name-replacements

@@ -38,6 +38,7 @@ resources:
   # - /legacy-sot-php
   # - /module-estimator
   # - /MRI-WebUI
+  # - /obot
   # - /openlab-scheduler
   # - /ptracker
   - ./qcon
