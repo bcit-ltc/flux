@@ -11,36 +11,41 @@ spec:
       containers:
         - name: psql
           image: ghcr.io/cloudnative-pg/postgresql:16
-          command: ["/bin/sh","-ceu"]
+          command: ["/bin/sh","-eu"]
           args:
             - |
-              # strict mode
-              set -euo pipefail
-
               CONTROL_DB="postgres"
               MAX_WAIT="${MAX_WAIT:-300}"   # seconds
               SLEEP_SECS="${SLEEP_SECS:-2}"
 
               # 1) Wait for Postgres to accept TCP connections
               until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d "${CONTROL_DB}" -t 2 >/dev/null 2>&1; do
-                echo "waiting for postgres at ${PGHOST}..."; sleep "${SLEEP_SECS}"
+                echo "waiting for postgres at ${PGHOST}..."
+                sleep "${SLEEP_SECS}"
               done
 
-              # 2) Ensure CONNECT on control DB (clear error if missing)
+              # 2) Ensure CONNECT on control DB
               start_ts=$(date +%s)
-              until psql -v ON_ERROR_STOP=1 -d "${CONTROL_DB}" -c "SELECT 1" >/dev/null 2>&1; do
+              while :; do
+                if psql -v ON_ERROR_STOP=1 -d "${CONTROL_DB}" -c "SELECT 1" >/dev/null 2>&1; then
+                  break
+                fi
                 now=$(date +%s)
                 if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
-                  echo "Timed out getting CONNECT on ${CONTROL_DB} as ${PGUSER}. Grant CONNECT or adjust credentials."
+                  echo "Timed out getting CONNECT on ${CONTROL_DB} as ${PGUSER}."
                   exit 1
                 fi
                 echo "waiting for CONNECT on ${CONTROL_DB} as ${PGUSER}..."
                 sleep "${SLEEP_SECS}"
               done
 
-              # 3) Wait for the target database to exist (check output, not just exit code)
+              # 3) Wait for the target database to exist (check output explicitly)
               start_ts=$(date +%s)
-              until psql -XtA -d "${CONTROL_DB}" -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" | grep -q '^1$'; do
+              while :; do
+                out="$(psql -XtA -d "${CONTROL_DB}" -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" 2>/dev/null || true)"
+                if [ "${out}" = "1" ]; then
+                  break
+                fi
                 now=$(date +%s)
                 if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
                   echo "Timed out waiting for DB '${DB_NAME}' to exist. Ensure CNPG/bootstrap creates it."
@@ -70,10 +75,11 @@ spec:
               valueFrom: { secretKeyRef: { name: init-secret, key: username } }
             - name: PGPASSWORD
               valueFrom: { secretKeyRef: { name: init-secret, key: password } }
-            - name: MAX_WAIT
-              value: "360"
-            - name: SLEEP_SECS
-              value: "2"
+            # Optional:
+            # - name: MAX_WAIT
+            #   value: "600"
+            # - name: SLEEP_SECS
+            #   value: "2"
           volumeMounts:
             - name: sql
               mountPath: /sql
