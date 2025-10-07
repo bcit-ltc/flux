@@ -77,7 +77,7 @@ replacements:
           - name: tls-rancher-ingress
           - name: sops-vault-token
           - name: vault-manager-secret
-          # - name: init-secret
+          - name: init-secret
 
       # Add the environment as a suffix to the default connection
       - select:

@@ -13,6 +13,6 @@ resources:
 
 namespace: postgres
 
-configurations:
-  - kustomizeconfig.yaml
+# configurations:
+#   - kustomizeconfig.yaml
 
