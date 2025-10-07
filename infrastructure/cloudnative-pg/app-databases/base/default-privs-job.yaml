@@ -14,23 +14,49 @@ spec:
           command: ["/bin/sh","-ceu"]
           args:
             - |
+              # strict mode
+              set -euo pipefail
+
+              CONTROL_DB="postgres"
+              MAX_WAIT="${MAX_WAIT:-300}"   # seconds
+              SLEEP_SECS="${SLEEP_SECS:-2}"
+
               # 1) Wait for Postgres to accept TCP connections
-              until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d postgres -t 2 >/dev/null 2>&1; do
-                echo "waiting for postgres at ${PGHOST}..."; sleep 2
+              until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d "${CONTROL_DB}" -t 2 >/dev/null 2>&1; do
+                echo "waiting for postgres at ${PGHOST}..."; sleep "${SLEEP_SECS}"
               done
 
-              # 2) Wait for the target database to exist
-              until psql -v ON_ERROR_STOP=1 -d postgres -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null 2>&1; do
-                echo "waiting for database ${DB_NAME}..."; sleep 2
+              # 2) Ensure CONNECT on control DB (clear error if missing)
+              start_ts=$(date +%s)
+              until psql -v ON_ERROR_STOP=1 -d "${CONTROL_DB}" -c "SELECT 1" >/dev/null 2>&1; do
+                now=$(date +%s)
+                if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
+                  echo "Timed out getting CONNECT on ${CONTROL_DB} as ${PGUSER}. Grant CONNECT or adjust credentials."
+                  exit 1
+                fi
+                echo "waiting for CONNECT on ${CONTROL_DB} as ${PGUSER}..."
+                sleep "${SLEEP_SECS}"
               done
 
-              # 3) Run bootstrap SQL
+              # 3) Wait for the target database to exist (check output, not just exit code)
+              start_ts=$(date +%s)
+              until psql -XtA -d "${CONTROL_DB}" -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" | grep -q '^1$'; do
+                now=$(date +%s)
+                if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
+                  echo "Timed out waiting for DB '${DB_NAME}' to exist. Ensure CNPG/bootstrap creates it."
+                  exit 1
+                fi
+                echo "waiting for database ${DB_NAME}..."
+                sleep "${SLEEP_SECS}"
+              done
+
+              # 4) Run bootstrap SQL
               psql -v ON_ERROR_STOP=1 \
                    -v DB_NAME="${DB_NAME}" \
                    -v OWNER_ROLE="${OWNER_ROLE}" \
                    -v APP_ROLE="${APP_ROLE}" \
                    -f /sql/default-privs.sql \
-                   -d postgres
+                   -d "${CONTROL_DB}"
           env:
             - name: DB_NAME
               valueFrom: { configMapKeyRef: { name: db-vars, key: DB_NAME } }
@@ -44,6 +70,10 @@ spec:
               valueFrom: { secretKeyRef: { name: init-secret, key: username } }
             - name: PGPASSWORD
               valueFrom: { secretKeyRef: { name: init-secret, key: password } }
+            - name: MAX_WAIT
+              value: "360"
+            - name: SLEEP_SECS
+              value: "2"
           volumeMounts:
             - name: sql
               mountPath: /sql

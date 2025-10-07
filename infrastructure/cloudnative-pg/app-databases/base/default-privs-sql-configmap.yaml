@@ -51,4 +51,3 @@ data:
     \connect postgres
     SELECT format('ALTER ROLE %I IN DATABASE %I SET search_path = %I, public',
                   :'OWNER_ROLE', :'DB_NAME', :'DB_NAME') \gexec
-
