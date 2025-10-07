@@ -21,6 +21,10 @@ data:
     END
     $$;
 
+    -- allow Vault's admin user to grant the app role
+    \set vm 'vault_manager'
+    SELECT format('GRANT %I TO %I WITH ADMIN OPTION', :'approle', :'vm') \gexec
+
     -- Grant CONNECT can run from any DB:
     SELECT format('GRANT CONNECT ON DATABASE %I TO %I', :'db', :'approle') \gexec
 
