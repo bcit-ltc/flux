@@ -23,4 +23,4 @@ resources:
   # - ./obot
   
   # Cloudnative-pg (PostgreSQL operator, cluster, and app databases)
-  # - ./cloudnative-pg
+  - ./cloudnative-pg
