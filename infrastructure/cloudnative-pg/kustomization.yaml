@@ -5,7 +5,7 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  # - cnpg-operator.yaml
+  - cnpg-operator.yaml
   # - ./cnpg-cluster
   # - ./app-databases/qcon-api
   # - ./app-databases/obot
