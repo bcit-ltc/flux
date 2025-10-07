@@ -4,35 +4,18 @@ metadata:
   name: default-privs-sql
 data:
   default-privs.sql: |
+    \set ON_ERROR_STOP 1
     -- variables: -v DB_NAME=... -v OWNER_ROLE=... -v APP_ROLE=...
 
-    -- Create OWNER_ROLE if missing
-    SELECT format(
-      $$DO $$
-      BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
-          CREATE ROLE %I LOGIN;
-        END IF;
-      END$$;$$,
-      :'OWNER_ROLE', :'OWNER_ROLE'
-    ) \gexec
-
-    -- Create APP_ROLE if missing
-    SELECT format(
-      $$DO $$
-      BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
-          CREATE ROLE %I NOLOGIN;
-        END IF;
-      END$$;$$,
-      :'APP_ROLE', :'APP_ROLE'
-    ) \gexec
+    -- Create roles if missing (PG16 supports IF NOT EXISTS)
+    SELECT format('CREATE ROLE IF NOT EXISTS %I LOGIN',   :'OWNER_ROLE') \gexec
+    SELECT format('CREATE ROLE IF NOT EXISTS %I NOLOGIN', :'APP_ROLE')   \gexec
 
     -- Make the app role owned by Vault's DB user so Vault can grant it
     \set vm 'vault_manager'
     SELECT format('ALTER ROLE %I OWNER TO %I', :'APP_ROLE', :'vm') \gexec
 
-    -- Allow Vault's DB user to grant the app role (belt-and-suspenders)
+    -- Allow Vault's DB user to grant the app role
     SELECT format('GRANT %I TO %I WITH ADMIN OPTION', :'APP_ROLE', :'vm') \gexec
 
     -- Grant CONNECT at cluster level:
@@ -41,7 +24,7 @@ data:
     -- Switch to target DB for schema/default-privileges work:
     \connect :DB_NAME
 
-    -- Ensure schema exists
+    -- Ensure schema exists (schema name == DB_NAME)
     SELECT format('CREATE SCHEMA IF NOT EXISTS %I', :'DB_NAME') \gexec
 
     -- USAGE on schema:
@@ -57,7 +40,7 @@ data:
     SELECT format('ALTER DEFAULT PRIVILEGES FOR ROLE %I IN SCHEMA %I GRANT USAGE, SELECT ON SEQUENCES TO %I',
                   :'OWNER_ROLE', :'DB_NAME', :'APP_ROLE') \gexec
 
-    -- Search path for the OWNER_ROLE in this DB:
+    -- Search path for OWNER_ROLE in this DB:
     \connect postgres
     SELECT format('ALTER ROLE %I IN DATABASE %I SET search_path = %I, public',
                   :'OWNER_ROLE', :'DB_NAME', :'DB_NAME') \gexec
