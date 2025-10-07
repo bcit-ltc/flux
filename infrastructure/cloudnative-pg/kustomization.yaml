@@ -6,7 +6,7 @@ kind: Kustomization
 resources:
   - ./cnpg-operator
   - ./cnpg-cluster
-  # - ./app-databases/qcon-api
+  - ./app-databases/qcon-api
   # - ./app-databases/obot
 
 # New databases must also have a role
