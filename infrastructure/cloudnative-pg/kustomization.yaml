@@ -5,7 +5,7 @@ kind: Kustomization
 
 resources:
   - ./cnpg-operator
-  # - ./cnpg-cluster
+  - ./cnpg-cluster
   # - ./app-databases/qcon-api
   # - ./app-databases/obot
 
