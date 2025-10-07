@@ -7,6 +7,7 @@ resources:
   - helm-release.yaml
   - helm-repository.yaml
   - namespace.yaml
+  # - db-credentials.yaml
 
 # Prefix all resources with this name
 namePrefix: obot-
@@ -41,3 +42,14 @@ components:
   # Required for VaultAuth role and service accounts
   # - ../../components/generators/vault-auth
 
+patches:
+
+  - target:
+      kind: VaultDynamicSecret
+    patch: |-
+      - op: replace
+        path: /spec/path
+        value: creds/obot
+      - op: replace
+        path: /metadata/annotations/app~1db-name
+        value: obot
