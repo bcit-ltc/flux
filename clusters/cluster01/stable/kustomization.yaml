@@ -106,14 +106,14 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Add the environment as a suffix to the cluster
-      - select:
-          kind: Cluster
-        fieldPaths:
-          - spec.superuserSecret.name
-        options:
-          delimiter: "-"
-          index: 99
+      # # Add the environment as a suffix to the cluster
+      # - select:
+      #     kind: Cluster
+      #   fieldPaths:
+      #     - spec.superuserSecret.name
+      #   options:
+      #     delimiter: "-"
+      #     index: 99
 
       # Add the environment to VaultDynamicSecrets configs
       - select:
@@ -132,6 +132,8 @@ replacements:
           name: default-privs
         fieldPaths:
           - spec.template.spec.containers.0.env.[name=PGHOST].value
+          - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
+          - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
         options:
           delimiter: "-"
           index: 2

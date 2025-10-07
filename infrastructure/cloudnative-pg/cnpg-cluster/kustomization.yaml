@@ -6,7 +6,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - cluster.yaml
-  - init-secret.yaml
+  # - init-secret.yaml
   - vault-manager-secret.yaml
   - postgres-vault-auth.yaml
   # - pgbouncer-pooler.yaml

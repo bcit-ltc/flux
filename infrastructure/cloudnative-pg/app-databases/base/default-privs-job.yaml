@@ -82,9 +82,9 @@ spec:
             - name: PGHOST
               value: pg-core-env-rw.postgres.svc.cluster.local
             - name: PGUSER
-              valueFrom: { secretKeyRef: { name: init-secret, key: username } }
+              valueFrom: { secretKeyRef: { name: pg-core-env-superuser, key: username } }
             - name: PGPASSWORD
-              valueFrom: { secretKeyRef: { name: init-secret, key: password } }
+              valueFrom: { secretKeyRef: { name: pg-core-env-superuser, key: password } }
             # If your pg_hba only allows SSL, uncomment this:
             # - name: PGSSLMODE
             #   value: "require"
