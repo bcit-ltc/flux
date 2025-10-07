@@ -9,6 +9,8 @@ resources:
 # Prefix all resources with this name
 namePrefix: obot-
 
+namespace: postgres
+
 configMapGenerator:
   - name: db-vars
     literals:

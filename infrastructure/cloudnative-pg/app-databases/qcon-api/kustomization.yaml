@@ -9,6 +9,8 @@ resources:
 # prefix all resource names in this overlay
 namePrefix: qcon-api-
 
+namespace: postgres
+
 configMapGenerator:
   - name: db-vars
     literals:
