@@ -1,9 +1,8 @@
-# Configures default privileges for the database
----
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: default-privs
+  namespace: postgres
 spec:
   backoffLimit: 0
   template:
@@ -12,6 +11,26 @@ spec:
       containers:
         - name: psql
           image: ghcr.io/cloudnative-pg/postgresql:16
+          command: ["/bin/sh","-ceu"]
+          args:
+            - |
+              # 1) Wait for Postgres to accept TCP connections
+              until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d postgres -t 2 >/dev/null 2>&1; do
+                echo "waiting for postgres at ${PGHOST}..."; sleep 2
+              done
+
+              # 2) Wait for the target database to exist
+              until psql -v ON_ERROR_STOP=1 -d postgres -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null 2>&1; do
+                echo "waiting for database ${DB_NAME}..."; sleep 2
+              done
+
+              # 3) Run bootstrap SQL
+              psql -v ON_ERROR_STOP=1 \
+                   -v DB_NAME="${DB_NAME}" \
+                   -v OWNER_ROLE="${OWNER_ROLE}" \
+                   -v APP_ROLE="${APP_ROLE}" \
+                   -f /sql/default-privs.sql \
+                   -d postgres
           env:
             - name: DB_NAME
               valueFrom: { configMapKeyRef: { name: db-vars, key: DB_NAME } }
@@ -28,29 +47,6 @@ spec:
           volumeMounts:
             - name: sql
               mountPath: /sql
-          containers:
-          - command:
-            - /bin/sh
-            - -ceu
-            - |
-              # 1) Wait for Postgres to accept TCP connections
-              until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d postgres -t 2 >/dev/null 2>&1; do
-                echo "waiting for postgres at ${PGHOST}..."; sleep 2
-              done
-
-              # 2) Wait for the target database to exist
-              until psql -v ON_ERROR_STOP=1 -d postgres -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null 2>&1; do
-                echo "waiting for database ${DB_NAME}..."; sleep 2
-              done
-
-              # 3) Run bootstrap SQL
-              psql -v ON_ERROR_STOP=1 \
-                  -v DB_NAME="${DB_NAME}" \
-                  -v OWNER_ROLE="${OWNER_ROLE}" \
-                  -v APP_ROLE="${APP_ROLE}" \
-                  -f /sql/default-privs.sql \
-                  -d postgres
-
       volumes:
         - name: sql
           configMap:
