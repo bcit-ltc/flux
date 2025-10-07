@@ -11,9 +11,11 @@ spec:
       containers:
         - name: psql
           image: ghcr.io/cloudnative-pg/postgresql:16
-          command: ["/bin/sh","-eu"]
+          command: ["/bin/sh","-c"]   # <-- run inline script with -c
           args:
             - |
+              set -eu
+
               CONTROL_DB="postgres"
               MAX_WAIT="${MAX_WAIT:-300}"   # seconds
               SLEEP_SECS="${SLEEP_SECS:-2}"
