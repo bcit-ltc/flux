@@ -22,5 +22,5 @@ resources:
   # Obot
   # - ./obot
   
-  # Cloudnative-pg (PostgreSQL operator, cluster, and app databases)
+  # Installation requires sequence - see infrastructure/cloudnative-pg/NOTES.md
   - ./cloudnative-pg
