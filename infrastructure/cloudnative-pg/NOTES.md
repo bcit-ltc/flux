@@ -29,4 +29,5 @@ When the cluster is healthy, uncomment app database configs, like `./app-databas
 
 Or use the kubectl plugin for cnpg:
 
+    krew install cnpg
     kubectl cnpg status pg-core-stable -n postgres
