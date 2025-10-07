@@ -11,8 +11,8 @@ spec:
   storage:
     size: 20Gi
 
-  superuserSecret:
-    name: init-secret
+  # superuserSecret:
+  #   name: init-secret
 
   # Let CNPG manage an extra NodePort service for external access to the RW endpoint.
   managed:
