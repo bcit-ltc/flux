@@ -8,8 +8,7 @@ resources:
   - helm-release.yaml
   - helm-repository.yaml
 
-# Prefix all resources with this name
-# namePrefix: postgres-
+namespace: cnpg-system
 
 configurations:
   - kustomizeconfig.yaml
