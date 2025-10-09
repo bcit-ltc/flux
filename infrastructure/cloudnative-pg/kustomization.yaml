@@ -6,23 +6,7 @@ kind: Kustomization
 resources:
   - ./cnpg-operator
   - ./cnpg-cluster
-  - ./app-databases/qcon-api
-  - ./app-databases/obot
 
-# New databases must also have a role
-patches:
-  - target: 
-      kind: Cluster
-    patch: |-
-      - op: add
-        path: /spec/managed/roles/1
-        value: {login: true, name: qcon_api_owner}
-      - op: add
-        path: /spec/managed/roles/2
-        value: {login: false, name: qcon_api_app}
-# - op: add
-#   path: /spec/managed/roles/3
-#   value: {login: true, name: obot_owner}
-# - op: add
-#   path: /spec/managed/roles/4
-#   value: {login: false, name: obot_app}
+# components:
+  # - ./app-databases/obot
+  # - ./app-databases/qcon-api

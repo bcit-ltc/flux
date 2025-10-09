@@ -1,0 +1,104 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: obot-default-privs
+  namespace: postgres
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      annotations:
+        config.fluxcd.io/workload-type: infrastructure
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: psql
+        image: ghcr.io/cloudnative-pg/postgresql:16
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          set -eu
+          CONTROL_DB="postgres"
+          MAX_WAIT="${MAX_WAIT:-300}"
+          SLEEP_SECS="${SLEEP_SECS:-2}"
+
+          echo "Using control DB: ${CONTROL_DB} as ${PGUSER}"
+
+          until pg_isready -h "${PGHOST}" -p "${PGPORT:-5432}" -U "${PGUSER}" -d "${CONTROL_DB}" -t 2 >/dev/null 2>&1; do
+            echo "waiting for postgres at ${PGHOST}..."
+            sleep "${SLEEP_SECS}"
+          done
+
+          echo "Initial psql connectivity check (printing any error):"
+          if ! psql -d "${CONTROL_DB}" -c "SELECT 1"; then
+            echo "^^^ psql failed above; entering retry loop (will suppress errors) ^^^"
+          fi
+
+          start_ts=$(date +%s)
+          while :; do
+            if psql -v ON_ERROR_STOP=1 -d "${CONTROL_DB}" -c "SELECT 1" >/dev/null 2>&1; then
+              break
+            fi
+            now=$(date +%s)
+            if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
+              echo "Timed out getting CONNECT on ${CONTROL_DB} as ${PGUSER}."
+              exit 1
+            fi
+            echo "waiting for CONNECT on ${CONTROL_DB} as ${PGUSER}..."
+            sleep "${SLEEP_SECS}"
+          done
+
+          start_ts=$(date +%s)
+          while :; do
+            out="$(psql -XtA -d "${CONTROL_DB}" -c "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" 2>/dev/null || true)"
+            if [ "${out}" = "1" ]; then
+              break
+            fi
+            now=$(date +%s)
+            if [ $((now - start_ts)) -ge "${MAX_WAIT}" ]; then
+              echo "Timed out waiting for DB '${DB_NAME}' to exist. Ensure CNPG/bootstrap creates it."
+              exit 1
+            fi
+            echo "waiting for database ${DB_NAME}..."
+            sleep "${SLEEP_SECS}"
+          done
+
+          psql -v ON_ERROR_STOP=1                -v DB_NAME="${DB_NAME}"                -v OWNER_ROLE="${OWNER_ROLE}"                -v APP_ROLE="${APP_ROLE}"                -f /sql/default-privs.sql                -d "${CONTROL_DB}"
+        env:
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: obot-db-vars
+              key: DB_NAME
+        - name: OWNER_ROLE
+          valueFrom:
+            configMapKeyRef:
+              name: obot-db-vars
+              key: OWNER_ROLE
+        - name: APP_ROLE
+          valueFrom:
+            configMapKeyRef:
+              name: obot-db-vars
+              key: APP_ROLE
+        - name: PGHOST
+          value: pg-core-rw.postgres.svc.cluster.local
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: pg-core-superuser
+              key: username
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pg-core-superuser
+              key: password
+        volumeMounts:
+        - name: sql
+          mountPath: /sql
+      volumes:
+      - name: sql
+        configMap:
+          name: obot-default-privs-sql
+          items:
+          - key: default-privs.sql
+            path: default-privs.sql

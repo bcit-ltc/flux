@@ -1,26 +1,19 @@
-# Infrastructure kustomization
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
 resources:
-  - ../base
+  - database.yaml
+  - db-vars-configmap.yaml
+  - default-privs-job.yaml
+  - default-privs-sql-configmap.yaml
 
-# Prefix all resources with this name
-namePrefix: obot-
-
-namespace: postgres
-
-configMapGenerator:
-  - name: db-vars
-    literals:
-      - DB_NAME=obot
-      - OWNER_ROLE=obot_owner
-      - APP_ROLE=obot_app
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-# Use the db-vars to replace placeholders in SQL scripts
-components:
-  - ../../../../components/db-name-replacements
+patches:
+  - target:
+      kind: Cluster
+    patch: |-
+      - op: add
+        path: /spec/managed/roles/-
+        value: { name: obot_owner, login: true }
+      - op: add
+        path: /spec/managed/roles/-
+        value: { name: obot_app, login: false }
