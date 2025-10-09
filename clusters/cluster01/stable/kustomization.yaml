@@ -106,14 +106,14 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # # Add the environment as a suffix to the cluster
-      # - select:
-      #     kind: Cluster
-      #   fieldPaths:
-      #     - spec.superuserSecret.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
+      # Add the environment to the cluster nodeport service
+      - select:
+          kind: Cluster
+        fieldPaths:
+          - spec.managed.services.additional.*.serviceTemplate.metadata.name
+        options:
+          delimiter: "-"
+          index: 2
 
       # Add the environment to VaultDynamicSecrets configs
       - select:
@@ -129,7 +129,6 @@ replacements:
       # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
       - select:
           kind: Job
-          name: default-privs
         fieldPaths:
           - spec.template.spec.containers.0.env.[name=PGHOST].value
           - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
@@ -137,3 +136,11 @@ replacements:
         options:
           delimiter: "-"
           index: 2
+
+      - select:
+          kind: Job
+        fieldPaths:
+          - spec.template.spec.volumes.[name=sql].configMap.name
+        options:
+          delimiter: "-"
+          index: 99

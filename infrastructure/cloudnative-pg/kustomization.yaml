@@ -8,5 +8,5 @@ resources:
   - ./cnpg-cluster
 
 components:
-  # - ./app-databases/obot
+  - ./app-databases/obot
   - ./app-databases/qcon-api
