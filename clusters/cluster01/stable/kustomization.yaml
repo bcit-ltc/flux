@@ -106,15 +106,6 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Add the environment to the cluster nodeport service
-      - select:
-          kind: Cluster
-        fieldPaths:
-          - spec.managed.services.additional.*.serviceTemplate.metadata.name
-        options:
-          delimiter: "-"
-          index: 2
-
       # Add the environment to VaultDynamicSecrets configs
       - select:
           kind: VaultDynamicSecret

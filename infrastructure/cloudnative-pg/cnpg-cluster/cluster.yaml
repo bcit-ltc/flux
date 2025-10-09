@@ -21,7 +21,7 @@ spec:
         - selectorType: rw
           serviceTemplate:
             metadata:
-              name: pg-core-env-nodeport
+              name: pg-core-nodeport
             spec:
               type: NodePort
               ports:
