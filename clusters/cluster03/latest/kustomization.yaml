@@ -39,7 +39,7 @@ patches:
         value: ">=1.0.0-0"      # include --devel releases
       - op: add
         path: /spec/ref/semverFilter
-        value: ".*-rc.*"        # only select images with -rc suffix
+        value: ".*-rc.*|^latest$"        # only select images with -rc suffix
 
   # Add the environment label to all resources in the Helm chart
   - target:
@@ -53,9 +53,12 @@ patches:
                 - target:
                     kind: .*
                   patch: |
-                    - op: add
-                      path: /metadata/labels/environment
-                      value: latest
+                    apiVersion: v1
+                    kind: ConfigMap   # placeholder; not used
+                    metadata:
+                      name: placeholder
+                      labels:
+                        environment: latest
 
   # Patch resources with environment-specific values
   - target:

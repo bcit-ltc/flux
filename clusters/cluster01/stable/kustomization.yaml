@@ -39,9 +39,12 @@ patches:
                 - target:
                     kind: .*
                   patch: |
-                    - op: add
-                      path: /metadata/labels/environment
-                      value: stable
+                    apiVersion: v1
+                    kind: ConfigMap   # placeholder; not used
+                    metadata:
+                      name: placeholder
+                      labels:
+                        environment: stable
 
   # Patch resources with environment-specific values
   - target:
