@@ -27,6 +27,7 @@ configMapGenerator:
         config.kubernetes.io/local-config: "true"
 
 patches:
+  # Add the environment label to all resources in the Helm chart
   - target:
       kind: HelmRelease
     patch: |-
@@ -38,12 +39,9 @@ patches:
                 - target:
                     kind: .*
                   patch: |
-                    apiVersion: v1
-                    kind: ConfigMap   # placeholder; not used
-                    metadata:
-                      name: placeholder
-                      labels:
-                        environment: stable
+                    - op: add
+                      path: /metadata/labels/environment
+                      value: stable
 
   # Patch resources with environment-specific values
   - target:
@@ -128,6 +126,7 @@ replacements:
           delimiter: "-"
           index: 2
 
+      # Replace the placeholder environment in the postgres INIT_DB job configMap name
       - select:
           kind: Job
         fieldPaths:

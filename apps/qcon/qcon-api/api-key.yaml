@@ -3,13 +3,15 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
-  name: sops-vault-token
+  name: api-key
 spec:
   type: kv-v2
   vaultAuthRef: vault-auth
   refreshAfter: 6h
-  mount: ltc-infrastructure
-  path: flux/sops-vault-token
+  mount: apps
+
+  # path is prefixed by `{appName}/{environment}/`; double // required
+  path: //api-key
   destination:
-    name: sops-vault-token
+    name: api-key
     create: true

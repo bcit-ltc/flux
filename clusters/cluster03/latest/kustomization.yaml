@@ -41,6 +41,7 @@ patches:
         path: /spec/ref/semverFilter
         value: ".*-rc.*"        # only select images with -rc suffix
 
+  # Add the environment label to all resources in the Helm chart
   - target:
       kind: HelmRelease
     patch: |-
@@ -50,7 +51,7 @@ patches:
           - kustomize:
               patches:
                 - target:
-                    name: .*
+                    kind: .*
                   patch: |
                     - op: add
                       path: /metadata/labels/environment
@@ -85,8 +86,7 @@ replacements:
           index: 1
         reject:
           - name: star-ltc-bcit-ca
-          - name: tls-rancher-ingress
-          - name: sops-vault-token
+          - name: vault-manager-secret
 
       # Add the environment as a suffix to the default connection
       - select:
@@ -104,4 +104,44 @@ replacements:
           - spec.vaultAuthGlobalRef.name
         options:
           delimiter: "-"
-          index: 99    
+          index: 99          
+
+      # Add the environment as a suffix to the postgres database
+      - select:
+          kind: Database
+        fieldPaths:
+          - spec.cluster.name
+        options:
+          delimiter: "-"
+          index: 99
+
+      # Add the environment to VaultDynamicSecrets configs
+      - select:
+          kind: VaultDynamicSecret
+        fieldPaths:
+          - spec.mount
+          - spec.path
+          - metadata.annotations.app/db-host
+        options:
+          delimiter: "-"
+          index: 2
+
+      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
+      - select:
+          kind: Job
+        fieldPaths:
+          - spec.template.spec.containers.0.env.[name=PGHOST].value
+          - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
+          - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
+        options:
+          delimiter: "-"
+          index: 2
+
+      # Replace the placeholder environment in the postgres INIT_DB job configMap name
+      - select:
+          kind: Job
+        fieldPaths:
+          - spec.template.spec.volumes.[name=sql].configMap.name
+        options:
+          delimiter: "-"
+          index: 99

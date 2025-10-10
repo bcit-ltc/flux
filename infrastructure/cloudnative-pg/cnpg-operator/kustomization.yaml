@@ -12,8 +12,3 @@ namespace: cnpg-system
 
 configurations:
   - kustomizeconfig.yaml
-
-# components:
-
-  # Required for VaultAuth role and service accounts
-  # - ../../../components/vault-auth
