@@ -5,7 +5,7 @@ metadata:
   name: postgres-vault-auth
 spec:
   kubernetes:
-    serviceAccount: pg-core-stable
+    serviceAccount: pg-core
     role: postgres-vault-auth
   vaultAuthGlobalRef:
     name: vault-auth-global

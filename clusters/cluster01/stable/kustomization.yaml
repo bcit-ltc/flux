@@ -91,6 +91,7 @@ replacements:
           kind: VaultAuth
         fieldPaths:
           - spec.vaultAuthGlobalRef.name
+          - spec.kubernetes.serviceAccount
         options:
           delimiter: "-"
           index: 99          
