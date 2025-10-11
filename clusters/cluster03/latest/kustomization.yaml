@@ -28,18 +28,14 @@ configMapGenerator:
 
 patches:
 
-  # Update oci repository ref selection to target all *.rc images
-  #     eg. 2.4.10-rc.7731b9b1.1684912629
+  # Update oci repository ref selection to target latest chart images
   - target:
       kind: OCIRepository
       annotationSelector: "config.fluxcd.io/workload-type=app"
     patch: |-
       - op: replace
-        path: /spec/ref/semver
-        value: ">=1.0.0-0"                # include --devel releases
-      - op: add
-        path: /spec/ref/semverFilter
-        value: ".*-rc.*|^latest$"         # only select images with -rc suffix or latest
+        path: /spec/ref
+        value: {"tag": "latest"}
 
   # Add the environment label to all resources in the Helm chart
   - target:
