@@ -36,10 +36,10 @@ patches:
     patch: |-
       - op: replace
         path: /spec/ref/semver
-        value: ">=1.0.0-0"      # include --devel releases
+        value: ">=1.0.0-0"                # include --devel releases
       - op: add
         path: /spec/ref/semverFilter
-        value: ".*-rc.*|^latest$"        # only select images with -rc suffix
+        value: ".*-rc.*|^latest$"         # only select images with -rc suffix or latest
 
   # Add the environment label to all resources in the Helm chart
   - target:
