@@ -11,7 +11,7 @@ commonAnnotations:
 resources:
   - ./course-workload-estimator
   - ./infrastructure-documentation
-  # - ./conversion-guide
+  - ./conversion-guide
   # - ./corgi
   # - ./course-production-site
   # - ./dataset-retriever
