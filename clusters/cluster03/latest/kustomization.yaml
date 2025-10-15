@@ -101,10 +101,19 @@ replacements:
           kind: VaultAuth
         fieldPaths:
           - spec.vaultAuthGlobalRef.name
-          - spec.kubernetes.serviceAccount
         options:
           delimiter: "-"
           index: 99          
+
+      # Add the environment as a suffix to the global auth name
+      - select:
+          kind: VaultAuth
+          name: postgres-vault-auth
+        fieldPaths:
+          - spec.kubernetes.serviceAccount
+        options:
+          delimiter: "-"
+          index: 99            
 
       # Add the environment as a suffix to the postgres database
       - select:
