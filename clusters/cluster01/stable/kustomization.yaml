@@ -46,17 +46,16 @@ patches:
                       labels:
                         environment: stable
 
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  # Remove all resources
+  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
+  #
   - target:
+      name: "ingress-latest"
+    patch: |
+      $patch: delete
       kind: Ingress
-      annotationSelector: "app=flux"
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: latest--flux-config.ltc.bcit.ca
-      - op: replace
-        path: /spec/tls/0/hosts/0
-        value: latest--flux-config.ltc.bcit.ca
+      metadata:
+        name: DOES NOT MATTER
 
   # Patch resources with environment-specific values
   - target:
