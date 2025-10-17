@@ -46,17 +46,6 @@ patches:
                       labels:
                         environment: stable
 
-  # Remove all resources
-  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-  #
-  - target:
-      name: "ingress-latest"
-    patch: |
-      $patch: delete
-      kind: Ingress
-      metadata:
-        name: DOES NOT MATTER
-
   # Patch resources with environment-specific values
   - target:
       kind: VaultAuthGlobal
@@ -67,6 +56,24 @@ patches:
       - op: replace
         path: /spec/kubernetes/audiences
         value: [stable]
+
+  # Remove all resources
+  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
+  - target:
+      name: "ingress-latest"
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
+
+  - target:
+      name: "star-latest-ltc-bcit-ca"
+    patch: |
+      $patch: delete
+      kind: VaultStaticSecret
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - source:

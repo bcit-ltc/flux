@@ -43,6 +43,7 @@ replacements:
           index: 0
         reject:
           - name: star-ltc-bcit-ca
+          - name: star-latest-ltc-bcit-ca
           - name: github-webhook-token
 
       # Append the release name to the Ingress host

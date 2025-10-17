@@ -37,6 +37,18 @@ patches:
         path: /spec/ref
         value: {"tag": "latest"}
 
+  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  - target:
+      kind: Ingress
+      annotationSelector: "app=flux"
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: flux.latest.ltc.bcit.ca
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: flux.latest.ltc.bcit.ca
+
   # Add the environment label to all resources in the Helm chart
   - target:
       kind: HelmRelease
@@ -56,18 +68,6 @@ patches:
                       labels:
                         environment: latest
 
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-  - target:
-      kind: Ingress
-      annotationSelector: "app=flux"
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: flux.latest.ltc.bcit.ca
-      - op: replace
-        path: /spec/tls/0/hosts/0
-        value: flux.latest.ltc.bcit.ca
-
   # Patch resources with environment-specific values
   - target:
       kind: VaultAuthGlobal
@@ -79,9 +79,8 @@ patches:
         path: /spec/kubernetes/audiences
         value: [latest]
 
-  # Remove all resources
+  # Remove all stable resources
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-  #
   - target:
       name: "ingress-stable"
     patch: |
@@ -89,6 +88,23 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
+  - target:
+      name: "star-ltc-bcit-ca"
+    patch: |
+      $patch: delete
+      kind: VaultStaticSecret
+      metadata:
+        name: DOES NOT MATTER
+
+  # Remove all stable resources
+  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
+  #
+  - target:
+      kind: Ingress
+    patch: |
+      - op: replace
+        path: /spec/tls/0/secretName
+        value: star-latest-ltc-bcit-ca
 
 replacements:
   - source:
@@ -107,7 +123,7 @@ replacements:
           delimiter: "/"
           index: 1
         reject:
-          - name: star-ltc-bcit-ca
+          - name: "star-latest-ltc-bcit-ca"
           - name: vault-manager-secret
           - name: github-webhook-token
 
@@ -127,17 +143,7 @@ replacements:
           - spec.vaultAuthGlobalRef.name
         options:
           delimiter: "-"
-          index: 99          
-
-      # Add the environment as a suffix to the global auth name
-      - select:
-          kind: VaultStaticSecret
-        fieldPaths:
-          - spec.destination.name
-          - spec.path
-        options:
-          delimiter: "-"
-          index: 99  
+          index: 99
 
       # Add the environment as a suffix to the global auth name
       - select:
@@ -157,16 +163,6 @@ replacements:
         options:
           delimiter: "-"
           index: 99
-
-      # Add the environment as a prefix to the ingress host
-      - select:
-          kind: Ingress
-        fieldPaths:
-          - spec.rules.0.host
-          - spec.tls.0.hosts.0
-        options:
-          delimiter: "."
-          index: 1
 
       # Add the environment to VaultDynamicSecrets configs
       - select:
@@ -198,3 +194,13 @@ replacements:
         options:
           delimiter: "-"
           index: 99
+
+      # Add the environment as a prefix to the ingress host
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - spec.rules.0.host
+          - spec.tls.0.hosts.0
+        options:
+          delimiter: "."
+          index: 1
