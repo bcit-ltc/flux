@@ -1,31 +1,28 @@
+# module-estimator kustomization
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-#   - ./cronjobs
-  - service-account.yaml
-  - webhook-ingress.yaml
+  - ../base
+  - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: flux-
+namePrefix: module-estimator-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: flux-system
+namespace: module-estimator
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="flux"
+      - releaseName="module-estimator"
 
     # Resource is not added to the cluster
     options:
       annotations:
         config.kubernetes.io/local-config: "true"
-
-# Teach kustomize how to update generated names
-configurations:
-  - kustomizeconfig.yaml
 
 # Order matters!
 components:
@@ -33,5 +30,8 @@ components:
   # Add TLS certificates for ingress
   - ../../components/ssl-certificates
 
-  # Add Vault authentication (role)
+  # Add Vault authentication (role and service accounts)
   - ../../components/vault-auth
+
+  # Update resources based on release name (ConfigMap above)
+  - ../../components/config-matcher

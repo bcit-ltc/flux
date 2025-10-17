@@ -126,7 +126,7 @@ replacements:
           - spec.kubernetes.serviceAccount
         options:
           delimiter: "-"
-          index: 99            
+          index: 99
 
       # Add the environment as a suffix to the postgres database
       - select:
