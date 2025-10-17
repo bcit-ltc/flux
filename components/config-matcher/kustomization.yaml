@@ -52,6 +52,7 @@ replacements:
         fieldPaths:
           - spec.rules.0.host
           - spec.tls.0.hosts.0
+          - spec.rules.0.http.paths.0.backend.service.name
         options:
           delimiter: "."
           index: 0
