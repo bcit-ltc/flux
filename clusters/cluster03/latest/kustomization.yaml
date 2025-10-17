@@ -63,10 +63,10 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: latest--flux-config.ltc.bcit.ca
+        value: latest.flux.ltc.bcit.ca
       - op: replace
         path: /spec/tls/0/hosts/0
-        value: latest--flux-config.ltc.bcit.ca
+        value: latest.flux.ltc.bcit.ca
 
   # Patch resources with environment-specific values
   - target:
@@ -117,6 +117,16 @@ replacements:
         options:
           delimiter: "-"
           index: 99          
+
+      # Add the environment as a suffix to the global auth name
+      - select:
+          kind: VaultStaticSecret
+        fieldPaths:
+          - spec.destination.name
+          - spec.path
+        options:
+          delimiter: "-"
+          index: 99  
 
       # Add the environment as a suffix to the global auth name
       - select:

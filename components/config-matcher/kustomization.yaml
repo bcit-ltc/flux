@@ -44,3 +44,13 @@ replacements:
         reject:
           - name: star-ltc-bcit-ca
           - name: github-webhook-token
+
+      # Append the release name to the Ingress host
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - spec.rules.0.host
+          - spec.tls.0.hosts.0
+        options:
+          delimiter: "."
+          index: 0

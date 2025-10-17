@@ -1,0 +1,22 @@
+# Deploys Ingress resources
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  tls:
+    - hosts:
+        - app.ltc.bcit.ca
+      secretName: star-ltc-bcit-ca
+  rules:
+    - host: app.ltc.bcit.ca
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app
+                port:
+                  number: 8080

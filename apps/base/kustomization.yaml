@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - oci-repository.yaml
+  - ingress.yaml
 
 # Teach kustomize how to update generated names
 configurations:

@@ -1,3 +1,4 @@
+# Generates a secret from Vault
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
