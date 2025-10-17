@@ -10,8 +10,8 @@ commonAnnotations:
 
 resources:
 
-  # automate sops token renewal
-  # - ./flux
+  # GitHub webhook receiver
+  - ./flux
 
   # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
   - ./vault-secrets-operator

@@ -5,7 +5,6 @@ kind: Kustomization
 
 resources:
   - ../base
-  - admin-credentials.yaml
   - namespace.yaml
 
 # Prefix all resources with this name
@@ -27,6 +26,9 @@ configMapGenerator:
 
 # Order matters!
 components:
+
+  # Configure GitHub webhook for reconciling cluster resources when repo is updated
+  - ../../components/notifications
 
   # Add TLS certificates for ingress
   - ../../components/ssl-certificates

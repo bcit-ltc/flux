@@ -1,0 +1,14 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: github-webhook-token
+spec:
+  type: kv-v2
+  vaultAuthRef: vault-auth
+  refreshAfter: 6h
+  mount: ltc-infrastructure
+  path: flux/github-webhook-token
+  destination:
+    name: github-webhook-token
+    create: true

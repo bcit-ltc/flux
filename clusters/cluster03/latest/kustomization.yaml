@@ -56,6 +56,18 @@ patches:
                       labels:
                         environment: latest
 
+  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  - target:
+      kind: Ingress
+      annotationSelector: "app=flux"
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: latest--flux-config.ltc.bcit.ca
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: latest--flux-config.ltc.bcit.ca
+
   # Patch resources with environment-specific values
   - target:
       kind: VaultAuthGlobal
@@ -86,6 +98,7 @@ replacements:
         reject:
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
+          - name: github-webhook-token
 
       # Add the environment as a suffix to the default connection
       - select:

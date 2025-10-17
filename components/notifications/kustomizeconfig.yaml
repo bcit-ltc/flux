@@ -1,0 +1,41 @@
+# This file is for teaching kustomize how to substitute names
+---
+nameReference:
+
+# Both GitRepository and Kustomization have a Receiver `spec.resources.name`
+- kind: GitRepository
+  fieldSpecs:
+    - kind: Receiver
+      path: spec/resources/name
+
+- kind: Kustomization
+  fieldSpecs:
+    - kind: Receiver
+      path: spec/resources/name
+
+- kind: Provider
+  fieldSpecs:
+    - kind: Alert
+      path: spec/providerRef/name
+
+- kind: VaultStaticSecret
+  fieldSpecs:
+    - kind: Kustomization
+      path: spec/decryption/secretRef/name
+    # - kind: VaultStaticSecret
+    #   path: spec/destination/name
+    - kind: Provider
+      path: spec/secretRef/name
+    - kind: Receiver
+      path: spec/secretRef/name
+
+- kind: VaultStaticSecret
+  fieldSpecs:
+    - kind: Kustomization
+      path: spec/decryption/secretRef/name
+    # - kind: VaultStaticSecret
+    #   path: spec/destination/name
+    - kind: Provider
+      path: spec/secretRef/name
+    - kind: Receiver
+      path: spec/secretRef/name
