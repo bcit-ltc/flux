@@ -79,17 +79,17 @@ patches:
         path: /spec/kubernetes/audiences
         value: [latest]
 
-  # Remove all stable resources
+  # Remove all stable resources (this env should only emit latest resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
-      name: "ingress-stable"
+      name: ingress-stable
     patch: |
       $patch: delete
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
   - target:
-      name: "star-ltc-bcit-ca"
+      name: star-ltc-bcit-ca
     patch: |
       $patch: delete
       kind: VaultStaticSecret

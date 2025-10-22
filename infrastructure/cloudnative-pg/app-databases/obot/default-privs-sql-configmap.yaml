@@ -29,8 +29,8 @@ data:
     -- Ensure schema exists (schema name == DB_NAME)
     SELECT format('CREATE SCHEMA IF NOT EXISTS %I;', :'DB_NAME') \gexec
 
-    -- USAGE on schema for the app role
-    SELECT format('GRANT USAGE ON SCHEMA %I TO %I;', :'DB_NAME', :'APP_ROLE') \gexec
+    -- USAGE + CREATE on schema for the app role (CREATE is required for Django migrations)
+    SELECT format('GRANT USAGE, CREATE ON SCHEMA %I TO %I;', :'DB_NAME', :'APP_ROLE') \gexec
 
     -- Privileges on existing objects
     SELECT format('GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA %I TO %I;', :'DB_NAME', :'APP_ROLE') \gexec
