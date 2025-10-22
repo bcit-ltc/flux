@@ -9,14 +9,15 @@ commonAnnotations:
   config.fluxcd.io/workload-type: app
 
 resources:
-  - ./course-workload-estimator
-  - ./infrastructure-documentation
-  - ./conversion-guide
+  # - ./conversion-guide
   # - ./corgi
-  # - ./course-production-site
+  - ./conversion-guide
+  - ./course-production-site
+  - ./course-workload-estimator
   # - ./dataset-retriever
   # - ./distribution-game
   # - ./HSPanorama
+  - ./infrastructure-documentation
   # - ./Inspire-Articulate360
   # - ./legacy-html
   # - ./legacy-ltc
@@ -38,7 +39,6 @@ resources:
   # - ./legacy-sot-php
   # - ./module-estimator
   # - ./MRI-WebUI
-  # - ./obot
   # - ./openlab-scheduler
   # - ./ptracker
   - ./qcon
