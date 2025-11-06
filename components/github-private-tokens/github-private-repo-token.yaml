@@ -1,5 +1,3 @@
-# Generates a secret from Vault
----
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultDynamicSecret
 metadata:
@@ -13,4 +11,15 @@ spec:
   destination:
     create: true
     name: github-private-repo-token
-    type: "kubernetes.io/dockerconfigjson"
+    type: kubernetes.io/dockerconfigjson
+    transformation:
+      excludes:
+        - .*
+      templates:
+        .dockerconfigjson:
+          text: |
+            {{- $token := get .Secrets "token" -}}
+            {{- $user  := "x-access-token" -}}  {{/* username for GitHub App installation tokens */}}
+            {{- $reg   := "ghcr.io" -}}
+            {{- $auth  := printf "%s:%s" $user $token | b64enc -}}
+            {{- dict "auths" (dict $reg (dict "username" $user "password" $token "auth" $auth)) | toJson -}}

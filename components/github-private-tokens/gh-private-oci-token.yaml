@@ -14,3 +14,8 @@ spec:
     create: true
     name: gh-private-oci-token
     type: Opaque
+    transformation:
+      excludes: [".*"]
+      templates:
+        GITHUB_TOKEN:
+          text: '{{ get .Secrets "token" }}'
