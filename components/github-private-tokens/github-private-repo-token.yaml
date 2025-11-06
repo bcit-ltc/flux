@@ -1,0 +1,15 @@
+# Generates a secret from Vault
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: github-private-repo-token
+spec:
+  vaultAuthRef: vault-auth
+  mount: github
+  path: token
+
+  destination:
+    create: true
+    name: github-private-repo-token
+    type: "kubernetes.io/dockerconfigjson"

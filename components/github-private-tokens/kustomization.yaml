@@ -1,0 +1,8 @@
+# Create a tls secret for the ingress
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - github-private-repo-token.yaml
+  - gh-private-oci-token.yaml

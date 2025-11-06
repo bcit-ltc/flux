@@ -34,7 +34,7 @@ resources:
   # - ./legacy-soh-3dbirth
   # - ./legacy-soh-3dheart
   # - ./legacy-soh-nser-8600-assessmentsim
-  # - ./legacy-soh-sonography
+  - ./legacy-soh-sonography
   # - ./legacy-sot
   # - ./legacy-sot-php
   - ./module-estimator
