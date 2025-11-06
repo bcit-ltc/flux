@@ -27,6 +27,9 @@ configMapGenerator:
 # Order matters!
 components:
 
+  # Add GitHub tokens for private repos/packages
+  - ../../components/github-private-tokens
+  
   # Add TLS certificates for ingress
   - ../../components/ssl-certificates
 
