@@ -5,6 +5,9 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - api-key.yaml
+  - app-internal-credentials.yaml
+  - db-credentials.yaml     # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name
 namePrefix: qcon-web-
@@ -48,4 +51,12 @@ patches:
       metadata:
         name: DOES NOT MATTER
 
-
+  - target:
+      kind: VaultDynamicSecret
+    patch: |-
+      - op: replace
+        path: /spec/path
+        value: creds/qcon-web
+      - op: replace
+        path: /metadata/annotations/app~1db-name
+        value: qcon_web

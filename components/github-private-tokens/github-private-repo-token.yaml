@@ -8,6 +8,7 @@ spec:
   path: token
   params:
     org_name: "bcit-ltc"
+  refreshAfter: 24h
   destination:
     create: true
     name: github-private-repo-token

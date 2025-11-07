@@ -3,7 +3,7 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
-  name: tokens
+  name: api-key
 spec:
   type: kv-v2
   vaultAuthRef: vault-auth
@@ -11,7 +11,7 @@ spec:
   mount: apps
 
   # path is prefixed by `{appName}/{environment}/`; double // required
-  path: //tokens
+  path: //api-key
   destination:
-    name: tokens
+    name: api-key
     create: true
