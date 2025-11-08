@@ -5,9 +5,10 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - api-key.yaml
-  - app-internal-credentials.yaml
-  - db-credentials.yaml     # Also see VaultDynamicSecret patch below
+  # managed by qcon-api
+  # - api-key.yaml
+  # - app-internal-credentials.yaml
+  # - db-credentials.yaml     # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name
 namePrefix: qcon-web-
