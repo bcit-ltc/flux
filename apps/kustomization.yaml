@@ -24,7 +24,7 @@ resources:
   # - ./legacy-multimedia-php
   # - ./legacy-sob
   # - ./legacy-sob-php
-  # - ./legacy-soc
+  - ./legacy-soc
   # - ./legacy-soc-php
   # - ./legacy-socas
   # - ./legacy-soe
