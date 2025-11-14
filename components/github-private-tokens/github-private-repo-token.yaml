@@ -1,26 +1,35 @@
+# Retrieves and transforms a secret from Vault
+---
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
-  name: github-private-repo-token
+  name: star-latest-ltc-bcit-ca
 spec:
+  type: kv-v2
   vaultAuthRef: vault-auth
-  mount: github
-  path: token
-  params:
-    org_name: "bcit-ltc"
+  mount: ltc-infrastructure
+  path: vault/gh-private-oci-token
   refreshAfter: 24h
   destination:
+    name: gh-private-oci-token
     create: true
-    name: github-private-repo-token
+    overwrite: true
     type: kubernetes.io/dockerconfigjson
     transformation:
+      excludeRaw: true
       excludes:
-        - .*
+        - ".*"
       templates:
-        .dockerconfigjson:
+        ".dockerconfigjson":
           text: |
-            {{- $token := get .Secrets "token" -}}
-            {{- $user  := "x-access-token" -}}  {{/* username for GitHub App installation tokens */}}
-            {{- $reg   := "ghcr.io" -}}
-            {{- $auth  := printf "%s:%s" $user $token | b64enc -}}
-            {{- dict "auths" (dict $reg (dict "username" $user "password" $token "auth" $auth)) | toJson -}}
+            {{- $server := "ghcr.io" -}}
+            {{- $user := "ghcr-user" -}}
+            {{- $email := "noreply@example.com" -}}
+            {{- $token := .Secrets.GITHUB_TOKEN -}}
+            {{- $auth := printf "%s:%s" $user $token | b64enc -}}
+            {{- dict "auths" (dict $server (dict
+                  "username" $user
+                  "password" $token
+                  "email"    $email
+                  "auth"     $auth)) | mustToJson -}}
+

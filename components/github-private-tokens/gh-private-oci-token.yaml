@@ -1,22 +1,15 @@
-# Generates a secret from Vault
+# Retrieves a secret from Vault
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultDynamicSecret
+kind: VaultStaticSecret
 metadata:
-  name: gh-private-oci-token
+  name: star-latest-ltc-bcit-ca
 spec:
+  type: kv-v2
   vaultAuthRef: vault-auth
-  mount: github
-  path: token
-  params:
-    org_name: "bcit-ltc"
   refreshAfter: 24h
+  mount: ltc-infrastructure
+  path: vault/gh-private-oci-token
   destination:
-    create: true
     name: gh-private-oci-token
-    type: Opaque
-    transformation:
-      excludes: [".*"]
-      templates:
-        GITHUB_TOKEN:
-          text: '{{ get .Secrets "token" }}'
+    create: true
