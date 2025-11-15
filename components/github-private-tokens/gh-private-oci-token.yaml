@@ -9,7 +9,7 @@ spec:
   vaultAuthRef: vault-auth
   refreshAfter: 24h
   mount: ltc-infrastructure
-  path: vault/gh-private-oci-token
+  path: github/gh-private-oci-token
   destination:
     name: gh-private-oci-token
     create: true

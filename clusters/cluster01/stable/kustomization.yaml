@@ -95,6 +95,8 @@ replacements:
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
+          - name: gh-private-oci-token
+          - name: github-private-repo-token
 
       # Add the environment as a suffix to the default connection
       - select:
@@ -144,9 +146,6 @@ replacements:
         options:
           delimiter: "-"
           index: 2
-        reject:
-          - name: github-private-repo-token
-          - name: gh-private-oci-token
 
       # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
       - select:

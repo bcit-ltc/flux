@@ -45,6 +45,8 @@ replacements:
           - name: star-ltc-bcit-ca
           - name: star-latest-ltc-bcit-ca
           - name: github-webhook-token
+          - name: gh-private-oci-token
+          - name: github-private-repo-token
       - select:
           kind: VaultDynamicSecret
         fieldPaths:
@@ -52,9 +54,6 @@ replacements:
         options:
           delimiter: "/"
           index: 0
-        reject:
-          - name: gh-private-oci-token
-          - name: github-private-repo-token
 
       # Append the release name to the Ingress host
       - select:
