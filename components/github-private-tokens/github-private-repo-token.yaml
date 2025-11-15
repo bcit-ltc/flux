@@ -3,7 +3,7 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
-  name: star-latest-ltc-bcit-ca
+  name: github-private-repo-token
 spec:
   type: kv-v2
   vaultAuthRef: vault-auth
@@ -11,7 +11,7 @@ spec:
   path: vault/gh-private-oci-token
   refreshAfter: 24h
   destination:
-    name: gh-private-oci-token
+    name: github-private-repo-token
     create: true
     overwrite: true
     type: kubernetes.io/dockerconfigjson

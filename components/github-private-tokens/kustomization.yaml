@@ -1,4 +1,4 @@
-# Create a tls secret for the ingress
+# Create secrets for private repos
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
