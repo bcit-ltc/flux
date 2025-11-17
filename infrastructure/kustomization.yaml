@@ -19,6 +19,9 @@ resources:
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   - ./longhorn
 
+  # Grafana
+  - ./grafana
+
   # Obot
   # - ./obot
   

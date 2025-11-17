@@ -1,0 +1,24 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap-alloy-values.yaml
+  - helm-release.yaml
+
+namespace: observability
+
+# Prefix all resources with this name
+namePrefix: alloy-
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="alloy"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"

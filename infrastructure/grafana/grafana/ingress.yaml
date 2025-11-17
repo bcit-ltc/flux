@@ -1,0 +1,30 @@
+ingress:
+  enabled: true
+  ingressClassName: nginx          # or your class
+  hosts:
+    - grafana.example.internal     # change me
+  path: /
+  pathType: Prefix
+  tls: []                          # or configure your TLS secret
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: dashboard-ingress
+# spec:
+#   rules:
+#   - host: grafana.ltc.bcit.ca
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /
+#         backend:
+#           service:
+#             name: grafana
+#             port:
+#               number: 80
+#   tls:
+#     - hosts:
+#         - grafana.ltc.bcit.ca
+#       secretName: star-ltc-bcit-ca

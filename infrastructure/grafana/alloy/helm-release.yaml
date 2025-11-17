@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: helm-release
+spec:
+  interval: 10m
+  releaseName: alloy
+  chart:
+    spec:
+      chart: alloy
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-helm-repository
+      # version: ""  # (optional) pin a chart version later
+  values:
+    controller:
+      type: daemonset
+  valuesFrom:
+    - kind: ConfigMap
+      name: alloy-values
+      valuesKey: config
+      targetPath: config

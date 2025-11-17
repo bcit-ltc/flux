@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: helm-release
+spec:
+  interval: 10m
+  releaseName: grafana
+  chart:
+    spec:
+      chart: grafana
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-helm-repository
+  valuesFrom:
+    - kind: ConfigMap
+      name: values
+      valuesKey: values.yaml
+    - kind: Secret
+      name: secrets
+      valuesKey: adminPassword
+      targetPath: adminPassword

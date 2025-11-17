@@ -1,0 +1,26 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap-grafana-dashboard-nginx.yaml
+  - configmap-grafana-values.yaml
+  - helm-release.yaml
+  - secret-grafana-secrets.yaml
+
+namespace: observability
+
+# Prefix all resources with this name
+namePrefix: grafana-
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="grafana"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"

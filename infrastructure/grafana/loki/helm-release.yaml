@@ -1,0 +1,23 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: helm-release
+spec:
+  interval: 10m
+  releaseName: loki
+  chart:
+    spec:
+      chart: loki
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-helm-repository
+      # version: ""  # (optional) pin a chart version later
+  values:
+    loki:
+      auth_enabled: false
+    singleBinary:
+      replicas: 1
+    persistence:
+      enabled: true
+      size: 100Gi
+      # storageClass: ""   # (optional) set your on-prem StorageClass

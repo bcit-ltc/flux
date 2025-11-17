@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: values
+data:
+  values.yaml: |
+    # --- basic service ---
+    service:
+      type: ClusterIP
+      port: 80
+
+    # --- persistence (optional) ---
+    persistence:
+      enabled: true
+      size: 10Gi
+      # storageClassName: ""   # set if you have a specific StorageClass
+
+    # --- Grafana INI (minimal) ---
+    grafana.ini:
+      server:
+        root_url: "%(protocol)s://%(domain)s/"
+      log:
+        mode: console
+        level: warn
+
+    # --- admin user (username fixed in chart; password comes from Secret) ---
+    adminUser: admin
+
+    # --- Loki datasource (default) ---
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki.observability.svc.cluster.local:3100
+            isDefault: true
+            jsonData:
+              maxLines: 1000
+
+    # --- optional: initial dashboards sidecar (off by default here) ---
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard        # the label selector the sidecar watches
+        searchNamespace: ALL            # or "observability" if you prefer
+        folder: "NGINX"                 # dashboards land in this folder
+
+      datasources:
+        enabled: false
+
+    # --- readiness/liveness (defaults are fine; edit if you harden) ---
+    readinessProbe:
+      timeoutSeconds: 5
+    livenessProbe:
+      timeoutSeconds: 5
