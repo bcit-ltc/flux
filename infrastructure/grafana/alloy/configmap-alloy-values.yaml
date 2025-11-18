@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: values
+  name: alloy-values-stable
   namespace: observability
 data:
-  # Will be loaded into .spec.values.config of the HelmRelease via valuesFrom.targetPath
   config: |
     // ---- Write target (Loki service URL in-cluster)
     loki.write "default" {
@@ -13,31 +12,19 @@ data:
       }
     }
 
-    // ---- Discover pods on THIS node (works well with DaemonSet)
+    // ---- Discover all pods in the cluster
     discovery.kubernetes "pods" {
       role = "pod"
-      selectors {
-        role  = "pod"
-        field = "spec.nodeName=" + coalesce(sys.env("HOSTNAME"), constants.hostname)
-      }
     }
 
-    // ---- Tail pod logs via K8s API (no hostPath needed)
+    // ---- Tail pod logs via K8s API
     loki.source.kubernetes "pods" {
       targets    = discovery.kubernetes.pods.targets
       forward_to = [loki.process.clean.receiver]
     }
 
-    // ---- Light processing: optionally drop successful health hits; keep errors
+    // ---- Light processing: drop successful healthz; keep errors
     loki.process "clean" {
-      // If your apps emit JSON logs (like the NGINX JSON format), you can parse here.
-      // Example parser (uncomment if you emit JSON lines):
-      // stage.json {
-      //   expressions = { ts = "ts", method = "method", uri = "uri", status = "status", rt = "rt" }
-      //   drop_malformed = true
-      // }
-
-      // Drop 2xx health checks; keep all 4xx/5xx
       stage.drop {
         source     = "body"
         expression = "^.*\"uri\":\"/healthz/(startup|ready)\".*\"status\":2..*"
