@@ -45,7 +45,11 @@ data:
         enabled: true
         label: grafana_dashboard        # the label selector the sidecar watches
         searchNamespace: ALL            # or "observability" if you prefer
-        # folder: "NGINX"                 # dashboards land in this folder
+        # Folder in the pod filesystem where JSON dashboards are written
+        folder: /tmp/dashboards
+        # put all into an "NGINX" folder in Grafana UI
+        defaultFolderName: NGINX
+
 
       datasources:
         enabled: false
