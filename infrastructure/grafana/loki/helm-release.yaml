@@ -13,6 +13,11 @@ spec:
         name: grafana-helm-repository
       # version: ""  # (optional) pin a chart version later
   values:
+    global:
+      dnsNamespace: kube-system
+      clusterDomain: cluster.local
+      dnsService: rke2-coredns-rke2-coredns
+
     # Force monolithic single-binary mode
     deploymentMode: SingleBinary
 
@@ -20,7 +25,6 @@ spec:
       auth_enabled: false
 
       commonConfig:
-        # single replica -> RF=1
         replication_factor: 1
 
       # Store chunks on local filesystem with a simple TSDB schema
@@ -45,7 +49,7 @@ spec:
         size: 100Gi
         # storageClass: ""    # optionally set a specific StorageClass
 
-    # IMPORTANT: zero out SimpleScalable targets so validation passes
+    # zero out SimpleScalable targets so validation passes
     read:
       replicas: 0
     write:
