@@ -13,16 +13,42 @@ spec:
         name: grafana-helm-repository
       # version: ""  # (optional) pin a chart version later
   values:
+    # Force monolithic single-binary mode
     deploymentMode: SingleBinary
+
     loki:
       auth_enabled: false
+
       commonConfig:
+        # single replica -> RF=1
         replication_factor: 1
+
+      # Store chunks on local filesystem with a simple TSDB schema
       storage:
         type: filesystem
+
+      schemaConfig:
+        configs:
+          - from: "2025-01-01"
+            store: tsdb
+            object_store: filesystem
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+
+    # Single-binary settings
     singleBinary:
       replicas: 1
       persistence:
         enabled: true
         size: 100Gi
-        # storageClass: <your-class>   # optional
+        # storageClass: ""    # optionally set a specific StorageClass
+
+    # IMPORTANT: zero out SimpleScalable targets so validation passes
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    backend:
+      replicas: 0
