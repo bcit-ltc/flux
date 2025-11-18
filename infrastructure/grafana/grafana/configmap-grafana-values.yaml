@@ -45,7 +45,7 @@ data:
         enabled: true
         label: grafana_dashboard        # the label selector the sidecar watches
         searchNamespace: ALL            # or "observability" if you prefer
-        folder: "NGINX"                 # dashboards land in this folder
+        # folder: "NGINX"                 # dashboards land in this folder
 
       datasources:
         enabled: false
