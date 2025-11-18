@@ -15,8 +15,9 @@ spec:
   values:
     controller:
       type: daemonset
-  valuesFrom:
-    - kind: ConfigMap
-      name: alloy-values
-      valuesKey: config
-      targetPath: config
+
+    alloy:
+      configMap:
+        create: false
+        name: values
+        key: config

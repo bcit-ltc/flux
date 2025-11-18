@@ -12,6 +12,10 @@ namespace: observability
 # Prefix all resources with this name
 namePrefix: alloy-
 
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
