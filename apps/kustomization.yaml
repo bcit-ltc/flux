@@ -9,7 +9,7 @@ commonAnnotations:
   config.fluxcd.io/workload-type: app
 
 resources:
-  - ./cdn
+  - ./common
   # - ./corgi
   - ./conversion-guide
   - ./course-production-site

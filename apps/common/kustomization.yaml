@@ -1,4 +1,4 @@
-# cdn kustomization
+# common kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,16 +8,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: cdn-
+namePrefix: common-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: cdn
+namespace: common
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="cdn"
+      - releaseName="common"
 
     # Resource is not added to the cluster
     options:
