@@ -41,6 +41,16 @@ spec:
                   continue
                 fi
 
+                echo "[bootstrap] Checking existence of DB '${DB_NAME}'"
+
+                # Check if the database exists, using the default admin database
+                if ! psql \
+                  "dbname=${PGDATABASE}" \
+                  -Atqc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; then
+                  echo "[bootstrap] WARNING: database '${DB_NAME}' does not exist yet; skipping"
+                  continue
+                fi
+
                 echo "[bootstrap] Configuring DB '${DB_NAME}' with APP_ROLE='${APP_ROLE}'"
 
                 psql \
@@ -57,7 +67,6 @@ spec:
           env:
             - name: DB_ROOT_OWNER
               value: db_root_owner
-
           volumeMounts:
             - name: app-list
               mountPath: /config
@@ -73,14 +82,12 @@ spec:
             items:
               - key: apps
                 path: apps
-
         - name: sql
           configMap:
             name: default-privs-sql
             items:
               - key: default-privs.sql
                 path: default-privs.sql
-
         - name: superuser
           secret:
             secretName: pg-core-superuser
