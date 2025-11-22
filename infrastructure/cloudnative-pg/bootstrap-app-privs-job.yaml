@@ -19,10 +19,11 @@ spec:
 
               echo "[bootstrap] Starting app privilege bootstrap"
 
-              # Read admin credentials from vault-manager-secret
-              PGUSER="$(cat /secrets/vault-manager/username)"
-              PGPASSWORD="$(cat /secrets/vault-manager/password)"
-              export PGUSER PGPASSWORD
+              # Pull CNPG superuser credentials
+              PGUSER="$(cat /secrets/superuser/username)"
+              PGPASSWORD="$(cat /secrets/superuser/password)"
+              PGDATABASE="$(cat /secrets/superuser/dbname)"
+              export PGUSER PGPASSWORD PGDATABASE
 
               # Default connection target: pg-core primary
               PGHOST="${PGHOST:-pg-core-rw.postgres.svc.cluster.local}"
@@ -52,16 +53,19 @@ spec:
               done < /config/apps
 
               echo "[bootstrap] Completed app privilege bootstrap"
+
           env:
             - name: DB_ROOT_OWNER
               value: db_root_owner
+
           volumeMounts:
             - name: app-list
               mountPath: /config
             - name: sql
               mountPath: /sql
-            - name: vault-manager
-              mountPath: /secrets/vault-manager
+            - name: superuser
+              mountPath: /secrets/superuser
+
       volumes:
         - name: app-list
           configMap:
@@ -69,12 +73,14 @@ spec:
             items:
               - key: apps
                 path: apps
+
         - name: sql
           configMap:
             name: default-privs-sql
             items:
               - key: default-privs.sql
                 path: default-privs.sql
-        - name: vault-manager
+
+        - name: superuser
           secret:
-            secretName: vault-manager-secret
+            secretName: pg-core-superuser
