@@ -31,21 +31,23 @@ spec:
         namespace: postgres
       patch: |-
         - op: add
-          path: /metadata/labels/environment
-          value: stable
+          path: /metadata/labels
+          value:
+            environment: stable
+
         - op: add
-          path: /spec/template/metadata/labels/environment
-          value: stable
+          path: /spec/template/metadata/labels
+          value:
+            environment: stable
+
         - op: add
           path: /spec/template/spec/containers/0/env/-
           value:
             name: ENVIRONMENT
             value: "stable"
+
         - op: add
-          path: /spec/template/spec/initContainers/0/env/-
+          path: /spec/template/spec/initContainers/0/env
           value:
-            name: ENVIRONMENT
-            value: "stable"
-
-
-
+            - name: ENVIRONMENT
+              value: "stable"
