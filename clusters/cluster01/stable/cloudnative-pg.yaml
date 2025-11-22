@@ -24,28 +24,28 @@ spec:
       name: pg-core-stable
       namespace: postgres
 
-patches:
-  - target:
-      kind: Job
-      name: bootstrap-app-privs
-      namespace: postgres
-    patch: |-
-      - op: add
-        path: /metadata/labels/environment
-        value: stable
-      - op: add
-        path: /spec/template/metadata/labels/environment
-        value: stable
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value:
-          name: ENVIRONMENT
-          value: "stable"
-      - op: add
-        path: /spec/template/spec/initContainers/0/env/-
-        value:
-          name: ENVIRONMENT
-          value: "stable"
+  patches:
+    - target:
+        kind: Job
+        name: bootstrap-app-privs
+        namespace: postgres
+      patch: |-
+        - op: add
+          path: /metadata/labels/environment
+          value: stable
+        - op: add
+          path: /spec/template/metadata/labels/environment
+          value: stable
+        - op: add
+          path: /spec/template/spec/containers/0/env/-
+          value:
+            name: ENVIRONMENT
+            value: "stable"
+        - op: add
+          path: /spec/template/spec/initContainers/0/env/-
+          value:
+            name: ENVIRONMENT
+            value: "stable"
 
 
 
