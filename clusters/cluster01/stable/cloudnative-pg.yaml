@@ -24,12 +24,12 @@ spec:
       name: pg-core
       namespace: postgres
 
-  patches:
-    - target:
-        kind: Job
-        name: bootstrap-app-privs
-        namespace: postgres
-      patch: |-
-        - op: replace
-          path: /metadata/labels/environment
-          value: stable
+  # patches:
+  #   - target:
+  #       kind: Job
+  #       name: bootstrap-app-privs
+  #       namespace: postgres
+  #     patch: |-
+  #       - op: replace
+  #         path: /metadata/labels/environment
+  #         value: stable
