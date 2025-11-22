@@ -4,15 +4,13 @@ kind: Job
 metadata:
   name: bootstrap-app-privs
   namespace: postgres
+  labels:
+    environment: env
 spec:
   ttlSecondsAfterFinished: 600
   template:
     spec:
       restartPolicy: OnFailure
-
-      # -----------------------
-      # Init container: wait for PG
-      # -----------------------
       initContainers:
         - name: wait-for-postgres
           image: postgres:15
@@ -40,10 +38,6 @@ spec:
                 sleep 3
               done
               echo "Postgres is ready!"
-
-      # -----------------------
-      # Main container: apply default privs
-      # -----------------------
       containers:
         - name: psql
           image: ghcr.io/cloudnative-pg/postgresql:16
