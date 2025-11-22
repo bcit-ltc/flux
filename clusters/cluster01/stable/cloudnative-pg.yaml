@@ -8,6 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: flux-system
+
   interval: 10m
   wait: true
   prune: true
@@ -23,13 +24,3 @@ spec:
       kind: Cluster
       name: pg-core
       namespace: postgres
-
-  # patches:
-  #   - target:
-  #       kind: Job
-  #       name: bootstrap-app-privs
-  #       namespace: postgres
-  #     patch: |-
-  #       - op: replace
-  #         path: /metadata/labels/environment
-  #         value: stable

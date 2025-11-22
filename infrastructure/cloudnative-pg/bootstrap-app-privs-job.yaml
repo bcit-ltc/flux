@@ -53,28 +53,28 @@ spec:
 
               echo "[bootstrap] Using OWNER_ROLE=${OWNER_ROLE}, PGHOST=${PGHOST}, PGPORT=${PGPORT}"
 
-              # --- loop: check DB exists, then apply default-privs.sql ---
+              # --- loop: wait for DB to exist, then apply default-privs.sql ---
               while read -r DB_NAME APP_ROLE; do
                 # Skip empty/comment lines
                 if [[ -z "${DB_NAME:-}" ]] || [[ "${DB_NAME}" =~ ^# ]]; then
                   continue
                 fi
 
-                echo "[bootstrap] Checking existence of DB '${DB_NAME}'"
+                echo "[bootstrap] Waiting for database '${DB_NAME}' to exist..."
+                until psql -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; do
+                  echo "[bootstrap] Database '${DB_NAME}' not found yet; sleeping..."
+                  sleep 5
+                done
 
-                if psql -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; then
-                  echo "[bootstrap] Database '${DB_NAME}' exists; applying privilege bootstrap (APP_ROLE='${APP_ROLE}')"
+                echo "[bootstrap] Database '${DB_NAME}' exists; applying privilege bootstrap (APP_ROLE='${APP_ROLE}')"
 
-                  psql \
-                    "dbname=${DB_NAME}" \
-                    -v ON_ERROR_STOP=1 \
-                    -v DB_NAME="${DB_NAME}" \
-                    -v OWNER_ROLE="${OWNER_ROLE}" \
-                    -v APP_ROLE="${APP_ROLE}" \
-                    -f /sql/default-privs.sql
-                else
-                  echo "[bootstrap] WARNING: database '${DB_NAME}' does not exist yet; skipping"
-                fi
+                psql \
+                  "dbname=${DB_NAME}" \
+                  -v ON_ERROR_STOP=1 \
+                  -v DB_NAME="${DB_NAME}" \
+                  -v OWNER_ROLE="${OWNER_ROLE}" \
+                  -v APP_ROLE="${APP_ROLE}" \
+                  -f /sql/default-privs.sql
               done < /config/apps
 
               echo "[bootstrap] Completed app privilege bootstrap"
