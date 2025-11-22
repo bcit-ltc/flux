@@ -5,6 +5,7 @@ metadata:
   name: bootstrap-app-privs
   namespace: postgres
 spec:
+  activeDeadlineSeconds: 300
   ttlSecondsAfterFinished: 600
   template:
     spec:
