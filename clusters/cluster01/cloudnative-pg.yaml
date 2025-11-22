@@ -1,0 +1,29 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg
+  namespace: flux-system
+spec:
+  interval: 10m
+  prune: true
+  wait: true
+
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+  # IMPORTANT:
+  # This points at `infrastructure/cloudnative-pg` (not cnpg-cluster directly)
+  # because that kustomization in turn includes the cnpg-cluster subpath.
+  path: ./infrastructure/cloudnative-pg
+
+  dependsOn:
+    # The Kustomization (or HelmRelease bundle) that deploys the CNPG operator
+    - name: stable
+
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-core
+      namespace: postgres

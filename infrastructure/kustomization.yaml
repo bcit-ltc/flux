@@ -26,4 +26,5 @@ resources:
   # - ./obot
   
   # Installation requires sequence - see infrastructure/cloudnative-pg/NOTES.md
-  # - ./cloudnative-pg
+  - ./cloudnative-pg/cnpg-operator
+  # - ./cloudnative-pg/cnpg-cluster

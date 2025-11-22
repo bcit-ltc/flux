@@ -2,6 +2,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: pg-core
+  namespace: postgres
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16
@@ -26,12 +27,24 @@ spec:
                   nodePort: 31432
 
     roles:
+      # Infra-level admin, used by Vault DB connection and bootstrap jobs
       - name: vault_manager
+        ensure: present
         login: true
         createrole: true
         createdb: true
+        superuser: false
         passwordSecret:
           name: vault-manager-secret
+
+      # Shared owner role for all application databases
+      # (DBs and schemas are owned by this role; app roles get privileges)
+      - name: db_root_owner
+        ensure: present
+        login: true
+        superuser: false
+        createdb: true
+        # no passwordSecret: CNPG will manage the role internally; we don't need to log in as this user from K8s
 
   postgresql:
     # hostssl for external traffic; TLS is required.

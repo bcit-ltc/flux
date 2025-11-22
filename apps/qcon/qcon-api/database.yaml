@@ -2,13 +2,13 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: obot-database
+  name: qcon-api-database
   namespace: postgres
 spec:
   cluster:
     name: pg-core
-  name: obot
-  owner: obot_owner
+  name: qcon_api
+  owner: db_root_owner
   schemas:
-    - name: obot
-      owner: obot_owner
+    - name: qcon_api
+      owner: db_root_owner

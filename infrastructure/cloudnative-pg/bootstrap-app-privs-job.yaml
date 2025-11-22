@@ -1,0 +1,81 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  # generateName lets you run this manifest multiple times without name collisions
+  generateName: bootstrap-app-privs-
+  namespace: postgres
+spec:
+  ttlSecondsAfterFinished: 600
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: psql
+          image: ghcr.io/cloudnative-pg/postgresql:16
+          command: ["/bin/bash", "-ceu", "--"]
+          args:
+            - |
+              set -o pipefail
+
+              echo "[bootstrap] Starting app privilege bootstrap"
+
+              # Read admin credentials from vault-manager-secret
+              PGUSER="$(cat /secrets/vault-manager/username)"
+              PGPASSWORD="$(cat /secrets/vault-manager/password)"
+              export PGUSER PGPASSWORD
+
+              # Default connection target: pg-core primary
+              PGHOST="${PGHOST:-pg-core-rw.postgres.svc.cluster.local}"
+              PGPORT="${PGPORT:-5432}"
+              export PGHOST PGPORT
+
+              OWNER_ROLE="${DB_ROOT_OWNER:-db_root_owner}"
+
+              echo "[bootstrap] Using OWNER_ROLE=${OWNER_ROLE}, PGHOST=${PGHOST}, PGPORT=${PGPORT}"
+
+              # Iterate over each app line: "<DB_NAME> <APP_ROLE>"
+              while read -r DB_NAME APP_ROLE; do
+                # Skip empty/comment lines
+                if [[ -z "${DB_NAME:-}" ]] || [[ "${DB_NAME}" =~ ^# ]]; then
+                  continue
+                fi
+
+                echo "[bootstrap] Configuring DB '${DB_NAME}' with APP_ROLE='${APP_ROLE}'"
+
+                psql \
+                  "dbname=${DB_NAME}" \
+                  -v ON_ERROR_STOP=1 \
+                  -v DB_NAME="${DB_NAME}" \
+                  -v OWNER_ROLE="${OWNER_ROLE}" \
+                  -v APP_ROLE="${APP_ROLE}" \
+                  -f /sql/default-privs.sql
+              done < /config/apps
+
+              echo "[bootstrap] Completed app privilege bootstrap"
+          env:
+            - name: DB_ROOT_OWNER
+              value: db_root_owner
+          volumeMounts:
+            - name: app-list
+              mountPath: /config
+            - name: sql
+              mountPath: /sql
+            - name: vault-manager
+              mountPath: /secrets/vault-manager
+      volumes:
+        - name: app-list
+          configMap:
+            name: app-list
+            items:
+              - key: apps
+                path: apps
+        - name: sql
+          configMap:
+            name: default-privs-sql
+            items:
+              - key: default-privs.sql
+                path: default-privs.sql
+        - name: vault-manager
+          secret:
+            secretName: vault-manager-secret

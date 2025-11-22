@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-list
+  namespace: postgres
+data:
+  # Each non-empty line: "<DB_NAME> <APP_ROLE>"
+  #
+  # DB_NAME should match the CNPG Database.spec.name
+  # APP_ROLE should match the group role used in Terraform:
+  #   APP_ROLE = <db_name><app_role_suffix>, e.g. "qcon_api_app"
+  apps: |
+    qcon_api qcon_api_app
+    obot     obot_app
+    new_app  new_app_app
