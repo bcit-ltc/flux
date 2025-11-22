@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: qcon-api-db-vars
+  name: db-vars
   namespace: postgres
 data:
   DB_NAME: qcon_api

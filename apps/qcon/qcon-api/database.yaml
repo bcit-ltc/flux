@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: qcon-api-database
+  name: database
   namespace: postgres
 spec:
   cluster:
