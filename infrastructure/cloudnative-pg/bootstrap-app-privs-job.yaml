@@ -7,6 +7,13 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 600
   template:
+    metadata:
+      labels:
+        # Make sure this gets the env label so the Downward API can read it.
+        # Your cluster overlays already inject `environment: stable/latest`
+        # via label transformers, so this may already be present, but it
+        # doesn’t hurt to be explicit.
+        environment: stable
     spec:
       restartPolicy: OnFailure
       containers:
@@ -19,79 +26,62 @@ spec:
 
               echo "[bootstrap] Starting app privilege bootstrap"
 
-              # Pull CNPG superuser credentials
-              PGUSER="$(cat /secrets/superuser/username)"
-              PGPASSWORD="$(cat /secrets/superuser/password)"
-              PGDATABASE="$(cat /secrets/superuser/dbname)"
-              export PGUSER PGPASSWORD PGDATABASE
+              # --- read superuser creds from pg-core-superuser secret ---
+              PGUSER="$(cat /secrets/pg-core-superuser/username)"
+              PGPASSWORD="$(cat /secrets/pg-core-superuser/password)"
+              export PGUSER PGPASSWORD
 
-              # Default connection target: pg-core primary
-              PGHOST="${PGHOST:-pg-core-rw.postgres.svc.cluster.local}"
+              # --- derive PGHOST from environment label if not provided ---
+              # ENVIRONMENT comes from the pod's `metadata.labels["environment"]`
+              ENVIRONMENT="${ENVIRONMENT:-stable}"
+              PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
               PGPORT="${PGPORT:-5432}"
               export PGHOST PGPORT
 
               OWNER_ROLE="${DB_ROOT_OWNER:-db_root_owner}"
 
-              echo "[bootstrap] Using OWNER_ROLE=${OWNER_ROLE}, PGHOST=${PGHOST}, PGPORT=${PGPORT}"
+              echo "[bootstrap] Using OWNER_ROLE=${OWNER_ROLE}, ENVIRONMENT=${ENVIRONMENT}, PGHOST=${PGHOST}, PGPORT=${PGPORT}"
 
-              # Iterate over each app line: "<DB_NAME> <APP_ROLE>"
+              # --- (keep your existing "check DB exists then apply default-privs.sql" logic here) ---
               while read -r DB_NAME APP_ROLE; do
+                # Skip empty/comment lines
                 if [[ -z "${DB_NAME:-}" ]] || [[ "${DB_NAME}" =~ ^# ]]; then
                   continue
                 fi
 
                 echo "[bootstrap] Checking existence of DB '${DB_NAME}'"
 
-                # --- Wait for PG to be ready ---
-                MAX_RETRIES=20
-                RETRY_DELAY=3
-                connected=false
+                if psql -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; then
+                  echo "[bootstrap] Database '${DB_NAME}' exists; applying privilege bootstrap (APP_ROLE='${APP_ROLE}')"
 
-                for ((i=1; i<=MAX_RETRIES; i++)); do
-                  if psql -v ON_ERROR_STOP=0 -d postgres -c "SELECT 1;" >/dev/null 2>&1; then
-                    connected=true
-                    break
-                  fi
-                  echo "[bootstrap] PG not ready yet (attempt $i/$MAX_RETRIES)..."
-                  sleep $RETRY_DELAY
-                done
-
-                if [[ "${connected}" != true ]]; then
-                  echo "[bootstrap] ERROR: PG never became ready; skipping DB '${DB_NAME}'"
-                  continue
-                fi
-
-                # --- Check DB existence ---
-                if ! psql -Atqc "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null 2>&1; then
+                  psql \
+                    "dbname=${DB_NAME}" \
+                    -v ON_ERROR_STOP=1 \
+                    -v DB_NAME="${DB_NAME}" \
+                    -v OWNER_ROLE="${OWNER_ROLE}" \
+                    -v APP_ROLE="${APP_ROLE}" \
+                    -f /sql/default-privs.sql
+                else
                   echo "[bootstrap] WARNING: database '${DB_NAME}' does not exist yet; skipping"
-                  continue
                 fi
-
-                echo "[bootstrap] Database '${DB_NAME}' exists; applying privilege bootstrap"
-
-                psql \
-                  "dbname=${DB_NAME}" \
-                  -v ON_ERROR_STOP=1 \
-                  -v DB_NAME="${DB_NAME}" \
-                  -v OWNER_ROLE="${OWNER_ROLE}" \
-                  -v APP_ROLE="${APP_ROLE}" \
-                  -f /sql/default-privs.sql
-
               done < /config/apps
 
               echo "[bootstrap] Completed app privilege bootstrap"
-
           env:
             - name: DB_ROOT_OWNER
               value: db_root_owner
+            # 👉 Downward API: read the `environment` label from the pod
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
           volumeMounts:
             - name: app-list
               mountPath: /config
             - name: sql
               mountPath: /sql
-            - name: superuser
-              mountPath: /secrets/superuser
-
+            - name: pg-core-superuser
+              mountPath: /secrets/pg-core-superuser
       volumes:
         - name: app-list
           configMap:
@@ -105,6 +95,6 @@ spec:
             items:
               - key: default-privs.sql
                 path: default-privs.sql
-        - name: superuser
+        - name: pg-core-superuser
           secret:
             secretName: pg-core-superuser
