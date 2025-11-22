@@ -23,3 +23,27 @@ spec:
       kind: Cluster
       name: pg-core-stable
       namespace: postgres
+
+  patches:
+    # Inject ENVIRONMENT=stable and label
+    - target:
+        kind: Job
+        name: bootstrap-app-privs
+        namespace: postgres
+      patch: |
+        apiVersion: batch/v1
+        kind: Job
+        metadata:
+          labels:
+            environment: stable
+        spec:
+          template:
+            metadata:
+              labels:
+                environment: stable
+            spec:
+              containers:
+                - name: psql
+                  env:
+                    - name: ENVIRONMENT
+                      value: "stable"

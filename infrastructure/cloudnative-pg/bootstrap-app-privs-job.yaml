@@ -9,6 +9,41 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
+
+      # -----------------------
+      # Init container: wait for PG
+      # -----------------------
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:15
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['environment']
+            - name: PGPORT
+              value: "5432"
+          command:
+            - sh
+            - -ceu
+            - |
+              set -o pipefail
+
+              # Default ENVIRONMENT if label missing (e.g. manual run)
+              ENVIRONMENT="${ENVIRONMENT:-stable}"
+              PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
+              PGPORT="${PGPORT:-5432}"
+
+              echo "Waiting for Postgres at $PGHOST:$PGPORT ..."
+              until pg_isready -h "$PGHOST" -p "$PGPORT"; do
+                echo "Postgres not ready yet..."
+                sleep 3
+              done
+              echo "Postgres is ready!"
+
+      # -----------------------
+      # Main container: apply default privs
+      # -----------------------
       containers:
         - name: psql
           image: ghcr.io/cloudnative-pg/postgresql:16
@@ -25,8 +60,7 @@ spec:
               export PGUSER PGPASSWORD
 
               # --- derive PGHOST from environment label if not provided ---
-              # ENVIRONMENT comes from the pod's `metadata.labels["environment"]`
-              ENVIRONMENT="${ENVIRONMENT}"
+              ENVIRONMENT="${ENVIRONMENT:-stable}"
               PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
               PGPORT="${PGPORT:-5432}"
               export PGHOST PGPORT
@@ -35,7 +69,7 @@ spec:
 
               echo "[bootstrap] Using OWNER_ROLE=${OWNER_ROLE}, ENVIRONMENT=${ENVIRONMENT}, PGHOST=${PGHOST}, PGPORT=${PGPORT}"
 
-              # --- (keep your existing "check DB exists then apply default-privs.sql" logic here) ---
+              # --- loop: check DB exists, then apply default-privs.sql ---
               while read -r DB_NAME APP_ROLE; do
                 # Skip empty/comment lines
                 if [[ -z "${DB_NAME:-}" ]] || [[ "${DB_NAME}" =~ ^# ]]; then
@@ -74,6 +108,7 @@ spec:
               mountPath: /sql
             - name: pg-core-superuser
               mountPath: /secrets/pg-core-superuser
+
       volumes:
         - name: app-list
           configMap:
