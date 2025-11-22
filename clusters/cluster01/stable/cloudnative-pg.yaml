@@ -20,7 +20,7 @@ spec:
 
   dependsOn:
     # The Kustomization (or HelmRelease bundle) that deploys the CNPG operator
-    - name: stable
+    - name: flux-system
 
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
