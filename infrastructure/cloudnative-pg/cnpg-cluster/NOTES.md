@@ -11,7 +11,7 @@ When the cluster is healthy, uncomment app database components.
 Use the kubectl plugin to check the cluster health:
 
     krew install cnpg
-    kubectl cnpg status pg-core-stable -n postgres
+    kubectl cnpg status pg-core -n postgres
 
 ## Adding new app databases
 

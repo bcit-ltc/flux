@@ -12,6 +12,5 @@ resources:
 
   # - pgbouncer-pooler.yaml     # not yet used
   - postgres-vault-auth.yaml
-  - vault-manager-secret.yaml
 
 namespace: postgres

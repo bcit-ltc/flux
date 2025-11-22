@@ -125,15 +125,6 @@ replacements:
           - spec.kubernetes.serviceAccount
         options:
           delimiter: "-"
-          index: 99   
-
-      # Add the environment as a suffix to the postgres database
-      - select:
-          kind: Database
-        fieldPaths:
-          - spec.cluster.name
-        options:
-          delimiter: "-"
           index: 99
 
       # Add the environment to VaultDynamicSecrets configs
@@ -143,7 +134,6 @@ replacements:
         fieldPaths:
           - spec.mount
           - spec.path
-          - metadata.annotations.app/db-host
         options:
           delimiter: "-"
           index: 2

@@ -27,15 +27,6 @@ spec:
                   nodePort: 31432
 
     roles:
-      # Infra-level admin, used by Vault DB connection and bootstrap jobs
-      - name: vault_manager
-        ensure: present
-        login: true
-        createrole: true
-        createdb: true
-        superuser: false
-        passwordSecret:
-          name: vault-manager-secret
 
       # Shared owner role for all application databases
       # (DBs and schemas are owned by this role; app roles get privileges)
