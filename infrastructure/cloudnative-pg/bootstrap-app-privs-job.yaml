@@ -29,7 +29,7 @@ spec:
 
               # Default ENVIRONMENT if label missing (e.g. manual run)
               ENVIRONMENT="${ENVIRONMENT:-stable}"
-              PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
+              PGHOST="${PGHOST:-pg-core-rw.postgres.svc.cluster.local}"
               PGPORT="${PGPORT:-5432}"
 
               echo "Waiting for Postgres at $PGHOST:$PGPORT ..."
@@ -55,7 +55,7 @@ spec:
 
               # --- derive PGHOST from environment label if not provided ---
               ENVIRONMENT="${ENVIRONMENT:-stable}"
-              PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
+              PGHOST="${PGHOST:-pg-core-rw.postgres.svc.cluster.local}"
               PGPORT="${PGPORT:-5432}"
               export PGHOST PGPORT
 
