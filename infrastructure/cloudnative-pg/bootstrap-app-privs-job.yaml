@@ -2,8 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  # generateName lets you run this manifest multiple times without name collisions
-  generateName: bootstrap-app-privs-
+  name: bootstrap-app-privs
   namespace: postgres
 spec:
   ttlSecondsAfterFinished: 600
