@@ -6,6 +6,7 @@ kind: Kustomization
 resources:
   - ../../../apps
   - ../../../infrastructure
+  - cloudnative-pg.yaml
 
 # Add this to all resources
 nameSuffix: -stable
