@@ -30,22 +30,21 @@ spec:
         name: bootstrap-app-privs
         namespace: postgres
       patch: |-
+        # 1) Ensure the Pod template has the environment label
         - op: add
-          path: /metadata/labels
+          path: /spec/template/metadata
           value:
-            environment: stable
+            labels:
+              environment: stable
 
-        - op: add
-          path: /spec/template/metadata/labels
-          value:
-            environment: stable
-
+        # 2) Append ENVIRONMENT to the main container's env
         - op: add
           path: /spec/template/spec/containers/0/env/-
           value:
             name: ENVIRONMENT
             value: "stable"
 
+        # 3) Create env array on the initContainer with ENVIRONMENT
         - op: add
           path: /spec/template/spec/initContainers/0/env
           value:
