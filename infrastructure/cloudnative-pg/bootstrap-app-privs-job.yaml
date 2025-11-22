@@ -36,22 +36,38 @@ spec:
 
               # Iterate over each app line: "<DB_NAME> <APP_ROLE>"
               while read -r DB_NAME APP_ROLE; do
-                # Skip empty/comment lines
                 if [[ -z "${DB_NAME:-}" ]] || [[ "${DB_NAME}" =~ ^# ]]; then
                   continue
                 fi
 
                 echo "[bootstrap] Checking existence of DB '${DB_NAME}'"
 
-                # Check if the database exists, using the default admin database
-                if ! psql \
-                  "dbname=${PGDATABASE}" \
-                  -Atqc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; then
+                # --- Wait for PG to be ready ---
+                MAX_RETRIES=20
+                RETRY_DELAY=3
+                connected=false
+
+                for ((i=1; i<=MAX_RETRIES; i++)); do
+                  if psql -v ON_ERROR_STOP=0 -d postgres -c "SELECT 1;" >/dev/null 2>&1; then
+                    connected=true
+                    break
+                  fi
+                  echo "[bootstrap] PG not ready yet (attempt $i/$MAX_RETRIES)..."
+                  sleep $RETRY_DELAY
+                done
+
+                if [[ "${connected}" != true ]]; then
+                  echo "[bootstrap] ERROR: PG never became ready; skipping DB '${DB_NAME}'"
+                  continue
+                fi
+
+                # --- Check DB existence ---
+                if ! psql -Atqc "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" >/dev/null 2>&1; then
                   echo "[bootstrap] WARNING: database '${DB_NAME}' does not exist yet; skipping"
                   continue
                 fi
 
-                echo "[bootstrap] Configuring DB '${DB_NAME}' with APP_ROLE='${APP_ROLE}'"
+                echo "[bootstrap] Database '${DB_NAME}' exists; applying privilege bootstrap"
 
                 psql \
                   "dbname=${DB_NAME}" \
@@ -60,6 +76,7 @@ spec:
                   -v OWNER_ROLE="${OWNER_ROLE}" \
                   -v APP_ROLE="${APP_ROLE}" \
                   -f /sql/default-privs.sql
+
               done < /config/apps
 
               echo "[bootstrap] Completed app privilege bootstrap"
