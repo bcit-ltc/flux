@@ -52,3 +52,4 @@ spec:
       - hostssl all  all  192.68.68.0/24   scram-sha-256
       - hostssl all  all  10.42.0.0/16   scram-sha-256
       - hostssl all  all  10.67.0.0/16   scram-sha-256
+      - hostssl all  all  10.65.0.0/16   scram-sha-256
