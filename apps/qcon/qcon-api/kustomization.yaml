@@ -8,8 +8,6 @@ resources:
   - api-key.yaml
   - app-internal-credentials.yaml
   - db-credentials.yaml     # Also see VaultDynamicSecret patch below
-  - database.yaml
-  - db-vars-configmap.yaml
 
 # Prefix all resources with this name
 namePrefix: qcon-api-
