@@ -6,7 +6,7 @@ resources:
   - cluster.yaml                      # pg-core Cluster
   - default-privs-sql-configmap.yaml  # generic SQL used by bootstrap job
   - namespace.yaml
-  - ../app-databases/qcon-api.yaml
+  - ../app-databases
   #
   # NOTE: we do NOT include bootstrap-app-privs-job.yaml here,
   #       so Jobs only run when you explicitly kubectl apply them.
