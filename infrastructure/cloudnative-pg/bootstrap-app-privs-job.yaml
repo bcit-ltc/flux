@@ -7,13 +7,6 @@ metadata:
 spec:
   ttlSecondsAfterFinished: 600
   template:
-    metadata:
-      labels:
-        # Make sure this gets the env label so the Downward API can read it.
-        # Your cluster overlays already inject `environment: stable/latest`
-        # via label transformers, so this may already be present, but it
-        # doesn’t hurt to be explicit.
-        environment: stable
     spec:
       restartPolicy: OnFailure
       containers:
@@ -33,7 +26,7 @@ spec:
 
               # --- derive PGHOST from environment label if not provided ---
               # ENVIRONMENT comes from the pod's `metadata.labels["environment"]`
-              ENVIRONMENT="${ENVIRONMENT:-stable}"
+              ENVIRONMENT="${ENVIRONMENT}"
               PGHOST="${PGHOST:-pg-core-${ENVIRONMENT}-rw.postgres.svc.cluster.local}"
               PGPORT="${PGPORT:-5432}"
               export PGHOST PGPORT
@@ -70,7 +63,6 @@ spec:
           env:
             - name: DB_ROOT_OWNER
               value: db_root_owner
-            # 👉 Downward API: read the `environment` label from the pod
             - name: ENVIRONMENT
               valueFrom:
                 fieldRef:
