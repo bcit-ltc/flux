@@ -1,0 +1,24 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: obot
+  namespace: postgres
+spec:
+  cluster:
+    name: pg-core
+  name: obot
+  owner: db_root_owner
+  schemas:
+    - name: obot
+      owner: db_root_owner
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-vars
+  namespace: postgres
+data:
+  DB_NAME: obot
+  OWNER_ROLE: db_root_owner
+  APP_ROLE: obot_app

@@ -1,9 +1,11 @@
+# Deploys a chart release
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: helm-release
 spec:
-  interval: 10m
+  interval: 24h
   releaseName: loki
   chart:
     spec:

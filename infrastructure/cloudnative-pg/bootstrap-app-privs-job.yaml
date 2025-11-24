@@ -1,3 +1,4 @@
+# Bootstraps application database roles and privileges
 ---
 apiVersion: batch/v1
 kind: Job

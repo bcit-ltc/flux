@@ -20,7 +20,7 @@ resources:
   - ./longhorn
 
   # Grafana
-  - ./grafana
+  # - ./grafana
 
   # Obot
   # - ./obot

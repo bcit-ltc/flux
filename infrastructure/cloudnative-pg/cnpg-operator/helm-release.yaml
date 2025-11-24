@@ -1,4 +1,4 @@
-# Watches helm chart repositories for new versions
+# Deploys a chart release
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease

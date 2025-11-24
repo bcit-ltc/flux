@@ -1,3 +1,4 @@
+# Default privileges SQL
 ---
 apiVersion: v1
 kind: ConfigMap
