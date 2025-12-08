@@ -19,7 +19,7 @@ resources:
   # - ./HSPanorama
   - ./infrastructure-documentation
   # - ./Inspire-Articulate360
-  # - ./legacy-html
+  - ./legacy-html
   # - ./legacy-ltc
   # - ./legacy-multimedia
   # - ./legacy-multimedia-php
