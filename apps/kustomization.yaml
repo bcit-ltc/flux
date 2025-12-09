@@ -20,7 +20,7 @@ resources:
   - ./infrastructure-documentation
   # - ./Inspire-Articulate360
   - ./legacy-html
-  # - ./legacy-ltc
+  - ./legacy-ltc
   # - ./legacy-multimedia
   # - ./legacy-multimedia-php
   # - ./legacy-sob
