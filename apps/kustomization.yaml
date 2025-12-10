@@ -23,7 +23,7 @@ resources:
   - ./legacy-ltc
   # - ./legacy-multimedia
   # - ./legacy-multimedia-php
-  # - ./legacy-sob
+  - ./legacy-sob
   # - ./legacy-sob-php
   - ./legacy-soc
   # - ./legacy-soc-php
