@@ -28,9 +28,9 @@ resources:
   - ./legacy-soc
   - ./legacy-soc-php
   - ./legacy-socas
-  # - ./legacy-soe
-  # - ./legacy-soh
-  # - ./legacy-soh-3dassessmentsim
+  - ./legacy-soe
+  - ./legacy-soh
+  - ./legacy-soh-3dassessmentsim
   - ./legacy-soh-3dbirth
   # - ./legacy-soh-3dheart
   # - ./legacy-soh-nser-8600-assessmentsim
