@@ -14,11 +14,10 @@ resources:
   - ./conversion-guide
   - ./course-production-site
   - ./course-workload-estimator
-  # - ./dataset-retriever
-  # - ./distribution-game
-  # - ./HSPanorama
+  - ./dataset-retriever
+  - ./distribution-game
+  - ./heme-analyzer-app
   - ./infrastructure-documentation
-  # - ./Inspire-Articulate360
   - ./legacy-html
   - ./legacy-ltc
   - ./legacy-multimedia
@@ -32,15 +31,12 @@ resources:
   - ./legacy-soh
   - ./legacy-soh-3dassessmentsim
   - ./legacy-soh-3dbirth
-  # - ./legacy-soh-3dheart
-  # - ./legacy-soh-nser-8600-assessmentsim
+  - ./legacy-soh-3dheart
+  - ./legacy-soh-nser-8600-assessmentsim
   - ./legacy-soh-sonography
-  # - ./legacy-sot
-  # - ./legacy-sot-php
+  - ./legacy-sot
   - ./module-estimator
-  # - ./MRI-WebUI
-  # - ./openlab-scheduler
-  # - ./ptracker
+  - ./openlab-scheduler
+  - ./ptracker
   - ./qcon
-  # - ./SOH_PerinatalPal
   - ./sugar-suite

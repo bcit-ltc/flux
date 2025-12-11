@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: storage-quota
+spec:
+  hard:
+    requests.ephemeral-storage: 10Gi
+    limits.ephemeral-storage: 20Gi

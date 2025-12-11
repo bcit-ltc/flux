@@ -3,4 +3,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: HSPanorama
+  name: heme-analyzer-app
