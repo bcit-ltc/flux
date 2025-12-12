@@ -21,12 +21,12 @@ resources:
   - ./legacy-html
   - ./legacy-ltc
   - ./legacy-multimedia
-  - ./legacy-multimedia-php
+  # - ./legacy-multimedia-php
   - ./legacy-sob
-  - ./legacy-sob-php
+  # - ./legacy-sob-php
   - ./legacy-soc
-  - ./legacy-soc-php
-  - ./legacy-soc-royaloak
+  # - ./legacy-soc-php
+  # - ./legacy-soc-royaloak
   - ./legacy-socas
   - ./legacy-soe
   - ./legacy-soh
@@ -37,7 +37,7 @@ resources:
   - ./legacy-soh-sonography
   - ./legacy-sot
   - ./module-estimator
-  - ./openlab-scheduler # vault: in apps_grouped
-  - ./ptracker
+  # - ./openlab-scheduler # vault: in apps_grouped
+  # - ./ptracker
   - ./qcon # vault: in apps_grouped
   - ./sugar-suite
