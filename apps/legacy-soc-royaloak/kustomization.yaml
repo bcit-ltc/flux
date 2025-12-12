@@ -1,4 +1,4 @@
-# legacy-sot-php kustomization
+# legacy-soc-royaloak kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,16 +8,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: legacy-sot-php-
+namePrefix: legacy-soc-royaloak-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: legacy-sot-php
+namespace: legacy-soc-royaloak
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="legacy-sot-php"
+      - releaseName="legacy-soc-royaloak"
 
     # Resource is not added to the cluster
     options:
@@ -26,7 +26,6 @@ configMapGenerator:
 
 # Order matters!
 components:
-
   # Configure GitHub webhook for reconciling cluster resources when repo is updated
   - ../../components/notifications
 

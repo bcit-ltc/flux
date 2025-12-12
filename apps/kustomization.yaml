@@ -26,6 +26,7 @@ resources:
   - ./legacy-sob-php
   - ./legacy-soc
   - ./legacy-soc-php
+  - ./legacy-soc-royaloak
   - ./legacy-socas
   - ./legacy-soe
   - ./legacy-soh
@@ -36,7 +37,7 @@ resources:
   - ./legacy-soh-sonography
   - ./legacy-sot
   - ./module-estimator
-  - ./openlab-scheduler
+  - ./openlab-scheduler # vault: in apps_grouped
   - ./ptracker
-  - ./qcon
+  - ./qcon # vault: in apps_grouped
   - ./sugar-suite
