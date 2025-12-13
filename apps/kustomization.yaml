@@ -16,7 +16,7 @@ resources:
   - ./course-workload-estimator
   - ./dataset-retriever
   - ./distribution-game
-  - ./heme-analyzer-app
+  # - ./heme-analyzer-app
   - ./infrastructure-documentation
   - ./legacy-html
   - ./legacy-ltc
