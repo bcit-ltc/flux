@@ -14,7 +14,7 @@ resources:
   # - ./corgi
   - ./course-production-site
   - ./course-workload-estimator
-  - ./dataset-retriever
+  # - ./dataset-retriever
   - ./distribution-game
   # - ./heme-analyzer-app
   - ./infrastructure-documentation
