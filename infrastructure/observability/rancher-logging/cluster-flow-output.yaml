@@ -1,13 +1,13 @@
+# Rancher Logging cluster-level config
+---
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: ClusterOutput
 metadata:
   name: loki
-  namespace: cattle-logging-system
 spec:
   loki:
-    # Send to the Loki gateway service (chart provides an NGINX gateway in monolithic mode)
-    url: http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push
-    tenant: "rancher"
+    url: http://loki.loki.svc.cluster.local
+    configure_kubernetes_labels: true
     buffer:
       timekey: 1m
       timekey_wait: 30s
@@ -17,8 +17,8 @@ apiVersion: logging.banzaicloud.io/v1beta1
 kind: ClusterFlow
 metadata:
   name: all-to-loki
-  namespace: cattle-logging-system
 spec:
-  # Collect logs cluster-wide and ship to Loki
+  match:
+    - select: {}
   globalOutputRefs:
     - loki

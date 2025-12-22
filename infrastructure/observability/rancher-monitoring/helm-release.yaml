@@ -1,3 +1,22 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rancher-monitoring-crd
+  namespace: cattle-monitoring-system
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: rancher-monitoring-crd
+      sourceRef:
+        kind: HelmRepository
+        name: rancher-charts
+  install:
+    createNamespace: false
+  upgrade:
+    cleanupOnFail: true
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -24,7 +43,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
-        namespace: flux-system
   values:
     global:
       cattle:
@@ -35,12 +53,7 @@ spec:
         - name: Loki
           type: loki
           access: proxy
-          editable: true
-          isDefault: false
-          jsonData:
-              tlsSkipVerify: true
-          orgId: 1
-          url: http://loki-gateway.loki.svc.cluster.local
+          url: http://loki.loki.svc.cluster.local:3100
       persistence:
         enabled: true
         accessModes:
@@ -53,25 +66,23 @@ spec:
         finalizers: null
     prometheus:
       prometheusSpec:
-        retention: 8d
-        retentionSize: 50GiB
+        retention: 5d
+        retentionSize: 25GiB
         storageSpec:
           volumeClaimTemplate:
             spec:
-              accessModes: [ "ReadWriteOnce" ]
-              storageClassName: longhorn
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 25Gi
     nameOverride: rancher-monitoring
     namespaceOverride: cattle-monitoring-system
     rke2IngressNginx:
       enabled: true
     rke2ControllerManager:
-      enabled: true
+      enabled: false
     rke2Scheduler:
-      enabled: true
+      enabled: false
     rke2Proxy:
-      enabled: true
+      enabled: false
     rke2Etcd:
-      enabled: true
+      enabled: false

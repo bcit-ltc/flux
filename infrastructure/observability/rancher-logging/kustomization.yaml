@@ -1,0 +1,41 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - helm-release.yaml
+  - helm-repository.yaml
+  - namespace.yaml
+  - network-policy.yaml
+
+# Prefix all resources with this name
+namePrefix: rancher-logging-
+
+# Replace base Namespace name and add all resources to this namespace
+namespace: rancher-logging-system
+
+# Generate a re-usable name variable for other resources
+configMapGenerator:
+  - name: release-name
+    literals:
+      - releaseName="rancher-logging"
+
+    # This config resource is not added to the cluster
+    options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
+
+# Source Chart Repo
+  # url: https://releases.rancher.com/server-charts/stable
+  # url: https://grafana.github.io/helm-charts
+
+# components:
+  # - ../../components/generators/ssl-certificates
+
+  # Update resources based on ConfigMap above
+  # - ../../../components/config-matcher
+
+  # Required for VaultAuth role and service accounts
+  # - ../../components/generators/vault-auth
+

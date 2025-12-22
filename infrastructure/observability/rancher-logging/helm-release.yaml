@@ -1,9 +1,76 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rancher-logging-crd
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: rancher-logging-crd
+      sourceRef:
+        kind: HelmRepository
+        name: rancher-charts
+  upgrade:
+    cleanupOnFail: true
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rancher-logging
+spec:
+  interval: 24h
+  dependsOn:
+    - name: rancher-logging-crd
+  chart:
+    spec:
+      chart: rancher-logging
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: rancher-charts
+  values:
+    logging:
+      enabled: false
+    additionalLoggingSources:
+      rke2:
+        enabled: true
+    systemdLogPath: /var/log/journal
+    disablePvc: true
+    monitoring:
+      serviceMonitor:
+        enabled: false
+    fluentbit:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
+      metrics:
+        serviceMonitor: false
+        prometheusRules: false
+    fluentd:
+      bufferStorageVolume:
+        emptyDir:
+          sizeLimit: 10Gi
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 2Gi
+      metrics:
+        serviceMonitor: false
+        prometheusRules: false
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
-  namespace: loki
 spec:
   interval: 24h
   chart:
@@ -13,11 +80,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: grafana
-        namespace: flux-system
-  install:
-    createNamespace: false
-  upgrade:
-    cleanupOnFail: true
   values:
     global:
       dnsService: rke2-coredns-rke2-coredns
@@ -63,21 +125,20 @@ spec:
           admin: "admin"
     deploymentMode: SingleBinary
     singleBinary:
+      resources:
+        requests:
+          cpu: 750m
+          memory: 1500Mi
+        limits:
+          cpu: 2
+          memory: 3Gi
+      extraEnv:
+        - name: GOMEMLIMIT
+          value: 2700MiB
       replicas: 1
       persistence:
         enabled: true
         size: 20Gi
-      resources:
-        limits:
-          cpu: 3
-          memory: 4Gi
-        requests:
-          cpu: 2
-          memory: 2Gi
-      extraEnv:
-        # Keep a little bit lower than memory limits
-        - name: GOMEMLIMIT
-          value: 3750MiB
     chunksCache:
       # default is 500MB, with limited memory keep this smaller
       writebackSizeLimit: 10MB
@@ -119,12 +180,7 @@ spec:
       replicas: 0
     gateway:
       ingress:
-        enabled: true
-        hosts:
-          - host: loki.ltc.bcit.ca
-            paths:
-             - path: /
-               pathType: Prefix
+        enabled: false
     # for logs drilldown
     pattern_ingester:
       enabled: true

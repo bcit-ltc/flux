@@ -1,3 +1,5 @@
+# Watches helm chart repositories for new versions
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
