@@ -12,6 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
+        namespace: cattle-logging-system
   upgrade:
     cleanupOnFail: true
 ---
@@ -30,6 +31,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
+        namespace: cattle-logging-system
   values:
     logging:
       enabled: false
@@ -80,6 +82,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: grafana
+        namespace: cattle-logging-system
   values:
     global:
       dnsService: rke2-coredns-rke2-coredns

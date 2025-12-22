@@ -13,6 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
+        namespace: cattle-logging-system
   install:
     createNamespace: false
   upgrade:
@@ -43,6 +44,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
+        namespace: cattle-logging-system
   values:
     global:
       cattle:
