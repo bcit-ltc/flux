@@ -3,7 +3,7 @@
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: ClusterOutput
 metadata:
-  name: loki
+  name: cluster-output-loki
 spec:
   loki:
     url: http://loki.loki.svc.cluster.local
@@ -16,9 +16,9 @@ spec:
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: ClusterFlow
 metadata:
-  name: all-to-loki
+  name: cluster-flow-loki
 spec:
   match:
     - select: {}
   globalOutputRefs:
-    - loki
+    - cluster-output-loki

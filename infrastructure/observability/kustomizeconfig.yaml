@@ -7,3 +7,8 @@ nameReference:
     fieldSpecs:
       - kind: HelmRelease
         path: spec/chart/spec/sourceRef/name
+
+  - kind: ClusterOutput
+    fieldSpecs:
+      - kind: ClusterFlow
+        path: spec/globalOutputRefs
