@@ -4,16 +4,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - cluster-flow-output.yaml
   - helm-release.yaml
   - helm-repository.yaml
   - namespace.yaml
   - network-policy.yaml
 
 # Prefix all resources with this name
-namePrefix: rancher-logging-
+# namePrefix: rancher-logging-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: rancher-logging-system
+namespace: cattle-logging-system
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:

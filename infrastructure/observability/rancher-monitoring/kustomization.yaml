@@ -9,10 +9,10 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: rancher-monitoring-
+# namePrefix: rancher-monitoring-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: rancher-monitoring-system
+namespace: cattle-monitoring-system
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
