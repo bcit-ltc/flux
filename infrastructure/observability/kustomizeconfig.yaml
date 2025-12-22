@@ -1,0 +1,9 @@
+# This file is for teaching kustomize how to substitute names
+---
+nameReference:
+
+  # Update the HelmRelease spec.chartRef.name with the name of the corresponding HelmRelease
+  - kind: HelmRepository
+    fieldSpecs:
+      - kind: HelmRelease
+        path: spec/chart/spec/sourceRef/name

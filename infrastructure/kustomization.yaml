@@ -19,12 +19,8 @@ resources:
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   - ./longhorn
 
-  # Grafana
-  # - ./grafana
+  # Observability: Rancher monitoring/logging + Grafana
+  - ./observability
 
   # Obot
   # - ./obot
-  
-  # Installation requires sequence - see infrastructure/cloudnative-pg/NOTES.md
-  # - ./cloudnative-pg/cnpg-operator
-  # - ./cloudnative-pg/cnpg-cluster

@@ -1,0 +1,12 @@
+secret/helm-operation-wq6dq
+secret/pod-impersonation-helm-op-8wtx4-token
+secret/sh.helm.release.v1.rancher-webhook.v1
+secret/sh.helm.release.v1.rancher-webhook.v2
+secret/sh.helm.release.v1.rancher-webhook.v3
+secret/sh.helm.release.v1.rancher-webhook.v4
+secret/sh.helm.release.v1.rancher-webhook.v5
+secret/sh.helm.release.v1.system-upgrade-controller.v1
+secret/sh.helm.release.v1.system-upgrade-controller.v2
+secret/sh.helm.release.v1.system-upgrade-controller.v3
+configmap/impersonation-helm-op-admin-kubeconfig-jshc8
+configmap/impersonation-helm-op-user-kubeconfig-w746k

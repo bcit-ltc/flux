@@ -1,0 +1,668 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:08Z"
+    creationTimestamp: "2025-12-15T06:44:08Z"
+    labels:
+      managed-by: prometheus-operator
+      operated-alertmanager: "true"
+      service.kubernetes.io/headless: ""
+    name: alertmanager-operated
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950807"
+    uid: bd27a7b9-31b2-4335-b5d4-7747c8885219
+  subsets:
+  - addresses:
+    - hostname: alertmanager-rancher-monitoring-alertmanager-0
+      ip: 10.42.4.48
+      nodeName: prod-worker-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: alertmanager-rancher-monitoring-alertmanager-0
+        namespace: cattle-monitoring-system
+        uid: 03a44926-bb2a-4a51-bbd0-49af3c42d62c
+    ports:
+    - name: udp-mesh
+      port: 9094
+      protocol: UDP
+    - name: tcp-mesh
+      port: 9094
+      protocol: TCP
+    - name: http-web
+      port: 9093
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:45:20Z"
+    creationTimestamp: "2025-12-15T06:44:09Z"
+    labels:
+      managed-by: prometheus-operator
+      operated-prometheus: "true"
+      service.kubernetes.io/headless: ""
+    name: prometheus-operated
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951682"
+    uid: 013b534f-178d-42b7-8ffe-2c78137f98fb
+  subsets:
+  - addresses:
+    - hostname: prometheus-rancher-monitoring-prometheus-0
+      ip: 10.42.3.222
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: prometheus-rancher-monitoring-prometheus-0
+        namespace: cattle-monitoring-system
+        uid: 2ff011cb-dbb5-4ebc-8adc-1192ba4e13fb
+    ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:10Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950827"
+    uid: cd86c8a2-01f5-4ca4-84b3-b798a402aa2e
+  subsets:
+  - addresses:
+    - ip: 142.232.110.60
+      nodeName: prod-manager-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-controller-manager-client-ndpg2
+        namespace: cattle-monitoring-system
+        uid: c25a12aa-9711-4ad3-a0b9-e593d2e1de6e
+    - ip: 142.232.76.205
+      nodeName: prod-manager-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-controller-manager-client-4zgbx
+        namespace: cattle-monitoring-system
+        uid: 97e50fba-9500-42b7-8258-b9dd9e785e83
+    - ip: 142.232.76.38
+      nodeName: prod-manager-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-controller-manager-client-msprs
+        namespace: cattle-monitoring-system
+        uid: 0ff11ac3-eb0b-44f6-bf92-c2ebc34b0bc8
+    ports:
+    - name: metrics
+      port: 10257
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:09Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950747"
+    uid: 71f4c1d2-1fda-4af4-b0ac-7e776a1256c0
+  subsets:
+  - addresses:
+    - ip: 10.42.3.215
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-controller-manager-proxy-5ff4db598b-c2s22
+        namespace: cattle-monitoring-system
+        uid: 2b9ad76f-1a09-4ea4-aae2-13ec8cdc23e6
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:10Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950831"
+    uid: 68913982-1661-4d31-8896-8d011a6dcc3b
+  subsets:
+  - addresses:
+    - ip: 142.232.110.60
+      nodeName: prod-manager-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-etcd-client-b64tj
+        namespace: cattle-monitoring-system
+        uid: 68081994-3208-4f00-8327-e0ae37d92f1f
+    - ip: 142.232.76.205
+      nodeName: prod-manager-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-etcd-client-nsccv
+        namespace: cattle-monitoring-system
+        uid: 25b211d6-33d0-4d17-9bf9-ff8e0674eb58
+    - ip: 142.232.76.38
+      nodeName: prod-manager-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-etcd-client-gc9x6
+        namespace: cattle-monitoring-system
+        uid: 1684d619-6a95-4f53-9996-b3b9b04278af
+    ports:
+    - name: metrics
+      port: 2381
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:08Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950572"
+    uid: e14d6637-cbd7-457e-be0a-bc91db550922
+  subsets:
+  - addresses:
+    - ip: 10.42.3.216
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-etcd-proxy-545d8b577d-fgnww
+        namespace: cattle-monitoring-system
+        uid: 6524e521-bd53-45ee-a9fe-9ecc2b5fe144
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:10Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950836"
+    uid: b0ee601f-5142-469f-ac7a-682d44cf5b04
+  subsets:
+  - addresses:
+    - ip: 142.232.110.58
+      nodeName: prod-worker-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-bdp9c
+        namespace: cattle-monitoring-system
+        uid: b8550290-7ae9-493a-9dc4-63c286cf3597
+    - ip: 142.232.110.60
+      nodeName: prod-manager-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-5f65g
+        namespace: cattle-monitoring-system
+        uid: fce98dd3-6591-4066-92f8-e282bbc0abdc
+    - ip: 142.232.110.64
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-ftnrg
+        namespace: cattle-monitoring-system
+        uid: c6b52e1c-5a67-4773-8e3e-231379f12d14
+    - ip: 142.232.110.65
+      nodeName: prod-worker-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-xhdzt
+        namespace: cattle-monitoring-system
+        uid: e64d9f02-ec75-4f39-9a7e-309e015ef77a
+    - ip: 142.232.76.205
+      nodeName: prod-manager-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-9vvnm
+        namespace: cattle-monitoring-system
+        uid: 071b9c6a-7814-4da0-a2b3-0e254e593f92
+    - ip: 142.232.76.38
+      nodeName: prod-manager-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-client-fb79m
+        namespace: cattle-monitoring-system
+        uid: 7d34d55a-1bc3-4d83-b9c5-027f16055d9c
+    ports:
+    - name: metrics
+      port: 10249
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:09Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950742"
+    uid: 38a77e62-6342-4523-b1cf-92964e71347e
+  subsets:
+  - addresses:
+    - ip: 10.42.3.220
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-proxy-proxy-6b4f9d866-8rf2w
+        namespace: cattle-monitoring-system
+        uid: 2956f5f9-b95e-482b-acf6-d51c6c49dd27
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:10Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950842"
+    uid: 80845959-7d8c-432f-b112-e9207dee1d43
+  subsets:
+  - addresses:
+    - ip: 142.232.110.60
+      nodeName: prod-manager-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-scheduler-client-xswst
+        namespace: cattle-monitoring-system
+        uid: b4ea4bd3-2551-4770-ad35-7ea887720ce3
+    - ip: 142.232.76.205
+      nodeName: prod-manager-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-scheduler-client-fmn5f
+        namespace: cattle-monitoring-system
+        uid: 1ecbd7c7-7347-4ece-abb5-8ba91d02e186
+    - ip: 142.232.76.38
+      nodeName: prod-manager-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-scheduler-client-5nhwm
+        namespace: cattle-monitoring-system
+        uid: 2562b837-ce43-41ab-8ed0-7de0a1e2f9d2
+    ports:
+    - name: metrics
+      port: 10259
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:09Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950715"
+    uid: 9f457136-30f1-494f-b060-d475898bd980
+  subsets:
+  - addresses:
+    - ip: 10.42.3.219
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: pushprox-kube-scheduler-proxy-659db476b8-ljrhm
+        namespace: cattle-monitoring-system
+        uid: fcd857c2-0cf8-4543-8a61-2b4920c47235
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:17Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-alertmanager
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+      self-monitor: "true"
+    name: rancher-monitoring-alertmanager
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950944"
+    uid: 10304e6e-9c9b-41bd-9434-c2fd45a41df5
+  subsets:
+  - addresses:
+    - ip: 10.42.4.48
+      nodeName: prod-worker-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: alertmanager-rancher-monitoring-alertmanager-0
+        namespace: cattle-monitoring-system
+        uid: 03a44926-bb2a-4a51-bbd0-49af3c42d62c
+    ports:
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+    - name: http-web
+      port: 9093
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:58Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: grafana
+      app.kubernetes.io/version: 12.1.1
+      chart: grafana-10.0.0
+      helm.sh/chart: grafana-10.0.0
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-grafana
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951397"
+    uid: 7691a958-5cb2-4860-b267-19a96ec3b5a4
+  subsets:
+  - addresses:
+    - ip: 10.42.4.49
+      nodeName: prod-worker-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-grafana-7f674cfcb4-8nsmr
+        namespace: cattle-monitoring-system
+        uid: 3e459a38-04ec-498d-9f6e-c6fec5106c42
+    ports:
+    - name: nginx-http
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:21Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/part-of: kube-state-metrics
+      app.kubernetes.io/version: 2.17.0
+      helm.sh/chart: kube-state-metrics-6.3.0
+      release: rancher-monitoring
+    name: rancher-monitoring-kube-state-metrics
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951007"
+    uid: 3e1ec8bc-4ba9-4537-83cd-56487369b070
+  subsets:
+  - addresses:
+    - ip: 10.42.3.217
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-kube-state-metrics-5cc64fcff7-btq6v
+        namespace: cattle-monitoring-system
+        uid: 5dae9caa-24c1-45df-818a-00ce69a13721
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:09Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-operator
+      app.kubernetes.io/component: prometheus-operator
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: rancher-monitoring-prometheus-operator
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-operator
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950719"
+    uid: 360415ab-2382-413b-b638-564c89d2b19c
+  subsets:
+  - addresses:
+    - ip: 10.42.3.221
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-operator-85949f6d8b-z8bln
+        namespace: cattle-monitoring-system
+        uid: b8fa3368-d962-43c3-817a-48bf9a2cc59d
+    ports:
+    - name: https
+      port: 10250
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:45:20Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-prometheus
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+      self-monitor: "true"
+    name: rancher-monitoring-prometheus
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951679"
+    uid: 1aabdf1e-867a-4b6f-8200-1ef3ce6120f1
+  subsets:
+  - addresses:
+    - ip: 10.42.3.222
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: prometheus-rancher-monitoring-prometheus-0
+        namespace: cattle-monitoring-system
+        uid: 2ff011cb-dbb5-4ebc-8adc-1192ba4e13fb
+    ports:
+    - name: http-web
+      port: 8081
+      protocol: TCP
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:40Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-adapter
+      app.kubernetes.io/part-of: prometheus-adapter
+      app.kubernetes.io/version: v0.12.0
+      helm.sh/chart: prometheus-adapter-5.1.0
+    name: rancher-monitoring-prometheus-adapter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951227"
+    uid: e3da8e9c-947a-4c40-b4a0-e5a861ed4d48
+  subsets:
+  - addresses:
+    - ip: 10.42.3.218
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-adapter-54fc9cdd56-bkdsd
+        namespace: cattle-monitoring-system
+        uid: b5f8861d-1e44-4a3b-b70a-b3e895faa669
+    ports:
+    - name: https
+      port: 6443
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:09Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-node-exporter
+      app.kubernetes.io/part-of: prometheus-node-exporter
+      app.kubernetes.io/version: 1.9.1
+      helm.sh/chart: prometheus-node-exporter-4.47.3
+      jobLabel: node-exporter
+      release: rancher-monitoring
+    name: rancher-monitoring-prometheus-node-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950788"
+    uid: dfb72146-d77a-42c1-a2ce-95730371b1b4
+  subsets:
+  - addresses:
+    - ip: 142.232.110.58
+      nodeName: prod-worker-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-2s5p7
+        namespace: cattle-monitoring-system
+        uid: c05b6928-c006-41a8-8772-f457692a5179
+    - ip: 142.232.110.60
+      nodeName: prod-manager-03.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-bn5d9
+        namespace: cattle-monitoring-system
+        uid: 9c0fa98c-1197-4b26-991d-fe0f36a8b4b2
+    - ip: 142.232.110.64
+      nodeName: prod-worker-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-kc595
+        namespace: cattle-monitoring-system
+        uid: 81fd4a0c-5184-41b5-aaa9-542359547b8c
+    - ip: 142.232.110.65
+      nodeName: prod-worker-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-ld9mw
+        namespace: cattle-monitoring-system
+        uid: 9b2e6d52-7294-4aa6-9dcf-017637a004a0
+    - ip: 142.232.76.205
+      nodeName: prod-manager-02.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-8czv2
+        namespace: cattle-monitoring-system
+        uid: 0213b6b6-eb24-46b4-b3e0-12e14213be5d
+    - ip: 142.232.76.38
+      nodeName: prod-manager-01.ltc.bcit.ca
+      targetRef:
+        kind: Pod
+        name: rancher-monitoring-prometheus-node-exporter-8fvzw
+        namespace: cattle-monitoring-system
+        uid: 14d3337d-5fb8-4a7e-a30e-93d5f45e457b
+    ports:
+    - name: http-metrics
+      port: 9796
+      protocol: TCP
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    annotations:
+      endpoints.kubernetes.io/last-change-trigger-time: "2025-12-15T06:44:06Z"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: windows-exporter
+      k8s-app: rancher-monitoring-windows-exporter
+      provider: kubernetes
+      release: rancher-monitoring
+    name: rancher-monitoring-windows-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950159"
+    uid: 80562703-86a5-448d-88b8-5687204b96c5
+kind: List
+metadata:
+  resourceVersion: ""

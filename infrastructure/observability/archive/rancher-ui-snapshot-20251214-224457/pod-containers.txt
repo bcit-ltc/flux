@@ -1,0 +1,32 @@
+rancher-monitoring-grafana-7f674cfcb4-8nsmr
+  - grafana-sc-dashboard	rancher/appco-k8s-sidecar:1.30.7-11.3
+  - grafana	rancher/mirrored-grafana-grafana:12.1.1
+  - grafana-proxy	rancher/mirrored-library-nginx:1.27.2-alpine
+
+rancher-monitoring-kube-state-metrics-5cc64fcff7-btq6v
+  - kube-state-metrics	docker.io/rancher/mirrored-kube-state-metrics-kube-state-metrics:v2.17.0
+
+rancher-monitoring-operator-85949f6d8b-z8bln
+  - rancher-monitoring	docker.io/rancher/mirrored-prometheus-operator-prometheus-operator:v0.85.0
+
+rancher-monitoring-prometheus-adapter-54fc9cdd56-bkdsd
+  - prometheus-adapter	rancher/mirrored-prometheus-adapter-prometheus-adapter:v0.12.0
+
+rancher-monitoring-prometheus-node-exporter-2s5p7
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+
+rancher-monitoring-prometheus-node-exporter-8czv2
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+
+rancher-monitoring-prometheus-node-exporter-8fvzw
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+
+rancher-monitoring-prometheus-node-exporter-bn5d9
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+
+rancher-monitoring-prometheus-node-exporter-kc595
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+
+rancher-monitoring-prometheus-node-exporter-ld9mw
+  - node-exporter	docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+

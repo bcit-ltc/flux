@@ -1,0 +1,6 @@
+NAME: rancher-monitoring-crd
+LAST DEPLOYED: Mon Dec 15 06:43:41 2025
+NAMESPACE: cattle-monitoring-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None

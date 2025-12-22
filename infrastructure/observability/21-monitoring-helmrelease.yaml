@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rancher-monitoring
+  namespace: cattle-monitoring-system
+spec:
+  interval: 24h
+  dependsOn:
+    - name: rancher-monitoring-crd
+      namespace: cattle-monitoring-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+    crds: CreateReplace
+  chart:
+    spec:
+      chart: rancher-monitoring
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: rancher-charts
+        namespace: flux-system
+  values:
+    global:
+      cattle:
+        clusterId: c-7rtn4
+        clusterName: cluster01
+    grafana:
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          editable: true
+          isDefault: false
+          jsonData:
+              tlsSkipVerify: true
+          orgId: 1
+          url: http://loki-gateway.loki.svc.cluster.local
+      persistence:
+        enabled: true
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn
+        size: 10Gi
+        subPath: null
+        type: pvc
+        annotations: null
+        finalizers: null
+    prometheus:
+      prometheusSpec:
+        retention: 8d
+        retentionSize: 50GiB
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: longhorn
+              resources:
+                requests:
+                  storage: 50Gi
+    nameOverride: rancher-monitoring
+    namespaceOverride: cattle-monitoring-system
+    rke2IngressNginx:
+      enabled: true
+    rke2ControllerManager:
+      enabled: true
+    rke2Scheduler:
+      enabled: true
+    rke2Proxy:
+      enabled: true
+    rke2Etcd:
+      enabled: true

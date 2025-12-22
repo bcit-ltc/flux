@@ -1,0 +1,2456 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-proxy
+      provider: kubernetes
+      pushprox-exporter: proxy
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950755"
+    uid: bd841a58-e9c7-488e-8b88-1848c718f1cd
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-controller-manager
+        k8s-app: pushprox-kube-controller-manager-proxy
+        provider: kubernetes
+        release: rancher-monitoring
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-controller-manager
+          k8s-app: pushprox-kube-controller-manager-proxy
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - command:
+          - pushprox-proxy
+          image: rancher/pushprox-proxy:v0.1.5-rancher2-proxy
+          imagePullPolicy: IfNotPresent
+          name: pushprox-proxy
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        serviceAccount: pushprox-kube-controller-manager-proxy
+        serviceAccountName: pushprox-kube-controller-manager-proxy
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:09Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:06Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: ReplicaSet "pushprox-kube-controller-manager-proxy-5ff4db598b" has
+        successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-proxy
+      provider: kubernetes
+      pushprox-exporter: proxy
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950576"
+    uid: f1c16c5f-4ef7-4735-b913-79b48298f223
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-etcd
+        k8s-app: pushprox-kube-etcd-proxy
+        provider: kubernetes
+        release: rancher-monitoring
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-etcd
+          k8s-app: pushprox-kube-etcd-proxy
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - command:
+          - pushprox-proxy
+          image: rancher/pushprox-proxy:v0.1.5-rancher2-proxy
+          imagePullPolicy: IfNotPresent
+          name: pushprox-proxy
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        serviceAccount: pushprox-kube-etcd-proxy
+        serviceAccountName: pushprox-kube-etcd-proxy
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:08Z"
+      lastUpdateTime: "2025-12-15T06:44:08Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:06Z"
+      lastUpdateTime: "2025-12-15T06:44:08Z"
+      message: ReplicaSet "pushprox-kube-etcd-proxy-545d8b577d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-proxy
+      provider: kubernetes
+      pushprox-exporter: proxy
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950750"
+    uid: f6c6375c-9d1b-4434-9e93-6de82fac5c6b
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-proxy
+        k8s-app: pushprox-kube-proxy-proxy
+        provider: kubernetes
+        release: rancher-monitoring
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-proxy
+          k8s-app: pushprox-kube-proxy-proxy
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - command:
+          - pushprox-proxy
+          image: rancher/pushprox-proxy:v0.1.5-rancher2-proxy
+          imagePullPolicy: IfNotPresent
+          name: pushprox-proxy
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        serviceAccount: pushprox-kube-proxy-proxy
+        serviceAccountName: pushprox-kube-proxy-proxy
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:09Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:07Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: ReplicaSet "pushprox-kube-proxy-proxy-6b4f9d866" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-proxy
+      provider: kubernetes
+      pushprox-exporter: proxy
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950723"
+    uid: eb67c038-01e3-46a6-935e-cf8183b0ee0d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-scheduler
+        k8s-app: pushprox-kube-scheduler-proxy
+        provider: kubernetes
+        release: rancher-monitoring
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-scheduler
+          k8s-app: pushprox-kube-scheduler-proxy
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - command:
+          - pushprox-proxy
+          image: rancher/pushprox-proxy:v0.1.5-rancher2-proxy
+          imagePullPolicy: IfNotPresent
+          name: pushprox-proxy
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        serviceAccount: pushprox-kube-scheduler-proxy
+        serviceAccountName: pushprox-kube-scheduler-proxy
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:09Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:07Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: ReplicaSet "pushprox-kube-scheduler-proxy-659db476b8" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: grafana
+      app.kubernetes.io/version: 12.1.1
+      chart: grafana-10.0.0
+      helm.sh/chart: grafana-10.0.0
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-grafana
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951400"
+    uid: 6e86329c-7027-4af4-a5ea-3feca53e9980
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: rancher-monitoring
+        app.kubernetes.io/name: grafana
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          checksum/config: 7d0748c74218b9f07fd413b66243f0177a63a773b832f36dceec33f1d1a778e6
+          checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
+          checksum/secret: 032056e9c62bbe9d1daa41ee49cd3d9524c076f51ca4c65adadf4ef08ef28712
+          kubectl.kubernetes.io/default-container: grafana
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: grafana
+          app.kubernetes.io/instance: rancher-monitoring
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: grafana
+          app.kubernetes.io/part-of: grafana
+          app.kubernetes.io/version: 12.1.1
+          chart: grafana-10.0.0
+          helm.sh/chart: grafana-10.0.0
+          heritage: Helm
+          release: rancher-monitoring
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - env:
+          - name: METHOD
+            value: WATCH
+          - name: LABEL
+            value: grafana_dashboard
+          - name: LABEL_VALUE
+            value: "1"
+          - name: FOLDER
+            value: /tmp/dashboards
+          - name: RESOURCE
+            value: both
+          - name: NAMESPACE
+            value: cattle-dashboards
+          - name: REQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: admin-user
+                name: rancher-monitoring-grafana
+          - name: REQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: admin-password
+                name: rancher-monitoring-grafana
+          - name: REQ_URL
+            value: http://localhost:3000/api/admin/provisioning/dashboards/reload
+          - name: REQ_METHOD
+            value: POST
+          image: rancher/appco-k8s-sidecar:1.30.7-11.3
+          imagePullPolicy: IfNotPresent
+          name: grafana-sc-dashboard
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /tmp/dashboards
+            name: sc-dashboard-volume
+        - env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
+          - name: GF_SECURITY_ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                key: admin-user
+                name: rancher-monitoring-grafana
+          - name: GF_SECURITY_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: admin-password
+                name: rancher-monitoring-grafana
+          - name: GF_PATHS_DATA
+            value: /var/lib/grafana/
+          - name: GF_PATHS_LOGS
+            value: /var/log/grafana
+          - name: GF_PATHS_PLUGINS
+            value: /var/lib/grafana/plugins
+          - name: GF_PATHS_PROVISIONING
+            value: /etc/grafana/provisioning
+          - name: GOMEMLIMIT
+            valueFrom:
+              resourceFieldRef:
+                divisor: "1"
+                resource: limits.memory
+          image: rancher/mirrored-grafana-grafana:12.1.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /api/health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          name: grafana
+          ports:
+          - containerPort: 8080
+            name: grafana
+            protocol: TCP
+          - containerPort: 9094
+            name: gossip-tcp
+            protocol: TCP
+          - containerPort: 9094
+            name: gossip-udp
+            protocol: UDP
+          - containerPort: 6060
+            name: profiling
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /api/health
+              port: 3000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/grafana/grafana.ini
+            name: config
+            subPath: grafana.ini
+          - mountPath: /var/lib/grafana
+            name: storage
+          - mountPath: /tmp/dashboards
+            name: sc-dashboard-volume
+          - mountPath: /etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml
+            name: sc-dashboard-provider
+            subPath: provider.yaml
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: sc-datasources-volume
+        - args:
+          - nginx
+          - -g
+          - daemon off;
+          - -c
+          - /nginx/nginx.conf
+          image: rancher/mirrored-library-nginx:1.27.2-alpine
+          imagePullPolicy: IfNotPresent
+          name: grafana-proxy
+          ports:
+          - containerPort: 8080
+            name: nginx-http
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 101
+            runAsUser: 101
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /nginx
+            name: grafana-nginx
+          - mountPath: /var/cache/nginx
+            name: nginx-home
+        dnsPolicy: ClusterFirst
+        enableServiceLinks: true
+        initContainers:
+        - command:
+          - chown
+          - -R
+          - 472:472
+          - /var/lib/grafana
+          image: rancher/mirrored-library-busybox:1.31.1
+          imagePullPolicy: IfNotPresent
+          name: init-chown-data
+          resources: {}
+          securityContext:
+            capabilities:
+              add:
+              - CHOWN
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 0
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: storage
+        - env:
+          - name: METHOD
+            value: LIST
+          - name: LABEL
+            value: grafana_datasource
+          - name: LABEL_VALUE
+            value: "1"
+          - name: FOLDER
+            value: /etc/grafana/provisioning/datasources
+          - name: RESOURCE
+            value: both
+          image: rancher/appco-k8s-sidecar:1.30.7-11.3
+          imagePullPolicy: IfNotPresent
+          name: grafana-init-sc-datasources
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: sc-datasources-volume
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 472
+          runAsGroup: 472
+          runAsNonRoot: true
+          runAsUser: 472
+        serviceAccount: rancher-monitoring-grafana
+        serviceAccountName: rancher-monitoring-grafana
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: rancher-monitoring-grafana
+          name: config
+        - name: storage
+          persistentVolumeClaim:
+            claimName: rancher-monitoring-grafana
+        - emptyDir: {}
+          name: sc-dashboard-volume
+        - configMap:
+            defaultMode: 420
+            name: rancher-monitoring-grafana-config-dashboards
+          name: sc-dashboard-provider
+        - emptyDir: {}
+          name: sc-datasources-volume
+        - emptyDir: {}
+          name: nginx-home
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: nginx.conf
+              mode: 438
+              path: nginx.conf
+            name: grafana-nginx-proxy-config
+          name: grafana-nginx
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:58Z"
+      lastUpdateTime: "2025-12-15T06:44:58Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:06Z"
+      lastUpdateTime: "2025-12-15T06:44:58Z"
+      message: ReplicaSet "rancher-monitoring-grafana-7f674cfcb4" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/part-of: kube-state-metrics
+      app.kubernetes.io/version: 2.17.0
+      helm.sh/chart: kube-state-metrics-6.3.0
+      release: rancher-monitoring
+    name: rancher-monitoring-kube-state-metrics
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951009"
+    uid: c85e8f2d-bb40-413c-8d4a-a92241969b32
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: rancher-monitoring
+        app.kubernetes.io/name: kube-state-metrics
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: metrics
+          app.kubernetes.io/instance: rancher-monitoring
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: kube-state-metrics
+          app.kubernetes.io/part-of: kube-state-metrics
+          app.kubernetes.io/version: 2.17.0
+          helm.sh/chart: kube-state-metrics-6.3.0
+          release: rancher-monitoring
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - args:
+          - --port=8080
+          - --resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments
+          image: docker.io/rancher/mirrored-kube-state-metrics-kube-state-metrics:v2.17.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /livez
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: kube-state-metrics
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /readyz
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+          seccompProfile:
+            type: RuntimeDefault
+        serviceAccount: rancher-monitoring-kube-state-metrics
+        serviceAccountName: rancher-monitoring-kube-state-metrics
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:21Z"
+      lastUpdateTime: "2025-12-15T06:44:21Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:06Z"
+      lastUpdateTime: "2025-12-15T06:44:21Z"
+      message: ReplicaSet "rancher-monitoring-kube-state-metrics-5cc64fcff7" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app: rancher-monitoring-operator
+      app.kubernetes.io/component: prometheus-operator
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: rancher-monitoring-prometheus-operator
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-operator
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950730"
+    uid: 967f9c35-b35b-45d3-bb29-477bcd88e557
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: rancher-monitoring-operator
+        release: rancher-monitoring
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: rancher-monitoring-operator
+          app.kubernetes.io/component: prometheus-operator
+          app.kubernetes.io/instance: rancher-monitoring
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: rancher-monitoring-prometheus-operator
+          app.kubernetes.io/part-of: rancher-monitoring
+          app.kubernetes.io/version: v0.85.0
+          chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+          helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+          heritage: Helm
+          release: rancher-monitoring
+      spec:
+        automountServiceAccountToken: true
+        containers:
+        - args:
+          - --kubelet-service=kube-system/rancher-monitoring-kubelet
+          - --kubelet-endpoints=true
+          - --kubelet-endpointslice=false
+          - --localhost=127.0.0.1
+          - --prometheus-config-reloader=docker.io/rancher/mirrored-prometheus-operator-prometheus-config-reloader:v0.80.1
+          - --config-reloader-cpu-request=0
+          - --config-reloader-cpu-limit=0
+          - --config-reloader-memory-request=0
+          - --config-reloader-memory-limit=0
+          - --thanos-default-base-image=docker.io/rancher/mirrored-thanos-thanos:v0.39.2
+          - --secret-field-selector=type!=kubernetes.io/dockercfg,type!=kubernetes.io/service-account-token,type!=helm.sh/release.v1
+          - --web.enable-tls=true
+          - --web.cert-file=/cert/cert
+          - --web.key-file=/cert/key
+          - --web.listen-address=:10250
+          - --web.tls-min-version=VersionTLS13
+          env:
+          - name: GOGC
+            value: "30"
+          image: docker.io/rancher/mirrored-prometheus-operator-prometheus-operator:v0.85.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: rancher-monitoring
+          ports:
+          - containerPort: 10250
+            name: https
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /cert
+            name: tls-secret
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+          seccompProfile:
+            type: RuntimeDefault
+        serviceAccount: rancher-monitoring-operator
+        serviceAccountName: rancher-monitoring-operator
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        volumes:
+        - name: tls-secret
+          secret:
+            defaultMode: 420
+            secretName: rancher-monitoring-admission
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:09Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:07Z"
+      lastUpdateTime: "2025-12-15T06:44:09Z"
+      message: ReplicaSet "rancher-monitoring-operator-85949f6d8b" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-adapter
+      app.kubernetes.io/part-of: prometheus-adapter
+      app.kubernetes.io/version: v0.12.0
+      helm.sh/chart: prometheus-adapter-5.1.0
+    name: rancher-monitoring-prometheus-adapter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65951230"
+    uid: c5beb71f-1df2-4f8e-9fbe-2949926af85e
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: rancher-monitoring
+        app.kubernetes.io/name: prometheus-adapter
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          checksum/config: ce38533e6fda692570d557921e4ee8fbb9415cef07c67083b25a563e69e06654
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: metrics
+          app.kubernetes.io/instance: rancher-monitoring
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: prometheus-adapter
+          app.kubernetes.io/part-of: prometheus-adapter
+          app.kubernetes.io/version: v0.12.0
+          helm.sh/chart: prometheus-adapter-5.1.0
+        name: prometheus-adapter
+      spec:
+        affinity: {}
+        automountServiceAccountToken: true
+        containers:
+        - args:
+          - /adapter
+          - --secure-port=6443
+          - --cert-dir=/tmp/cert
+          - --prometheus-url=http://rancher-monitoring-prometheus.cattle-monitoring-system.svc:9090
+          - --metrics-relist-interval=1m
+          - --v=4
+          - --config=/etc/adapter/config.yaml
+          image: rancher/mirrored-prometheus-adapter-prometheus-adapter:v0.12.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: prometheus-adapter
+          ports:
+          - containerPort: 6443
+            name: https
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/adapter/
+            name: config
+            readOnly: true
+          - mountPath: /tmp
+            name: tmp
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 10001
+        serviceAccount: rancher-monitoring-prometheus-adapter
+        serviceAccountName: rancher-monitoring-prometheus-adapter
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: rancher-monitoring-prometheus-adapter
+          name: config
+        - emptyDir: {}
+          name: tmp
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-12-15T06:44:40Z"
+      lastUpdateTime: "2025-12-15T06:44:40Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-12-15T06:44:06Z"
+      lastUpdateTime: "2025-12-15T06:44:40Z"
+      message: ReplicaSet "rancher-monitoring-prometheus-adapter-54fc9cdd56" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-client
+      provider: kubernetes
+      pushprox-exporter: client
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950829"
+    uid: b98a6aec-6d32-4455-9641-44bee7649811
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-controller-manager
+        k8s-app: pushprox-kube-controller-manager-client
+        provider: kubernetes
+        release: rancher-monitoring
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-controller-manager
+          k8s-app: pushprox-kube-controller-manager-client
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - args:
+          - --fqdn=$(HOST_IP)
+          - --proxy-url=$(PROXY_URL)
+          - --allow-port=10257
+          - --use-localhost
+          - --insecure-skip-verify
+          - --token-path=/var/run/secrets/kubernetes.io/serviceaccount/token
+          command:
+          - pushprox-client
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: PROXY_URL
+            value: http://pushprox-kube-controller-manager-proxy.cattle-monitoring-system.svc:8080
+          image: rancher/pushprox-client:v0.1.5-rancher2-client
+          imagePullPolicy: IfNotPresent
+          name: pushprox-client
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirstWithHostNet
+        hostNetwork: true
+        nodeSelector:
+          kubernetes.io/os: linux
+          node-role.kubernetes.io/master: "true"
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: pushprox-kube-controller-manager-client
+        serviceAccountName: pushprox-kube-controller-manager-client
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 3
+    desiredNumberScheduled: 3
+    numberAvailable: 3
+    numberMisscheduled: 0
+    numberReady: 3
+    observedGeneration: 1
+    updatedNumberScheduled: 3
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-client
+      provider: kubernetes
+      pushprox-exporter: client
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950834"
+    uid: 27769609-c0ef-4a34-b276-631472e82a1b
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-etcd
+        k8s-app: pushprox-kube-etcd-client
+        provider: kubernetes
+        release: rancher-monitoring
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-etcd
+          k8s-app: pushprox-kube-etcd-client
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - args:
+          - --fqdn=$(HOST_IP)
+          - --proxy-url=$(PROXY_URL)
+          - --allow-port=2381
+          - --use-localhost
+          command:
+          - pushprox-client
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: PROXY_URL
+            value: http://pushprox-kube-etcd-proxy.cattle-monitoring-system.svc:8080
+          image: rancher/pushprox-client:v0.1.5-rancher2-client
+          imagePullPolicy: IfNotPresent
+          name: pushprox-client
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirstWithHostNet
+        hostNetwork: true
+        nodeSelector:
+          kubernetes.io/os: linux
+          node-role.kubernetes.io/etcd: "true"
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: pushprox-kube-etcd-client
+        serviceAccountName: pushprox-kube-etcd-client
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 3
+    desiredNumberScheduled: 3
+    numberAvailable: 3
+    numberMisscheduled: 0
+    numberReady: 3
+    observedGeneration: 1
+    updatedNumberScheduled: 3
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-client
+      provider: kubernetes
+      pushprox-exporter: client
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950837"
+    uid: ca7d03e2-d81e-4048-853e-6c95f518676e
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-proxy
+        k8s-app: pushprox-kube-proxy-client
+        provider: kubernetes
+        release: rancher-monitoring
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-proxy
+          k8s-app: pushprox-kube-proxy-client
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - args:
+          - --fqdn=$(HOST_IP)
+          - --proxy-url=$(PROXY_URL)
+          - --allow-port=10249
+          - --use-localhost
+          command:
+          - pushprox-client
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: PROXY_URL
+            value: http://pushprox-kube-proxy-proxy.cattle-monitoring-system.svc:8080
+          image: rancher/pushprox-client:v0.1.5-rancher2-client
+          imagePullPolicy: IfNotPresent
+          name: pushprox-client
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirstWithHostNet
+        hostNetwork: true
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: pushprox-kube-proxy-client
+        serviceAccountName: pushprox-kube-proxy-client
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 6
+    desiredNumberScheduled: 6
+    numberAvailable: 6
+    numberMisscheduled: 0
+    numberReady: 6
+    observedGeneration: 1
+    updatedNumberScheduled: 6
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-client
+      provider: kubernetes
+      pushprox-exporter: client
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950841"
+    uid: cd7115f4-a825-4a96-b684-27219ef79a65
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: kube-scheduler
+        k8s-app: pushprox-kube-scheduler-client
+        provider: kubernetes
+        release: rancher-monitoring
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          component: kube-scheduler
+          k8s-app: pushprox-kube-scheduler-client
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        containers:
+        - args:
+          - --fqdn=$(HOST_IP)
+          - --proxy-url=$(PROXY_URL)
+          - --allow-port=10259
+          - --use-localhost
+          - --insecure-skip-verify
+          - --token-path=/var/run/secrets/kubernetes.io/serviceaccount/token
+          command:
+          - pushprox-client
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: PROXY_URL
+            value: http://pushprox-kube-scheduler-proxy.cattle-monitoring-system.svc:8080
+          image: rancher/pushprox-client:v0.1.5-rancher2-client
+          imagePullPolicy: IfNotPresent
+          name: pushprox-client
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirstWithHostNet
+        hostNetwork: true
+        nodeSelector:
+          kubernetes.io/os: linux
+          node-role.kubernetes.io/master: "true"
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: pushprox-kube-scheduler-client
+        serviceAccountName: pushprox-kube-scheduler-client
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 3
+    desiredNumberScheduled: 3
+    numberAvailable: 3
+    numberMisscheduled: 0
+    numberReady: 3
+    observedGeneration: 1
+    updatedNumberScheduled: 3
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      field.cattle.io/publicEndpoints: '[{"nodeName":":prod-worker-02.ltc.bcit.ca","addresses":["142.232.110.65"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-ld9mw","allNodes":false},{"nodeName":":prod-manager-01.ltc.bcit.ca","addresses":["142.232.76.38"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-8fvzw","allNodes":false},{"nodeName":":prod-worker-01.ltc.bcit.ca","addresses":["142.232.110.64"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-kc595","allNodes":false},{"nodeName":":prod-worker-03.ltc.bcit.ca","addresses":["142.232.110.58"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-2s5p7","allNodes":false},{"nodeName":":prod-manager-02.ltc.bcit.ca","addresses":["142.232.76.205"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-8czv2","allNodes":false},{"nodeName":":prod-manager-03.ltc.bcit.ca","addresses":["142.232.110.60"],"port":9796,"protocol":"TCP","podName":"cattle-monitoring-system:rancher-monitoring-prometheus-node-exporter-bn5d9","allNodes":false}]'
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-node-exporter
+      app.kubernetes.io/part-of: prometheus-node-exporter
+      app.kubernetes.io/version: 1.9.1
+      helm.sh/chart: prometheus-node-exporter-4.47.3
+      release: rancher-monitoring
+    name: rancher-monitoring-prometheus-node-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950800"
+    uid: b556617c-31f0-4b43-9c33-a2df4d353e74
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: rancher-monitoring
+        app.kubernetes.io/name: prometheus-node-exporter
+    template:
+      metadata:
+        annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: metrics
+          app.kubernetes.io/instance: rancher-monitoring
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: prometheus-node-exporter
+          app.kubernetes.io/part-of: prometheus-node-exporter
+          app.kubernetes.io/version: 1.9.1
+          helm.sh/chart: prometheus-node-exporter-4.47.3
+          jobLabel: node-exporter
+          release: rancher-monitoring
+      spec:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: eks.amazonaws.com/compute-type
+                  operator: NotIn
+                  values:
+                  - fargate
+                - key: type
+                  operator: NotIn
+                  values:
+                  - virtual-kubelet
+        automountServiceAccountToken: false
+        containers:
+        - args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+          - --path.rootfs=/host/root
+          - --path.udev.data=/host/root/run/udev/data
+          - --web.listen-address=[$(HOST_IP)]:9796
+          - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+          - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
+          env:
+          - name: HOST_IP
+            value: 0.0.0.0
+          image: docker.io/rancher/mirrored-prometheus-node-exporter:v1.9.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http-metrics
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: node-exporter
+          ports:
+          - containerPort: 9796
+            name: http-metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http-metrics
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /host/proc
+            name: proc
+            readOnly: true
+          - mountPath: /host/sys
+            name: sys
+            readOnly: true
+          - mountPath: /host/root
+            mountPropagation: HostToContainer
+            name: root
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        hostNetwork: true
+        hostPID: true
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+        serviceAccount: rancher-monitoring-prometheus-node-exporter
+        serviceAccountName: rancher-monitoring-prometheus-node-exporter
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+        volumes:
+        - hostPath:
+            path: /proc
+            type: ""
+          name: proc
+        - hostPath:
+            path: /sys
+            type: ""
+          name: sys
+        - hostPath:
+            path: /
+            type: ""
+          name: root
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 6
+    desiredNumberScheduled: 6
+    numberAvailable: 6
+    numberMisscheduled: 0
+    numberReady: 6
+    observedGeneration: 1
+    updatedNumberScheduled: 6
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: windows-exporter
+      k8s-app: rancher-monitoring-windows-exporter
+      provider: kubernetes
+      release: rancher-monitoring
+    name: rancher-monitoring-windows-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950472"
+    uid: 41d8daa5-5734-49f8-b277-ef6ebdf0eb81
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        component: windows-exporter
+        k8s-app: rancher-monitoring-windows-exporter
+        provider: kubernetes
+        release: rancher-monitoring
+    template:
+      metadata:
+        annotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        creationTimestamp: null
+        labels:
+          component: windows-exporter
+          k8s-app: rancher-monitoring-windows-exporter
+          provider: kubernetes
+          release: rancher-monitoring
+      spec:
+        automountServiceAccountToken: false
+        containers:
+        - args:
+          - --config.file=%CONTAINER_SANDBOX_MOUNT_POINT%/config.yml
+          - --collector.textfile.directories=%CONTAINER_SANDBOX_MOUNT_POINT%
+          - --web.listen-address=:9796
+          image: docker.io/rancher/mirrored-prometheus-windows-exporter:0.31.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 9796
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: windows-exporter
+          ports:
+          - containerPort: 9796
+            hostPort: 9796
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 9796
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            windowsOptions:
+              hostProcess: true
+              runAsUserName: NT AUTHORITY\system
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /config.yml
+            name: config
+            subPath: config.yml
+        dnsPolicy: ClusterFirst
+        hostNetwork: true
+        hostPID: true
+        initContainers:
+        - args:
+          - -f
+          - scripts/configure-firewall.ps1
+          command:
+          - C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe
+          image: docker.io/rancher/mirrored-prometheus-windows-exporter:0.31.3
+          imagePullPolicy: IfNotPresent
+          name: configure-firewall
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /scripts
+            name: exporter-scripts
+        nodeSelector:
+          kubernetes.io/os: windows
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+            runAsUserName: NT AUTHORITY\system
+        serviceAccount: rancher-monitoring-windows-exporter
+        serviceAccountName: rancher-monitoring-windows-exporter
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: rancher-monitoring-windows-exporter-scripts
+          name: exporter-scripts
+        - configMap:
+            defaultMode: 420
+            name: rancher-monitoring-windows-exporter
+          name: config
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 0
+    desiredNumberScheduled: 0
+    numberMisscheduled: 0
+    numberReady: 0
+    observedGeneration: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+      prometheus-operator-input-hash: "8301037178978779633"
+    creationTimestamp: "2025-12-15T06:44:08Z"
+    generation: 1
+    labels:
+      alertmanager: rancher-monitoring-alertmanager
+      app: rancher-monitoring-alertmanager
+      app.kubernetes.io/instance: rancher-monitoring-alertmanager
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      managed-by: prometheus-operator
+      release: rancher-monitoring
+    name: alertmanager-rancher-monitoring-alertmanager
+    namespace: cattle-monitoring-system
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Alertmanager
+      name: rancher-monitoring-alertmanager
+      uid: 6ed931af-55a6-4610-a998-fdace61e2030
+    resourceVersion: "65950946"
+    uid: a2198a10-a33e-425b-8ee4-9ece084e766b
+  spec:
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+    podManagementPolicy: Parallel
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        alertmanager: rancher-monitoring-alertmanager
+        app.kubernetes.io/instance: rancher-monitoring-alertmanager
+        app.kubernetes.io/managed-by: prometheus-operator
+        app.kubernetes.io/name: alertmanager
+    serviceName: alertmanager-operated
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/default-container: alertmanager
+        creationTimestamp: null
+        labels:
+          alertmanager: rancher-monitoring-alertmanager
+          app.kubernetes.io/instance: rancher-monitoring-alertmanager
+          app.kubernetes.io/managed-by: prometheus-operator
+          app.kubernetes.io/name: alertmanager
+          app.kubernetes.io/version: 0.28.1
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                    - alertmanager
+                  - key: alertmanager
+                    operator: In
+                    values:
+                    - rancher-monitoring-alertmanager
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+        automountServiceAccountToken: true
+        containers:
+        - args:
+          - --config.file=/etc/alertmanager/config_out/alertmanager.env.yaml
+          - --storage.path=/alertmanager
+          - --data.retention=120h
+          - --cluster.listen-address=
+          - --web.listen-address=:9093
+          - --web.external-url=https://rancher3.ltc.bcit.ca/k8s/clusters/c-7rtn4/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-alertmanager:9093/proxy
+          - --web.route-prefix=/
+          - --cluster.label=cattle-monitoring-system/rancher-monitoring-alertmanager
+          - --cluster.peer=alertmanager-rancher-monitoring-alertmanager-0.alertmanager-operated:9094
+          - --cluster.reconnect-timeout=5m
+          - --web.config.file=/etc/alertmanager/web_config/web-config.yaml
+          env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
+          image: docker.io/rancher/mirrored-prometheus-alertmanager:v0.28.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /-/healthy
+              port: http-web
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: alertmanager
+          ports:
+          - containerPort: 9093
+            name: http-web
+            protocol: TCP
+          - containerPort: 9094
+            name: mesh-tcp
+            protocol: TCP
+          - containerPort: 9094
+            name: mesh-udp
+            protocol: UDP
+          readinessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /-/ready
+              port: http-web
+              scheme: HTTP
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: "1"
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/alertmanager/config
+            name: config-volume
+          - mountPath: /etc/alertmanager/config_out
+            name: config-out
+            readOnly: true
+          - mountPath: /etc/alertmanager/certs
+            name: tls-assets
+            readOnly: true
+          - mountPath: /alertmanager
+            name: alertmanager-rancher-monitoring-alertmanager-db
+          - mountPath: /etc/alertmanager/web_config/web-config.yaml
+            name: web-config
+            readOnly: true
+            subPath: web-config.yaml
+          - mountPath: /etc/alertmanager/cluster_tls_config/cluster-tls-config.yaml
+            name: cluster-tls-config
+            readOnly: true
+            subPath: cluster-tls-config.yaml
+        - args:
+          - --listen-address=:8080
+          - --web-config-file=/etc/alertmanager/web_config/web-config.yaml
+          - --reload-url=http://127.0.0.1:9093/-/reload
+          - --config-file=/etc/alertmanager/config/alertmanager.yaml.gz
+          - --config-envsubst-file=/etc/alertmanager/config_out/alertmanager.env.yaml
+          - --watched-dir=/etc/alertmanager/config
+          command:
+          - /bin/prometheus-config-reloader
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: SHARD
+            value: "-1"
+          image: docker.io/rancher/mirrored-prometheus-operator-prometheus-config-reloader:v0.80.1
+          imagePullPolicy: IfNotPresent
+          name: config-reloader
+          ports:
+          - containerPort: 8080
+            name: reloader-web
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/alertmanager/config
+            name: config-volume
+            readOnly: true
+          - mountPath: /etc/alertmanager/config_out
+            name: config-out
+          - mountPath: /etc/alertmanager/web_config/web-config.yaml
+            name: web-config
+            readOnly: true
+            subPath: web-config.yaml
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - args:
+          - --watch-interval=0
+          - --listen-address=:8081
+          - --config-file=/etc/alertmanager/config/alertmanager.yaml.gz
+          - --config-envsubst-file=/etc/alertmanager/config_out/alertmanager.env.yaml
+          - --watched-dir=/etc/alertmanager/config
+          command:
+          - /bin/prometheus-config-reloader
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: SHARD
+            value: "-1"
+          image: docker.io/rancher/mirrored-prometheus-operator-prometheus-config-reloader:v0.80.1
+          imagePullPolicy: IfNotPresent
+          name: init-config-reloader
+          ports:
+          - containerPort: 8081
+            name: reloader-web
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/alertmanager/config
+            name: config-volume
+            readOnly: true
+          - mountPath: /etc/alertmanager/config_out
+            name: config-out
+          - mountPath: /etc/alertmanager/web_config/web-config.yaml
+            name: web-config
+            readOnly: true
+            subPath: web-config.yaml
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 2000
+          runAsGroup: 2000
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        serviceAccount: rancher-monitoring-alertmanager
+        serviceAccountName: rancher-monitoring-alertmanager
+        terminationGracePeriodSeconds: 120
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        volumes:
+        - name: config-volume
+          secret:
+            defaultMode: 420
+            secretName: alertmanager-rancher-monitoring-alertmanager-generated
+        - name: tls-assets
+          projected:
+            defaultMode: 420
+            sources:
+            - secret:
+                name: alertmanager-rancher-monitoring-alertmanager-tls-assets-0
+        - emptyDir:
+            medium: Memory
+          name: config-out
+        - name: web-config
+          secret:
+            defaultMode: 420
+            secretName: alertmanager-rancher-monitoring-alertmanager-web-config
+        - name: cluster-tls-config
+          secret:
+            defaultMode: 420
+            secretName: alertmanager-rancher-monitoring-alertmanager-cluster-tls-config
+        - emptyDir: {}
+          name: alertmanager-rancher-monitoring-alertmanager-db
+    updateStrategy:
+      type: RollingUpdate
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: alertmanager-rancher-monitoring-alertmanager-97d88dd9f
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: alertmanager-rancher-monitoring-alertmanager-97d88dd9f
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+      prometheus-operator-input-hash: "14997231701738443934"
+    creationTimestamp: "2025-12-15T06:44:09Z"
+    generation: 1
+    labels:
+      app: rancher-monitoring-prometheus
+      app.kubernetes.io/instance: rancher-monitoring-prometheus
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      managed-by: prometheus-operator
+      operator.prometheus.io/mode: server
+      operator.prometheus.io/name: rancher-monitoring-prometheus
+      operator.prometheus.io/shard: "0"
+      prometheus: rancher-monitoring-prometheus
+      release: rancher-monitoring
+    name: prometheus-rancher-monitoring-prometheus
+    namespace: cattle-monitoring-system
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Prometheus
+      name: rancher-monitoring-prometheus
+      uid: 394513cb-0e00-4385-9b7a-34eaaa4a73ee
+    resourceVersion: "65951683"
+    uid: 915c2c24-66aa-4440-91a6-ad2f34b68049
+  spec:
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+    podManagementPolicy: Parallel
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/instance: rancher-monitoring-prometheus
+        app.kubernetes.io/managed-by: prometheus-operator
+        app.kubernetes.io/name: prometheus
+        operator.prometheus.io/name: rancher-monitoring-prometheus
+        operator.prometheus.io/shard: "0"
+        prometheus: rancher-monitoring-prometheus
+    serviceName: prometheus-operated
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/default-container: prometheus
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: rancher-monitoring-prometheus
+          app.kubernetes.io/managed-by: prometheus-operator
+          app.kubernetes.io/name: prometheus
+          app.kubernetes.io/version: 3.5.0
+          operator.prometheus.io/name: rancher-monitoring-prometheus
+          operator.prometheus.io/shard: "0"
+          prometheus: rancher-monitoring-prometheus
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                    - prometheus
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                    - rancher-monitoring-prometheus
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+        automountServiceAccountToken: true
+        containers:
+        - args:
+          - --config.file=/etc/prometheus/config_out/prometheus.env.yaml
+          - --web.enable-lifecycle
+          - --web.external-url=https://rancher3.ltc.bcit.ca/k8s/clusters/c-7rtn4/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-prometheus:9090/proxy
+          - --web.route-prefix=/
+          - --storage.tsdb.retention.time=7d
+          - --storage.tsdb.retention.size=50GiB
+          - --storage.tsdb.path=/prometheus
+          - --storage.tsdb.wal-compression
+          - --web.config.file=/etc/prometheus/web_config/web-config.yaml
+          image: docker.io/rancher/prom-prometheus:v3.5.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /-/healthy
+              port: http-web
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: prometheus
+          ports:
+          - containerPort: 9090
+            name: http-web
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /-/ready
+              port: http-web
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: "1"
+              memory: 3000Mi
+            requests:
+              cpu: 750m
+              memory: 750Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          startupProbe:
+            failureThreshold: 60
+            httpGet:
+              path: /-/ready
+              port: http-web
+              scheme: HTTP
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/prometheus/config_out
+            name: config-out
+            readOnly: true
+          - mountPath: /etc/prometheus/certs
+            name: tls-assets
+            readOnly: true
+          - mountPath: /prometheus
+            name: prometheus-rancher-monitoring-prometheus-db
+            subPath: prometheus-db
+          - mountPath: /etc/prometheus/rules/prometheus-rancher-monitoring-prometheus-rulefiles-0
+            name: prometheus-rancher-monitoring-prometheus-rulefiles-0
+          - mountPath: /etc/prometheus/web_config/web-config.yaml
+            name: web-config
+            readOnly: true
+            subPath: web-config.yaml
+        - args:
+          - --listen-address=:8080
+          - --reload-url=http://127.0.0.1:9090/-/reload
+          - --config-file=/etc/prometheus/config/prometheus.yaml.gz
+          - --config-envsubst-file=/etc/prometheus/config_out/prometheus.env.yaml
+          - --watched-dir=/etc/prometheus/rules/prometheus-rancher-monitoring-prometheus-rulefiles-0
+          command:
+          - /bin/prometheus-config-reloader
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: SHARD
+            value: "0"
+          image: docker.io/rancher/mirrored-prometheus-operator-prometheus-config-reloader:v0.80.1
+          imagePullPolicy: IfNotPresent
+          name: config-reloader
+          ports:
+          - containerPort: 8080
+            name: reloader-web
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/prometheus/config
+            name: config
+          - mountPath: /etc/prometheus/config_out
+            name: config-out
+          - mountPath: /etc/prometheus/rules/prometheus-rancher-monitoring-prometheus-rulefiles-0
+            name: prometheus-rancher-monitoring-prometheus-rulefiles-0
+        - args:
+          - nginx
+          - -g
+          - daemon off;
+          - -c
+          - /nginx/nginx.conf
+          image: rancher/mirrored-library-nginx:1.27.2-alpine
+          imagePullPolicy: IfNotPresent
+          name: prometheus-proxy
+          ports:
+          - containerPort: 8081
+            name: nginx-http
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 101
+            runAsUser: 101
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /nginx
+            name: prometheus-nginx
+          - mountPath: /var/cache/nginx
+            name: nginx-home
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - args:
+          - --watch-interval=0
+          - --listen-address=:8081
+          - --config-file=/etc/prometheus/config/prometheus.yaml.gz
+          - --config-envsubst-file=/etc/prometheus/config_out/prometheus.env.yaml
+          - --watched-dir=/etc/prometheus/rules/prometheus-rancher-monitoring-prometheus-rulefiles-0
+          command:
+          - /bin/prometheus-config-reloader
+          env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: SHARD
+            value: "0"
+          image: docker.io/rancher/mirrored-prometheus-operator-prometheus-config-reloader:v0.80.1
+          imagePullPolicy: IfNotPresent
+          name: init-config-reloader
+          ports:
+          - containerPort: 8081
+            name: reloader-web
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+          - mountPath: /etc/prometheus/config
+            name: config
+          - mountPath: /etc/prometheus/config_out
+            name: config-out
+          - mountPath: /etc/prometheus/rules/prometheus-rancher-monitoring-prometheus-rulefiles-0
+            name: prometheus-rancher-monitoring-prometheus-rulefiles-0
+        nodeSelector:
+          kubernetes.io/os: linux
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 2000
+          runAsGroup: 2000
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        serviceAccount: rancher-monitoring-prometheus
+        serviceAccountName: rancher-monitoring-prometheus
+        shareProcessNamespace: false
+        terminationGracePeriodSeconds: 600
+        tolerations:
+        - effect: NoSchedule
+          key: cattle.io/os
+          operator: Equal
+          value: linux
+        volumes:
+        - name: config
+          secret:
+            defaultMode: 420
+            secretName: prometheus-rancher-monitoring-prometheus
+        - name: tls-assets
+          projected:
+            defaultMode: 420
+            sources:
+            - secret:
+                name: prometheus-rancher-monitoring-prometheus-tls-assets-0
+        - emptyDir:
+            medium: Memory
+          name: config-out
+        - configMap:
+            defaultMode: 420
+            name: prometheus-rancher-monitoring-prometheus-rulefiles-0
+          name: prometheus-rancher-monitoring-prometheus-rulefiles-0
+        - name: web-config
+          secret:
+            defaultMode: 420
+            secretName: prometheus-rancher-monitoring-prometheus-web-config
+        - emptyDir: {}
+          name: nginx-home
+        - configMap:
+            defaultMode: 438
+            name: prometheus-nginx-proxy-config
+          name: prometheus-nginx
+    updateStrategy:
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: prometheus-rancher-monitoring-prometheus-db
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: longhorn
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: prometheus-rancher-monitoring-prometheus-6fbf686fbd
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: prometheus-rancher-monitoring-prometheus-6fbf686fbd
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""

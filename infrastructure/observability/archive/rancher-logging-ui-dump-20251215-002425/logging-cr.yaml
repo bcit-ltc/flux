@@ -1,0 +1,54 @@
+apiVersion: v1
+items:
+- apiVersion: logging.banzaicloud.io/v1beta1
+  kind: Logging
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-logging
+      meta.helm.sh/release-namespace: cattle-logging-system
+    creationTimestamp: "2025-12-15T08:23:21Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: rancher-logging
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: rancher-logging
+      app.kubernetes.io/version: 4.10.0
+      helm.sh/chart: rancher-logging-108.0.0_up4.10.0-rancher.15
+    name: rancher-logging-root
+    resourceVersion: "66004857"
+    uid: 962a5c59-d29f-4f45-9c53-8aeab5a78140
+  spec:
+    controlNamespace: cattle-logging-system
+    fluentd:
+      configReloaderImage:
+        repository: rancher/mirrored-kube-logging-config-reloader
+        tag: v0.0.6
+      disablePvc: true
+      image:
+        repository: rancher/mirrored-kube-logging-fluentd
+        tag: v1.16-4.10-full
+      livenessProbe:
+        initialDelaySeconds: 30
+        periodSeconds: 15
+        tcpSocket:
+          port: 24240
+      metrics:
+        prometheusRules: false
+        serviceMonitor: false
+      security:
+        podSecurityContext:
+          fsGroup: 101
+          runAsGroup: 101
+          runAsUser: 100
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: false
+  status:
+    configCheckResults:
+      de68d16c: true
+kind: List
+metadata:
+  resourceVersion: ""

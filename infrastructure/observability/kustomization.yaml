@@ -1,0 +1,26 @@
+# Observability kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./helm-repositories.yaml
+  - ./00-namespaces.yaml
+  - ./10-crd-helmreleases.yaml
+  - ./20-loki-helmrelease.yaml
+  - ./21-monitoring-helmrelease.yaml
+  - ./22-logging-helmrelease.yaml
+  - ./30-logging-to-loki.yaml
+
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
+# components:
+  # - ../../components/generators/ssl-certificates
+
+  # Update resources based on ConfigMap above
+  # - ../../components/config-matcher
+
+  # Required for VaultAuth role and service accounts
+  # - ../../components/generators/vault-auth

@@ -14,3 +14,9 @@ resources:
   # - postgres-vault-auth.yaml
 
 namespace: postgres
+
+#configMapGenerator:
+#  - name: tcp-services
+#    namespace: kube-system
+#    literals:
+#      - "5432=postgres/pg-core-rw:5432"

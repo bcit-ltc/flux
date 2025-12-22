@@ -1,0 +1,3854 @@
+additionalPrometheusRulesMap: {}
+alertmanager:
+  additionalLabels: {}
+  alertmanagerSpec:
+    additionalArgs: []
+    additionalConfig: {}
+    additionalConfigString: ""
+    additionalPeers: []
+    affinity: {}
+    alertmanagerConfigMatcherStrategy: {}
+    alertmanagerConfigNamespaceSelector: {}
+    alertmanagerConfigSelector: {}
+    alertmanagerConfiguration: {}
+    automountServiceAccountToken: true
+    clusterAdvertiseAddress: false
+    clusterGossipInterval: ""
+    clusterLabel: ""
+    clusterPeerTimeout: ""
+    clusterPushpullInterval: ""
+    configMaps: []
+    configSecret: alertmanager-rancher-monitoring-alertmanager
+    containers: []
+    dnsConfig: {}
+    dnsPolicy: ""
+    externalUrl: null
+    forceEnableClusterMode: false
+    image:
+      pullPolicy: IfNotPresent
+      repository: rancher/mirrored-prometheus-alertmanager
+      sha: ""
+      tag: v0.28.1
+    initContainers: []
+    listenLocal: false
+    logFormat: logfmt
+    logLevel: info
+    minReadySeconds: 0
+    nodeSelector: {}
+    paused: false
+    persistentVolumeClaimRetentionPolicy: {}
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    podMetadata: {}
+    portName: http-web
+    priorityClassName: ""
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    retention: 120h
+    routePrefix: /
+    scheme: ""
+    secrets: []
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    serviceName: null
+    storage: {}
+    tlsConfig: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    useExistingSecret: true
+    volumeMounts: []
+    volumes: []
+    web: {}
+  annotations: {}
+  apiVersion: v2
+  config:
+    global:
+      resolve_timeout: 5m
+    inhibit_rules:
+    - equal:
+      - namespace
+      - alertname
+      source_matchers:
+      - severity = critical
+      target_matchers:
+      - severity =~ warning|info
+    - equal:
+      - namespace
+      - alertname
+      source_matchers:
+      - severity = warning
+      target_matchers:
+      - severity = info
+    - equal:
+      - namespace
+      source_matchers:
+      - alertname = InfoInhibitor
+      target_matchers:
+      - severity = info
+    - target_matchers:
+      - alertname = InfoInhibitor
+    receivers:
+    - name: "null"
+    route:
+      group_by:
+      - namespace
+      group_interval: 5m
+      group_wait: 30s
+      receiver: "null"
+      repeat_interval: 12h
+      routes:
+      - matchers:
+        - alertname = "Watchdog"
+        receiver: "null"
+    templates:
+    - /etc/alertmanager/config/*.tmpl
+  enableFeatures: []
+  enabled: true
+  extraSecret:
+    annotations: {}
+    data: {}
+  forceDeployDashboards: false
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts: []
+    ingressClassName: ""
+    labels: {}
+    paths: []
+    tls: []
+  ingressPerReplica:
+    annotations: {}
+    enabled: false
+    hostDomain: ""
+    hostPrefix: ""
+    ingressClassName: ""
+    labels: {}
+    paths: []
+    tlsSecretName: ""
+    tlsSecretPerReplica:
+      enabled: false
+      prefix: alertmanager
+  namespaceOverride: ""
+  networkPolicy:
+    additionalIngress: []
+    egress:
+      enabled: false
+      rules: []
+    enableClusterRules: true
+    enabled: false
+    gateway:
+      namespace: ""
+      podLabels: {}
+    monitoringRules:
+      configReloader: true
+      prometheus: true
+    policyTypes:
+    - Ingress
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+    unhealthyPodEvictionPolicy: AlwaysAllow
+  route:
+    main:
+      additionalRules: []
+      annotations: {}
+      apiVersion: gateway.networking.k8s.io/v1
+      enabled: false
+      filters: []
+      hostnames: []
+      httpsRedirect: false
+      kind: HTTPRoute
+      labels: {}
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+      parentRefs: []
+  secret:
+    annotations: {}
+    recreateIfExists: false
+  service:
+    additionalPorts: []
+    annotations: {}
+    clusterIP: ""
+    enabled: true
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels: {}
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30903
+    port: 9093
+    sessionAffinity: None
+    sessionAffinityConfig:
+      clientIP:
+        timeoutSeconds: 10800
+    targetPort: 9093
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: ""
+  serviceMonitor:
+    additionalEndpoints: []
+    additionalLabels: {}
+    bearerTokenFile: null
+    enableHttp2: true
+    interval: ""
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    scheme: ""
+    selfMonitor: true
+    targetLimit: 0
+    tlsConfig: {}
+  servicePerReplica:
+    annotations: {}
+    enabled: false
+    externalTrafficPolicy: Cluster
+    loadBalancerSourceRanges: []
+    nodePort: 30904
+    port: 9093
+    targetPort: 9093
+    type: ClusterIP
+  stringConfig: ""
+  templateFiles:
+    rancher_defaults.tmpl: |-
+      {{- define "slack.rancher.text" -}}
+      {{ template "rancher.text_multiple" . }}
+      {{- end -}}
+
+      {{- define "rancher.text_multiple" -}}
+      *[GROUP - Details]*
+      One or more alarms in this group have triggered a notification.
+
+      {{- if gt (len .GroupLabels.Values) 0 }}
+      *Group Labels:*
+        {{- range .GroupLabels.SortedPairs }}
+        • *{{ .Name }}:* `{{ .Value }}`
+        {{- end }}
+      {{- end }}
+      {{- if .ExternalURL }}
+      *Link to AlertManager:* {{ .ExternalURL }}
+      {{- end }}
+
+      {{- range .Alerts }}
+      {{ template "rancher.text_single" . }}
+      {{- end }}
+      {{- end -}}
+
+      {{- define "rancher.text_single" -}}
+      {{- if .Labels.alertname }}
+      *[ALERT - {{ .Labels.alertname }}]*
+      {{- else }}
+      *[ALERT]*
+      {{- end }}
+      {{- if .Labels.severity }}
+      *Severity:* `{{ .Labels.severity }}`
+      {{- end }}
+      {{- if .Labels.cluster }}
+      *Cluster:*  {{ .Labels.cluster }}
+      {{- end }}
+      {{- if .Annotations.summary }}
+      *Summary:* {{ .Annotations.summary }}
+      {{- end }}
+      {{- if .Annotations.message }}
+      *Message:* {{ .Annotations.message }}
+      {{- end }}
+      {{- if .Annotations.description }}
+      *Description:* {{ .Annotations.description }}
+      {{- end }}
+      {{- if .Annotations.runbook_url }}
+      *Runbook URL:* <{{ .Annotations.runbook_url }}|:spiral_note_pad:>
+      {{- end }}
+      {{- with .Labels }}
+      {{- with .Remove (stringSlice "alertname" "severity" "cluster") }}
+      {{- if gt (len .) 0 }}
+      *Additional Labels:*
+        {{- range .SortedPairs }}
+        • *{{ .Name }}:* `{{ .Value }}`
+        {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- with .Annotations }}
+      {{- with .Remove (stringSlice "summary" "message" "description" "runbook_url") }}
+      {{- if gt (len .) 0 }}
+      *Additional Annotations:*
+        {{- range .SortedPairs }}
+        • *{{ .Name }}:* `{{ .Value }}`
+        {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- end -}}
+  tplConfig: false
+cleanPrometheusOperatorObjectNames: false
+commonLabels: {}
+coreDns:
+  enabled: true
+  service:
+    enabled: true
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: 9153
+    targetPort: 9153
+  serviceMonitor:
+    additionalLabels: {}
+    enabled: true
+    interval: ""
+    jobLabel: jobLabel
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    port: http-metrics
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector: {}
+    targetLabels: []
+    targetLimit: 0
+crds:
+  enabled: true
+  upgradeJob:
+    affinity: {}
+    annotations: {}
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+    enabled: false
+    env: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    forceConflicts: false
+    image:
+      busybox:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-library-busybox
+        tag: 1.37.0
+      kubectl:
+        pullPolicy: IfNotPresent
+        repository: rancher/kuberlr-kubectl
+        tag: v6.0.0
+    labels: {}
+    nodeSelector: {}
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext:
+      fsGroup: 65534
+      runAsGroup: 65534
+      runAsNonRoot: true
+      runAsUser: 65534
+      seccompProfile:
+        type: RuntimeDefault
+    resources: {}
+    serviceAccount:
+      annotations: {}
+      automountServiceAccountToken: true
+      create: true
+      labels: {}
+      name: ""
+    tolerations: []
+    topologySpreadConstraints: []
+customRules: {}
+defaultRules:
+  additionalAggregationLabels: []
+  additionalRuleAnnotations: {}
+  additionalRuleGroupAnnotations:
+    alertmanager: {}
+    configReloaders: {}
+    etcd: {}
+    general: {}
+    k8sContainerCpuUsageSecondsTotal: {}
+    k8sContainerMemoryCache: {}
+    k8sContainerMemoryRss: {}
+    k8sContainerMemorySwap: {}
+    k8sContainerResource: {}
+    k8sPodOwner: {}
+    kubeApiserverAvailability: {}
+    kubeApiserverBurnrate: {}
+    kubeApiserverHistogram: {}
+    kubeApiserverSlos: {}
+    kubeControllerManager: {}
+    kubePrometheusGeneral: {}
+    kubePrometheusNodeRecording: {}
+    kubeProxy: {}
+    kubeSchedulerAlerting: {}
+    kubeSchedulerRecording: {}
+    kubeStateMetrics: {}
+    kubelet: {}
+    kubernetesApps: {}
+    kubernetesResources: {}
+    kubernetesStorage: {}
+    kubernetesSystem: {}
+    network: {}
+    node: {}
+    nodeExporterAlerting: {}
+    nodeExporterRecording: {}
+    prometheus: {}
+    prometheusOperator: {}
+  additionalRuleGroupLabels:
+    alertmanager: {}
+    configReloaders: {}
+    etcd: {}
+    general: {}
+    k8sContainerCpuUsageSecondsTotal: {}
+    k8sContainerMemoryCache: {}
+    k8sContainerMemoryRss: {}
+    k8sContainerMemorySwap: {}
+    k8sContainerResource: {}
+    k8sPodOwner: {}
+    kubeApiserverAvailability: {}
+    kubeApiserverBurnrate: {}
+    kubeApiserverHistogram: {}
+    kubeApiserverSlos: {}
+    kubeControllerManager: {}
+    kubePrometheusGeneral: {}
+    kubePrometheusNodeRecording: {}
+    kubeProxy: {}
+    kubeSchedulerAlerting: {}
+    kubeSchedulerRecording: {}
+    kubeStateMetrics: {}
+    kubelet: {}
+    kubernetesApps: {}
+    kubernetesResources: {}
+    kubernetesStorage: {}
+    kubernetesSystem: {}
+    network: {}
+    node: {}
+    nodeExporterAlerting: {}
+    nodeExporterRecording: {}
+    prometheus: {}
+    prometheusOperator: {}
+  additionalRuleLabels: {}
+  annotations: {}
+  appNamespacesOperator: =~
+  appNamespacesTarget: .*
+  create: true
+  disabled: {}
+  keepFiringFor: ""
+  labels: {}
+  node:
+    fsSelector: fstype!=""
+  rules:
+    alertmanager: true
+    configReloaders: true
+    etcd: true
+    general: true
+    k8sContainerCpuUsageSecondsTotal: true
+    k8sContainerMemoryCache: true
+    k8sContainerMemoryRss: true
+    k8sContainerMemorySwap: true
+    k8sContainerMemoryWorkingSetBytes: true
+    k8sContainerResource: true
+    k8sPodOwner: true
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: true
+    kubeApiserverSlos: true
+    kubeControllerManager: true
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubeProxy: true
+    kubeSchedulerAlerting: true
+    kubeSchedulerRecording: true
+    kubeStateMetrics: true
+    kubelet: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
+    windows: true
+  runbookUrl: https://runbooks.prometheus-operator.dev/runbooks
+extraManifests: null
+fullnameOverride: ""
+global:
+  cattle:
+    clusterId: c-7rtn4
+    clusterName: cluster01
+    rkePathPrefix: ""
+    rkeWindowsPathPrefix: ""
+    systemDefaultRegistry: ""
+    systemProjectId: p-ktssc
+    url: https://rancher3.ltc.bcit.ca
+    windows:
+      enabled: false
+  disableProxyIPv6: false
+  imagePullSecrets: []
+  imageRegistry: docker.io
+  kubectl:
+    pullPolicy: IfNotPresent
+    repository: rancher/kuberlr-kubectl
+    tag: v6.0.0
+  rbac:
+    create: true
+    createAggregateClusterRoles: false
+    userRoles:
+      aggregateToDefaultRoles: true
+      create: true
+  seLinux:
+    enabled: false
+  systemDefaultRegistry: ""
+grafana:
+  additionalDataSources: []
+  admin:
+    existingSecret: ""
+    passwordKey: admin-password
+    userKey: admin-user
+  adminPassword: prom-operator
+  adminUser: admin
+  affinity: {}
+  alerting: {}
+  assertNoLeakedSecrets: true
+  automountServiceAccountToken: true
+  autoscaling:
+    behavior: {}
+    enabled: false
+    maxReplicas: 5
+    minReplicas: 1
+    targetCPU: "60"
+    targetMemory: ""
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    seccompProfile:
+      type: RuntimeDefault
+  createConfigmap: true
+  dashboardProviders: {}
+  dashboards: {}
+  dashboardsConfigMaps: {}
+  datasources: {}
+  defaultCurlOptions: -skf
+  defaultDashboards:
+    cleanupOnUninstall: false
+    namespace: cattle-dashboards
+    useExistingNamespace: false
+  defaultDashboardsEditable: true
+  defaultDashboardsEnabled: true
+  defaultDashboardsInterval: 1m
+  defaultDashboardsTimezone: utc
+  deleteDatasources: []
+  deploymentStrategy:
+    type: Recreate
+  dnsConfig: {}
+  dnsPolicy: null
+  downloadDashboards:
+    env: {}
+    envFromSecret: ""
+    envValueFrom: {}
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      seccompProfile:
+        type: RuntimeDefault
+  downloadDashboardsImage:
+    pullPolicy: IfNotPresent
+    repository: rancher/mirrored-curlimages-curl
+    sha: ""
+    tag: 8.9.1
+  enableKubeBackwardCompatibility: false
+  enableServiceLinks: true
+  enabled: true
+  env: {}
+  envFromConfigMaps: []
+  envFromSecret: ""
+  envFromSecrets: []
+  envRenderSecret: {}
+  envValueFrom: {}
+  extraConfigmapMounts: []
+  extraContainerVolumes:
+  - emptyDir: {}
+    name: nginx-home
+  - configMap:
+      items:
+      - key: nginx.conf
+        mode: 438
+        path: nginx.conf
+      name: grafana-nginx-proxy-config
+    name: grafana-nginx
+  extraContainers: |
+    - name: grafana-proxy
+      args:
+      - nginx
+      - -g
+      - daemon off;
+      - -c
+      - /nginx/nginx.conf
+      image: "{{ template "system_default_registry" . }}{{ .Values.proxy.image.repository }}:{{ .Values.proxy.image.tag }}"
+      ports:
+      - containerPort: 8080
+        name: nginx-http
+        protocol: TCP
+      volumeMounts:
+      - mountPath: /nginx
+        name: grafana-nginx
+      - mountPath: /var/cache/nginx
+        name: nginx-home
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+  extraEmptyDirMounts: []
+  extraExposePorts: []
+  extraInitContainers: []
+  extraLabels: {}
+  extraObjects: []
+  extraSecretMounts: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  forceDeployDashboards: false
+  forceDeployDatasources: false
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  gossipPortName: gossip
+  grafana.ini:
+    analytics:
+      check_for_updates: true
+    auth:
+      disable_login_form: false
+    auth.anonymous:
+      enabled: true
+      org_role: Viewer
+    auth.basic:
+      enabled: false
+    dashboards:
+      default_home_dashboard_path: /tmp/dashboards/rancher-default-home.json
+    grafana_net:
+      url: https://grafana.net
+    log:
+      mode: console
+    paths:
+      data: /var/lib/grafana/
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning
+    security:
+      allow_embedding: true
+    server:
+      domain: '{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl
+        (.Values.ingress.hosts | first) . }}{{ else }}''''{{ end }}'
+    users:
+      auto_assign_org_role: Viewer
+  headlessService: false
+  hostAliases: []
+  image:
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    repository: rancher/mirrored-grafana-grafana
+    sha: ""
+    tag: 12.1.1
+  imageRenderer:
+    affinity: {}
+    automountServiceAccountToken: false
+    autoscaling:
+      behavior: {}
+      enabled: false
+      maxReplicas: 5
+      minReplicas: 1
+      targetCPU: "60"
+      targetMemory: ""
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      seccompProfile:
+        type: RuntimeDefault
+    deploymentStrategy: {}
+    enabled: false
+    env:
+      HTTP_HOST: 0.0.0.0
+      XDG_CACHE_HOME: /tmp/.chromium
+      XDG_CONFIG_HOME: /tmp/.chromium
+    envValueFrom: {}
+    extraConfigmapMounts: []
+    extraSecretMounts: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    grafanaProtocol: http
+    grafanaSubPath: ""
+    hostAliases: []
+    image:
+      pullPolicy: Always
+      pullSecrets: []
+      repository: rancher/mirrored-grafana-grafana-image-renderer
+      sha: ""
+      tag: v4.0.15
+    networkPolicy:
+      extraIngressSelectors: []
+      limitEgress: false
+      limitIngress: true
+    nodeSelector: {}
+    podAnnotations: {}
+    podPortName: http
+    priorityClassName: ""
+    renderingCallbackURL: ""
+    replicas: 1
+    resources: {}
+    revisionHistoryLimit: 10
+    securityContext: {}
+    serverURL: ""
+    service:
+      appProtocol: ""
+      enabled: true
+      port: 8081
+      portName: http
+      targetPort: 8081
+    serviceAccountName: ""
+    serviceMonitor:
+      enabled: false
+      interval: 1m
+      labels: {}
+      path: /metrics
+      relabelings: []
+      scheme: http
+      scrapeTimeout: 30s
+      targetLabels: []
+      tlsConfig: {}
+    tolerations: []
+  ingress:
+    annotations: {}
+    enabled: false
+    extraPaths: []
+    hosts: []
+    labels: {}
+    path: /
+    pathType: Prefix
+    tls: []
+  initChownData:
+    enabled: true
+    image:
+      pullPolicy: IfNotPresent
+      repository: rancher/mirrored-library-busybox
+      sha: ""
+      tag: 1.31.1
+    resources: {}
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        drop:
+        - ALL
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+      runAsUser: 0
+      seccompProfile:
+        type: RuntimeDefault
+  ldap:
+    config: ""
+    enabled: false
+    existingSecret: ""
+  lifecycleHooks: {}
+  livenessProbe:
+    failureThreshold: 10
+    httpGet:
+      path: /api/health
+      port: 3000
+    initialDelaySeconds: 60
+    timeoutSeconds: 30
+  namespaceOverride: ""
+  networkPolicy:
+    allowExternal: true
+    egress:
+      blockDNSResolution: false
+      enabled: false
+      ports: []
+      to: []
+    enabled: false
+    explicitNamespacesSelector: {}
+    ingress: true
+  nodeSelector: {}
+  notifiers: {}
+  operator:
+    annotations: {}
+    dashboardsConfigMapRefEnabled: false
+    folder: General
+    matchLabels: {}
+    resyncPeriod: 10m
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    annotations: null
+    disableWarning: false
+    enabled: true
+    extraPvcLabels: {}
+    inMemory:
+      enabled: false
+    lookupVolumeName: true
+    size: 10Gi
+    storageClassName: longhorn
+    subPath: null
+    type: pvc
+    volumeName: ""
+  plugins: []
+  podDisruptionBudget: {}
+  podPortName: grafana
+  proxy:
+    image:
+      repository: rancher/mirrored-library-nginx
+      tag: 1.27.2-alpine
+  prune: false
+  rbac:
+    create: true
+    extraClusterRoleRules: []
+    extraRoleRules: []
+    namespaced: false
+    pspEnabled: false
+    pspUseAppArmor: false
+  readinessProbe:
+    httpGet:
+      path: /api/health
+      port: 3000
+  replicas: 1
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  revisionHistoryLimit: 10
+  route:
+    main:
+      additionalRules: []
+      annotations: {}
+      apiVersion: gateway.networking.k8s.io/v1
+      enabled: false
+      filters: []
+      hostnames: []
+      kind: HTTPRoute
+      labels: {}
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+      parentRefs: []
+  securityContext:
+    fsGroup: 472
+    runAsGroup: 472
+    runAsNonRoot: true
+    runAsUser: 472
+  service:
+    annotations: {}
+    appProtocol: ""
+    enabled: true
+    ipFamilies: []
+    ipFamilyPolicy: ""
+    labels: {}
+    loadBalancerClass: ""
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30950
+    port: 80
+    portName: nginx-http
+    sessionAffinity: ""
+    targetPort: 8080
+    type: ClusterIP
+  serviceAccount:
+    autoMount: true
+    automountServiceAccountToken: true
+    create: true
+    labels: {}
+    name: null
+    nameTest: null
+  serviceMonitor:
+    basicAuth: {}
+    enabled: true
+    interval: ""
+    labels: {}
+    metricRelabelings: []
+    path: /metrics
+    relabelings: []
+    scheme: http
+    scrapeTimeout: 30s
+    targetLabels: []
+    tlsConfig: {}
+  shareProcessNamespace: false
+  sidecar:
+    alerts:
+      enabled: false
+      env: {}
+      envValueFrom: {}
+      extraMounts: []
+      initAlerts: false
+      label: grafana_alert
+      labelValue: ""
+      reloadURL: http://localhost:3000/api/admin/provisioning/alerting/reload
+      resource: both
+      resourceName: ""
+      script: null
+      searchNamespace: null
+      sizeLimit: ""
+      skipReload: true
+      watchMethod: WATCH
+    dashboards:
+      SCProvider: true
+      annotations: {}
+      defaultFolderName: null
+      enableNewTablePanelSyntax: false
+      enabled: true
+      env: {}
+      envValueFrom: {}
+      extraMounts: []
+      folder: /tmp/dashboards
+      folderAnnotation: null
+      label: grafana_dashboard
+      labelValue: "1"
+      multicluster:
+        etcd:
+          enabled: false
+        global:
+          enabled: false
+      provider:
+        allowUiUpdates: false
+        disableDelete: false
+        folder: ""
+        folderUid: ""
+        foldersFromFilesStructure: false
+        name: sidecarProvider
+        orgid: 1
+        type: file
+      reloadURL: http://localhost:3000/api/admin/provisioning/dashboards/reload
+      resource: both
+      resourceName: ""
+      script: null
+      searchNamespace: cattle-dashboards
+      sizeLimit: ""
+      skipReload: false
+      watchMethod: WATCH
+    datasources:
+      alertmanager:
+        enabled: true
+        handleGrafanaManagedAlerts: false
+        implementation: prometheus
+        name: Alertmanager
+        uid: alertmanager
+      annotations: {}
+      createPrometheusReplicasDatasources: false
+      defaultDatasourceEnabled: true
+      enabled: true
+      env: {}
+      envValueFrom: {}
+      exemplarTraceIdDestinations: {}
+      extraMounts: []
+      httpMethod: POST
+      initDatasources: true
+      isDefaultDatasource: true
+      label: grafana_datasource
+      labelValue: "1"
+      name: Prometheus
+      prometheusServiceName: prometheus-operated
+      reloadURL: http://localhost:3000/api/admin/provisioning/datasources/reload
+      resource: both
+      resourceName: ""
+      script: null
+      searchNamespace: null
+      sizeLimit: ""
+      skipReload: false
+      uid: prometheus
+      watchMethod: WATCH
+    enableUniqueFilenames: false
+    image:
+      repository: rancher/appco-k8s-sidecar
+      sha: ""
+      tag: 1.30.7-11.3
+    imagePullPolicy: IfNotPresent
+    livenessProbe: {}
+    notifiers:
+      enabled: false
+      env: {}
+      extraMounts: []
+      initNotifiers: false
+      label: grafana_notifier
+      labelValue: ""
+      reloadURL: http://localhost:3000/api/admin/provisioning/notifications/reload
+      resource: both
+      resourceName: ""
+      script: null
+      searchNamespace: null
+      sizeLimit: ""
+      skipReload: false
+      watchMethod: WATCH
+    plugins:
+      enabled: false
+      env: {}
+      extraMounts: []
+      initPlugins: false
+      label: grafana_plugin
+      labelValue: ""
+      reloadURL: http://localhost:3000/api/admin/provisioning/plugins/reload
+      resource: both
+      resourceName: ""
+      script: null
+      searchNamespace: null
+      sizeLimit: ""
+      skipReload: false
+      watchMethod: WATCH
+    readinessProbe: {}
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      seccompProfile:
+        type: RuntimeDefault
+  smtp:
+    existingSecret: ""
+    passwordKey: password
+    userKey: user
+  testFramework:
+    containerSecurityContext: {}
+    enabled: false
+    imagePullPolicy: IfNotPresent
+    resources: {}
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+  tolerations: []
+  topologySpreadConstraints: []
+  useStatefulSet: false
+hardened:
+  k3s:
+    networkPolicy:
+      enabled: true
+hardenedKubelet:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    port: 10015
+    rbac:
+      additionalRules:
+      - nonResourceURLs:
+        - /metrics/cadvisor
+        verbs:
+        - get
+      - apiGroups:
+        - ""
+        resources:
+        - nodes/metrics
+        verbs:
+        - get
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kubelet
+  enabled: false
+  metricsPort: 10250
+  serviceMonitor:
+    endpoints:
+    - honorLabels: true
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+    - honorLabels: true
+      path: /metrics/cadvisor
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+    - honorLabels: true
+      path: /metrics/probes
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+hardenedNodeExporter:
+  clients:
+    port: 10016
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: node-exporter
+  enabled: false
+  metricsPort: 9796
+ingressNginx:
+  enabled: false
+  namespace: ingress-nginx
+  service:
+    port: 9913
+    targetPort: 10254
+  serviceMonitor:
+    interval: 30s
+    metricRelabelings: []
+    proxyUrl: ""
+    relabelings: []
+k3sServer:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    port: 10013
+    rbac:
+      additionalRules:
+      - nonResourceURLs:
+        - /metrics/cadvisor
+        verbs:
+        - get
+      - apiGroups:
+        - ""
+        resources:
+        - nodes/metrics
+        verbs:
+        - get
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: k3s-server
+  enabled: false
+  metricsPort: 10250
+  serviceMonitor:
+    endpoints:
+    - honorLabels: true
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+    - honorLabels: true
+      path: /metrics/cadvisor
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+    - honorLabels: true
+      path: /metrics/probes
+      port: metrics
+      relabelings:
+      - sourceLabels:
+        - __metrics_path__
+        targetLabel: metrics_path
+kube-state-metrics:
+  affinity: {}
+  annotations: {}
+  automountServiceAccountToken: true
+  autosharding:
+    enabled: false
+  collectors:
+  - certificatesigningrequests
+  - configmaps
+  - cronjobs
+  - daemonsets
+  - deployments
+  - endpoints
+  - horizontalpodautoscalers
+  - ingresses
+  - jobs
+  - leases
+  - limitranges
+  - mutatingwebhookconfigurations
+  - namespaces
+  - networkpolicies
+  - nodes
+  - persistentvolumeclaims
+  - persistentvolumes
+  - poddisruptionbudgets
+  - pods
+  - replicasets
+  - replicationcontrollers
+  - resourcequotas
+  - secrets
+  - services
+  - statefulsets
+  - storageclasses
+  - validatingwebhookconfigurations
+  - volumeattachments
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+  containers: []
+  customLabels: {}
+  customResourceState:
+    config: {}
+    create: true
+    enabled: false
+    key: config.yaml
+    name: ""
+  dnsConfig: {}
+  dnsPolicy: ClusterFirst
+  env: []
+  extraArgs: []
+  extraManifests: []
+  global:
+    cattle:
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  hostNetwork: false
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: rancher/mirrored-kube-state-metrics-kube-state-metrics
+    sha: ""
+    tag: v2.17.0
+  imagePullSecrets: []
+  initContainers: []
+  kubeRBACProxy:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+    enabled: false
+    extraArgs: []
+    ignoreProbePaths: true
+    image:
+      pullPolicy: IfNotPresent
+      registry: ""
+      repository: rancher/mirrored-brancz-kube-rbac-proxy
+      sha: ""
+      tag: v0.19.1
+    proxyEndpointsPort: 8888
+    resources: {}
+    volumeMounts: []
+  kubeconfig:
+    enabled: false
+    secret: null
+  labels: {}
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      scheme: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  metricAllowlist: []
+  metricAnnotationsAllowList: []
+  metricDenylist: []
+  metricLabelsAllowlist: []
+  namespaceOverride: ""
+  namespaces: ""
+  namespacesDenylist: ""
+  networkPolicy:
+    enabled: false
+    flavor: kubernetes
+  nodeSelector: {}
+  podAnnotations: {}
+  podDisruptionBudget: {}
+  podLabels: {}
+  prometheus:
+    monitor:
+      additionalLabels: {}
+      annotations: {}
+      enabled: true
+      honorLabels: true
+      http:
+        bearerTokenFile: ""
+        bearerTokenSecret: {}
+        enableHttp2: false
+        honorLabels: false
+        interval: ""
+        metricRelabelings: []
+        proxyUrl: ""
+        relabelings: []
+        scheme: ""
+        scrapeTimeout: ""
+        tlsConfig: {}
+      interval: ""
+      jobLabel: ""
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      metrics:
+        bearerTokenFile: ""
+        bearerTokenSecret: {}
+        enableHttp2: false
+        honorLabels: false
+        interval: ""
+        metricRelabelings: []
+        proxyUrl: ""
+        relabelings: []
+        scheme: ""
+        scrapeTimeout: ""
+        tlsConfig: {}
+      namespace: ""
+      namespaceSelector: []
+      podTargetLabels: []
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scrapeTimeout: ""
+      selectorOverride: {}
+      targetLabels: []
+      targetLimit: 0
+    scrapeconfig:
+      additionalLabels: {}
+      annotations: {}
+      enableHttp2: false
+      enabled: false
+      honorLabels: true
+      jobName: kube-state-metrics
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scheme: ""
+      scrapeInterval: ""
+      scrapeTimeout: ""
+      staticConfigLabels: {}
+      targetLimit: 0
+      tlsConfig: {}
+  prometheusScrape: false
+  rbac:
+    create: true
+    extraRules: []
+    useClusterRole: true
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      scheme: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  releaseLabel: true
+  releaseNamespace: false
+  replicas: 1
+  resources: {}
+  revisionHistoryLimit: 10
+  securityContext:
+    enabled: true
+    fsGroup: 65534
+    runAsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  selectorOverride: {}
+  selfMonitor:
+    enabled: false
+  service:
+    annotations: {}
+    clusterIP: ""
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 0
+    port: 8080
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    imagePullSecrets: []
+    name: null
+  startupProbe:
+    enabled: false
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      scheme: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  tolerations: []
+  topologySpreadConstraints: []
+  verticalPodAutoscaler:
+    controlledResources: []
+    enabled: false
+    maxAllowed: {}
+    minAllowed: {}
+  volumeMounts: []
+  volumes: []
+kubeAdmControllerManager:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    nodeSelector:
+      node-role.kubernetes.io/master: ""
+    port: 10011
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-controller-manager
+  enabled: false
+  metricsPort: 10257
+kubeAdmEtcd:
+  clients:
+    nodeSelector:
+      node-role.kubernetes.io/master: ""
+    port: 10014
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-etcd
+  enabled: false
+  metricsPort: 2381
+kubeAdmProxy:
+  clients:
+    port: 10013
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-proxy
+  enabled: false
+  metricsPort: 10249
+kubeAdmScheduler:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    nodeSelector:
+      node-role.kubernetes.io/master: ""
+    port: 10012
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-scheduler
+  enabled: false
+  metricsPort: 10259
+kubeApiServer:
+  enabled: true
+  serviceMonitor:
+    additionalLabels: {}
+    enabled: true
+    interval: ""
+    jobLabel: component
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings:
+    - action: drop
+      regex: (etcd_request|apiserver_request_slo|apiserver_request_sli|apiserver_request)_duration_seconds_bucket;(0\.15|0\.2|0\.3|0\.35|0\.4|0\.45|0\.6|0\.7|0\.8|0\.9|1\.25|1\.5|1\.75|2|3|3\.5|4|4\.5|6|7|8|9|15|20|40|45|50)(\.0)?
+      sourceLabels:
+      - __name__
+      - le
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector:
+      matchLabels:
+        component: apiserver
+        provider: kubernetes
+    targetLabels: []
+    targetLimit: 0
+  tlsConfig:
+    insecureSkipVerify: false
+    serverName: kubernetes
+kubeControllerManager:
+  enabled: false
+  endpoints: []
+  service:
+    enabled: true
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: null
+    targetPort: null
+  serviceMonitor:
+    additionalLabels: {}
+    enabled: true
+    https: null
+    insecureSkipVerify: null
+    interval: ""
+    jobLabel: jobLabel
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    port: http-metrics
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector: {}
+    serverName: null
+    targetLabels: []
+    targetLimit: 0
+kubeDns:
+  enabled: false
+  service:
+    dnsmasq:
+      port: 10054
+      targetPort: 10054
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    skydns:
+      port: 10055
+      targetPort: 10055
+  serviceMonitor:
+    additionalLabels: {}
+    dnsmasqMetricRelabelings: []
+    dnsmasqRelabelings: []
+    interval: ""
+    jobLabel: jobLabel
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector: {}
+    targetLabels: []
+    targetLimit: 0
+kubeEtcd:
+  enabled: false
+  endpoints: []
+  service:
+    enabled: true
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: 2381
+    targetPort: 2381
+  serviceMonitor:
+    additionalLabels: {}
+    caFile: ""
+    certFile: ""
+    enabled: true
+    insecureSkipVerify: false
+    interval: ""
+    jobLabel: jobLabel
+    keyFile: ""
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    port: http-metrics
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    scheme: http
+    selector: {}
+    serverName: ""
+    targetLabels: []
+    targetLimit: 0
+kubeProxy:
+  enabled: false
+  endpoints: []
+  service:
+    enabled: true
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: 10249
+    targetPort: 10249
+  serviceMonitor:
+    additionalLabels: {}
+    enabled: true
+    https: false
+    interval: ""
+    jobLabel: jobLabel
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    port: http-metrics
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector: {}
+    targetLabels: []
+    targetLimit: 0
+kubeScheduler:
+  enabled: false
+  endpoints: []
+  service:
+    enabled: true
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: null
+    targetPort: null
+  serviceMonitor:
+    additionalLabels: {}
+    enabled: true
+    https: null
+    insecureSkipVerify: null
+    interval: ""
+    jobLabel: jobLabel
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    port: http-metrics
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    selector: {}
+    serverName: null
+    targetLabels: []
+    targetLimit: 0
+kubeStateMetrics:
+  enabled: true
+kubeTargetVersionOverride: ""
+kubeVersionOverride: ""
+kubelet:
+  enabled: true
+  namespace: kube-system
+  serviceMonitor:
+    additionalLabels: {}
+    attachMetadata:
+      node: false
+    cAdvisor: true
+    cAdvisorInterval: 10s
+    cAdvisorMetricRelabelings:
+    - action: drop
+      regex: container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_memory_(mapped_file|swap)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_(file_descriptors|tasks_state|threads_max)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: container_memory_failures_total;hierarchy
+      sourceLabels:
+      - __name__
+      - scope
+    - action: drop
+      regex: container_network_.*;(cali|cilium|cni|lxc|nodelocaldns|tunl).*
+      sourceLabels:
+      - __name__
+      - interface
+    - action: drop
+      regex: container_spec.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: .+;
+      sourceLabels:
+      - id
+      - pod
+    cAdvisorRelabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+    enabled: true
+    honorLabels: true
+    honorTimestamps: true
+    https: true
+    insecureSkipVerify: true
+    interval: ""
+    kubelet: true
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings:
+    - action: drop
+      regex: (csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?
+      sourceLabels:
+      - __name__
+      - le
+    probes: true
+    probesMetricRelabelings: []
+    probesRelabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+    proxyUrl: ""
+    relabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+    resource: false
+    resourceInterval: 10s
+    resourcePath: /metrics/resource/v1alpha1
+    resourceRelabelings:
+    - action: replace
+      sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+    sampleLimit: 0
+    targetLabels: []
+    targetLimit: 0
+    trackTimestampsStaleness: true
+kubernetesServiceMonitors:
+  enabled: true
+loggingMonitors:
+  fluentbit:
+    enabled: false
+  fluentd:
+    enabled: false
+nameOverride: rancher-monitoring
+namespaceOverride: cattle-monitoring-system
+nodeExporter:
+  enabled: true
+  forceDeployDashboards: false
+  operatingSystems:
+    aix:
+      enabled: true
+    darwin:
+      enabled: true
+    linux:
+      enabled: true
+prometheus:
+  additionalLabels: {}
+  additionalPodMonitors: []
+  additionalRulesForClusterRole: []
+  additionalServiceMonitors: []
+  agentMode: false
+  annotations: {}
+  disableServiceDiscovery: false
+  enabled: true
+  extraSecret:
+    annotations: {}
+    data: {}
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts: []
+    ingressClassName: ""
+    labels: {}
+    paths: []
+    tls: []
+  ingressPerReplica:
+    annotations: {}
+    enabled: false
+    hostDomain: ""
+    hostPrefix: ""
+    ingressClassName: ""
+    labels: {}
+    paths: []
+    tlsSecretName: ""
+    tlsSecretPerReplica:
+      enabled: false
+      prefix: prometheus
+  networkPolicy:
+    enabled: false
+    flavor: kubernetes
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+    unhealthyPodEvictionPolicy: AlwaysAllow
+  prometheusSpec:
+    additionalAlertManagerConfigs: []
+    additionalAlertManagerConfigsSecret: {}
+    additionalAlertRelabelConfigs: []
+    additionalAlertRelabelConfigsSecret: {}
+    additionalArgs: []
+    additionalConfig: {}
+    additionalConfigString: ""
+    additionalPrometheusSecretsAnnotations: {}
+    additionalRemoteRead: []
+    additionalRemoteWrite: []
+    additionalScrapeConfigs: []
+    additionalScrapeConfigsSecret: {}
+    affinity: {}
+    alertingEndpoints: []
+    allowOverlappingBlocks: false
+    apiserverConfig: {}
+    arbitraryFSAccessThroughSMs: false
+    automountServiceAccountToken: true
+    configMaps: []
+    containers: |
+      - name: prometheus-proxy
+        args:
+        - nginx
+        - -g
+        - daemon off;
+        - -c
+        - /nginx/nginx.conf
+        image: "{{ template "system_default_registry" . }}{{ .Values.prometheus.prometheusSpec.proxy.image.repository }}:{{ .Values.prometheus.prometheusSpec.proxy.image.tag }}"
+        ports:
+        - containerPort: 8081
+          name: nginx-http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /nginx
+          name: prometheus-nginx
+        - mountPath: /var/cache/nginx
+          name: nginx-home
+        securityContext:
+          runAsUser: 101
+          runAsGroup: 101
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+    disableCompaction: false
+    dnsConfig: {}
+    dnsPolicy: ""
+    enableAdminAPI: false
+    enableFeatures: []
+    enableOTLPReceiver: false
+    enableRemoteWriteReceiver: false
+    enforcedKeepDroppedTargets: 0
+    enforcedLabelLimit: false
+    enforcedLabelNameLengthLimit: false
+    enforcedLabelValueLengthLimit: false
+    enforcedNamespaceLabel: ""
+    enforcedSampleLimit: false
+    enforcedTargetLimit: false
+    evaluationInterval: 30s
+    excludedFromEnforcement: []
+    exemplars: {}
+    externalLabels: {}
+    externalUrl: ""
+    hostAliases: []
+    hostNetwork: false
+    ignoreNamespaceSelectors: false
+    image:
+      pullPolicy: IfNotPresent
+      repository: rancher/prom-prometheus
+      tag: v3.5.0
+    initContainers: []
+    listenLocal: false
+    logFormat: logfmt
+    logLevel: info
+    maximumStartupDurationSeconds: 0
+    minReadySeconds: 0
+    nameValidationScheme: ""
+    nodeSelector: {}
+    otlp: {}
+    overrideHonorLabels: false
+    overrideHonorTimestamps: false
+    paused: false
+    persistentVolumeClaimRetentionPolicy: {}
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    podMetadata: {}
+    podMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    podTargetLabels: []
+    portName: http-web
+    priorityClassName: ""
+    probeNamespaceSelector: {}
+    probeSelector: {}
+    probeSelectorNilUsesHelmValues: true
+    prometheusExternalLabelName: ""
+    prometheusExternalLabelNameClear: false
+    prometheusRulesExcludedFromEnforce: []
+    proxy:
+      image:
+        repository: rancher/mirrored-library-nginx
+        tag: 1.27.2-alpine
+    query: {}
+    queryLogFile: false
+    remoteRead: []
+    remoteWrite: []
+    remoteWriteDashboards: false
+    replicaExternalLabelName: ""
+    replicaExternalLabelNameClear: false
+    replicas: 1
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 3000Mi
+      requests:
+        cpu: 750m
+        memory: 750Mi
+    retention: 7d
+    retentionSize: 50GiB
+    routePrefix: /
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    sampleLimit: false
+    scrapeClasses: []
+    scrapeConfigNamespaceSelector: {}
+    scrapeConfigSelector: {}
+    scrapeConfigSelectorNilUsesHelmValues: true
+    scrapeFailureLogFile: ""
+    scrapeInterval: 30s
+    scrapeProtocols: []
+    secrets: []
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    serviceDiscoveryRole: ""
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceName: null
+    shards: 1
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
+          storageClassName: longhorn
+    thanos: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    tracingConfig: {}
+    tsdb:
+      outOfOrderTimeWindow: 0s
+    version: ""
+    volumeMounts: []
+    volumes:
+    - emptyDir: {}
+      name: nginx-home
+    - configMap:
+        defaultMode: 438
+        name: prometheus-nginx-proxy-config
+      name: prometheus-nginx
+    walCompression: true
+    web: {}
+  route:
+    main:
+      additionalRules: []
+      annotations: {}
+      apiVersion: gateway.networking.k8s.io/v1
+      enabled: false
+      filters: []
+      hostnames: []
+      httpsRedirect: false
+      kind: HTTPRoute
+      labels: {}
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+      parentRefs: []
+  service:
+    additionalPorts: []
+    annotations: {}
+    clusterIP: ""
+    enabled: true
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels: {}
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30090
+    port: 9090
+    publishNotReadyAddresses: false
+    reloaderWebPort: 8080
+    sessionAffinity: None
+    sessionAffinityConfig:
+      clientIP:
+        timeoutSeconds: 10800
+    targetPort: 8081
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: ""
+  serviceMonitor:
+    additionalEndpoints: []
+    additionalLabels: {}
+    bearerTokenFile: null
+    interval: ""
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    relabelings: []
+    sampleLimit: 0
+    scheme: ""
+    selfMonitor: true
+    targetLimit: 0
+    tlsConfig: {}
+  servicePerReplica:
+    annotations: {}
+    enabled: false
+    externalTrafficPolicy: Cluster
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    loadBalancerSourceRanges: []
+    nodePort: 30091
+    port: 9090
+    targetPort: 9090
+    type: ClusterIP
+  thanosIngress:
+    annotations: {}
+    enabled: false
+    hosts: []
+    ingressClassName: ""
+    labels: {}
+    nodePort: 30901
+    paths: []
+    servicePort: 10901
+    tls: []
+  thanosService:
+    annotations: {}
+    clusterIP: None
+    enabled: false
+    externalTrafficPolicy: Cluster
+    httpNodePort: 30902
+    httpPort: 10902
+    httpPortName: http
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels: {}
+    nodePort: 30901
+    port: 10901
+    portName: grpc
+    targetHttpPort: http
+    targetPort: grpc
+    type: ClusterIP
+  thanosServiceExternal:
+    annotations: {}
+    enabled: false
+    externalTrafficPolicy: Cluster
+    httpNodePort: 30902
+    httpPort: 10902
+    httpPortName: http
+    labels: {}
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30901
+    port: 10901
+    portName: grpc
+    targetHttpPort: http
+    targetPort: grpc
+    type: LoadBalancer
+  thanosServiceMonitor:
+    additionalLabels: {}
+    bearerTokenFile: null
+    enabled: false
+    interval: ""
+    metricRelabelings: []
+    relabelings: []
+    scheme: ""
+    tlsConfig: {}
+prometheus-adapter:
+  affinity: {}
+  automountServiceAccountToken: true
+  certManager:
+    caCertDuration: 43800h0m0s
+    caCertRevisionHistoryLimit: null
+    certDuration: 8760h0m0s
+    certRevisionHistoryLimit: null
+    enabled: false
+  customAnnotations: {}
+  customLabels: {}
+  deploymentAnnotations: {}
+  dnsConfig: {}
+  enabled: true
+  env: []
+  extraArguments: []
+  extraContainers: []
+  extraManifests: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  hostNetwork:
+    enabled: false
+  image:
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    repository: rancher/mirrored-prometheus-adapter-prometheus-adapter
+    tag: v0.12.0
+  listenPort: 6443
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: https
+      scheme: HTTPS
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+  logLevel: 4
+  metricsRelistInterval: 1m
+  namespaceOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+    minAvailable: null
+    unhealthyPodEvictionPolicy: null
+  podLabels: {}
+  podSecurityContext:
+    fsGroup: 10001
+  priorityClassName: ""
+  prometheus:
+    path: ""
+    port: 9090
+    url: http://rancher-monitoring-prometheus.cattle-monitoring-system.svc
+  rbac:
+    create: true
+    customMetrics:
+      resources:
+      - '*'
+    externalMetrics:
+      resources:
+      - '*'
+    useAuthReaderClusterRole: false
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: https
+      scheme: HTTPS
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+  replicas: 1
+  resources: {}
+  rules:
+    custom: []
+    default: true
+    existing: null
+    external: []
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  service:
+    annotations: {}
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    port: 443
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: null
+  startupProbe: {}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  tls:
+    ca: '# Public CA file that signed the APIService'
+    certificate: '# Public key of the APIService'
+    enable: false
+    key: '# Private key of the APIService'
+  tolerations: []
+  topologySpreadConstraints: []
+prometheus-node-exporter:
+  affinity: {}
+  commonLabels: {}
+  configmaps: []
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+  daemonsetAnnotations: {}
+  dnsConfig: {}
+  endpoints: []
+  env: {}
+  extraArgs:
+  - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+  - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
+  extraHostVolumeMounts: []
+  extraInitContainers: []
+  extraManifests: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  fullnameOverride: ""
+  global:
+    cattle:
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  hostIPC: false
+  hostNetwork: true
+  hostPID: true
+  hostProcFsMount:
+    mountPropagation: ""
+  hostRootFsMount:
+    enabled: true
+    mountPropagation: HostToContainer
+  hostSysFsMount:
+    mountPropagation: ""
+  image:
+    digest: ""
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: rancher/mirrored-prometheus-node-exporter
+    tag: v1.9.1
+  imagePullSecrets: []
+  kubeRBACProxy:
+    containerSecurityContext: {}
+    enableHostPort: false
+    enableProxyEndpointsHostPort: false
+    enabled: false
+    env: {}
+    extraArgs: []
+    extraVolumeMounts: []
+    image:
+      pullPolicy: IfNotPresent
+      registry: ""
+      repository: rancher/mirrored-brancz-kube-rbac-proxy
+      sha: ""
+      tag: v0.19.1
+    port: 8100
+    portName: http
+    proxyEndpointsPort: 8888
+    resources: {}
+    tls:
+      enabled: false
+      tlsClientAuth: false
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      scheme: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  nameOverride: ""
+  namespaceOverride: ""
+  networkPolicy:
+    enabled: false
+  nodeSelector:
+    kubernetes.io/os: linux
+  podAnnotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+  podLabels:
+    jobLabel: node-exporter
+  prometheus:
+    monitor:
+      additionalLabels: {}
+      apiVersion: ""
+      attachMetadata:
+        node: false
+      basicAuth: {}
+      bearerTokenFile: null
+      enabled: true
+      interval: ""
+      jobLabel: jobLabel
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      namespace: ""
+      podTargetLabels: []
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scheme: http
+      scrapeTimeout: ""
+      selectorOverride: {}
+      targetLabels: []
+      targetLimit: 0
+      tlsConfig: {}
+    podMonitor:
+      additionalLabels: {}
+      apiVersion: ""
+      attachMetadata:
+        node: false
+      authorization: {}
+      basicAuth: {}
+      bearerTokenSecret: {}
+      enableHttp2: ""
+      enabled: false
+      filterRunning: ""
+      followRedirects: ""
+      honorLabels: true
+      honorTimestamps: true
+      interval: ""
+      jobLabel: jobLabel
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      namespace: ""
+      oauth2: {}
+      params: {}
+      path: /metrics
+      podTargetLabels: []
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scheme: http
+      scrapeTimeout: ""
+      selectorOverride: {}
+      targetLimit: 0
+      tlsConfig: {}
+  rbac:
+    create: true
+    pspEnabled: false
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      scheme: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  releaseLabel: true
+  resources: {}
+  restartPolicy: null
+  revisionHistoryLimit: 10
+  secrets: []
+  securityContext:
+    fsGroup: 65534
+    runAsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+    clusterIP: ""
+    enabled: true
+    externalTrafficPolicy: ""
+    internalTrafficPolicy: ""
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels:
+      jobLabel: node-exporter
+    listenOnAllInterfaces: true
+    nodePort: null
+    port: 9796
+    portName: http-metrics
+    servicePort: ""
+    targetPort: 9796
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: false
+    create: true
+    imagePullSecrets: []
+    name: null
+  sidecarHostVolumeMounts: []
+  sidecarVolumeMount: []
+  sidecars: []
+  terminationGracePeriodSeconds: null
+  terminationMessageParams:
+    enabled: false
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+  tlsSecret:
+    caItem: ""
+    certItem: tls.crt
+    enabled: false
+    keyItem: tls.key
+    secretName: prometheus-node-exporter-tls
+    volumeName: prometheus-node-exporter-tls
+  tolerations:
+  - effect: NoSchedule
+    operator: Exists
+  - effect: NoExecute
+    operator: Exists
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  version: ""
+  verticalPodAutoscaler:
+    controlledResources: []
+    enabled: false
+    maxAllowed: {}
+    minAllowed: {}
+prometheus-windows-exporter:
+  config: |-
+    collectors:
+      enabled: '[defaults],memory,container'
+  podLabels:
+    jobLabel: windows-exporter
+  prometheus:
+    monitor:
+      enabled: true
+      jobLabel: jobLabel
+  releaseLabel: true
+prometheusOperator:
+  admissionWebhooks:
+    annotations: {}
+    caBundle: ""
+    certManager:
+      admissionCert:
+        duration: ""
+        revisionHistoryLimit: null
+      enabled: false
+      rootCert:
+        duration: ""
+        revisionHistoryLimit: null
+    createSecretJob:
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+    deployment:
+      affinity: {}
+      annotations: {}
+      automountServiceAccountToken: true
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+      dnsConfig: {}
+      enabled: false
+      hostNetwork: false
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-prometheus-operator-admission-webhook
+        sha: ""
+        tag: v0.85.0
+      labels: {}
+      livenessProbe:
+        enabled: true
+        failureThreshold: 3
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      nodeSelector: {}
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        minAvailable: 1
+        unhealthyPodEvictionPolicy: AlwaysAllow
+      podLabels: {}
+      readinessProbe:
+        enabled: true
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      replicas: 1
+      resources: {}
+      revisionHistoryLimit: 10
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      service:
+        additionalPorts: []
+        annotations: {}
+        clusterIP: ""
+        externalIPs: []
+        externalTrafficPolicy: Cluster
+        ipDualStack:
+          enabled: false
+          ipFamilies:
+          - IPv6
+          - IPv4
+          ipFamilyPolicy: PreferDualStack
+        labels: {}
+        loadBalancerIP: ""
+        loadBalancerSourceRanges: []
+        nodePort: 31080
+        nodePortTls: 31443
+        type: ClusterIP
+      serviceAccount:
+        annotations: {}
+        automountServiceAccountToken: false
+        create: true
+        name: ""
+      strategy: {}
+      tls:
+        enabled: true
+        internalPort: 10250
+        tlsMinVersion: VersionTLS13
+      tolerations: []
+    enabled: true
+    failurePolicy: ""
+    matchConditions: {}
+    mutatingWebhookConfiguration:
+      annotations: {}
+    namespaceSelector: {}
+    objectSelector: {}
+    patch:
+      affinity: {}
+      annotations: {}
+      enabled: true
+      image:
+        pullPolicy: IfNotPresent
+        repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
+        sha: ""
+        tag: v1.6.2
+      nodeSelector: {}
+      podAnnotations: {}
+      priorityClassName: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 2000
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount:
+        annotations: {}
+        automountServiceAccountToken: true
+        create: true
+      tolerations: []
+      ttlSecondsAfterFinished: 60
+    patchWebhookJob:
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+    timeoutSeconds: 10
+    validatingWebhookConfiguration:
+      annotations: {}
+  affinity: {}
+  alertmanagerConfigNamespaces: []
+  alertmanagerInstanceNamespaces: []
+  alertmanagerInstanceSelector: ""
+  annotations: {}
+  automountServiceAccountToken: true
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+  denyNamespaces: []
+  dnsConfig: {}
+  enabled: true
+  env:
+    GOGC: "30"
+  extraArgs: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  fullnameOverride: ""
+  hostNetwork: false
+  image:
+    pullPolicy: IfNotPresent
+    repository: rancher/mirrored-prometheus-operator-prometheus-operator
+    sha: ""
+    tag: v0.85.0
+  kubeletEndpointSliceEnabled: false
+  kubeletEndpointsEnabled: true
+  kubeletService:
+    enabled: true
+    name: ""
+    namespace: kube-system
+    selector: ""
+  labels: {}
+  lifecycle: {}
+  livenessProbe:
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  namespaces: {}
+  networkPolicy:
+    enabled: false
+    flavor: kubernetes
+  nodeSelector: {}
+  podAnnotations: {}
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+    unhealthyPodEvictionPolicy: AlwaysAllow
+  podLabels: {}
+  prometheusConfigReloader:
+    enableProbe: false
+    image:
+      repository: rancher/mirrored-prometheus-operator-prometheus-config-reloader
+      sha: ""
+      tag: v0.80.1
+    resources: {}
+  prometheusInstanceNamespaces: []
+  prometheusInstanceSelector: ""
+  readinessProbe:
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  resources: {}
+  revisionHistoryLimit: 10
+  secretFieldSelector: type!=kubernetes.io/dockercfg,type!=kubernetes.io/service-account-token,type!=helm.sh/release.v1
+  securityContext:
+    fsGroup: 65534
+    runAsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  service:
+    additionalPorts: []
+    annotations: {}
+    clusterIP: ""
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels: {}
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30080
+    nodePortTls: 30443
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: ""
+  serviceMonitor:
+    additionalLabels: {}
+    interval: ""
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    relabelings: []
+    sampleLimit: 0
+    scrapeTimeout: ""
+    selfMonitor: true
+    targetLimit: 0
+  strategy: {}
+  terminationGracePeriodSeconds: 30
+  thanosImage:
+    repository: rancher/mirrored-thanos-thanos
+    tag: v0.39.2
+  thanosRulerInstanceNamespaces: []
+  thanosRulerInstanceSelector: ""
+  tls:
+    enabled: true
+    internalPort: 10250
+    tlsMinVersion: VersionTLS13
+  tolerations: []
+  verticalPodAutoscaler:
+    controlledResources: []
+    enabled: false
+    maxAllowed: {}
+    minAllowed: {}
+    updatePolicy:
+      updateMode: Auto
+rancherBackupMonitoring:
+  dashboards:
+    enabled: false
+rancherMonitoring:
+  enabled: true
+  namespaceSelector:
+    matchNames:
+    - cattle-system
+  selector: {}
+rke2ControllerManager:
+  clients:
+    affinity: {}
+    command:
+    - pushprox-client
+    copyCertsImage:
+      repository: rancher/mirrored-library-busybox
+      tag: 1.37.0
+    deployment:
+      enabled: false
+      replicas: 0
+    enabled: true
+    https:
+      authenticationMethod:
+        authorization:
+          credentials:
+            key: token
+            optional: false
+          enabled: false
+          type: bearer
+        bearerTokenFile:
+          bearerTokenFilePath: /var/run/secrets/kubernetes.io/serviceaccount/token
+          enabled: false
+        bearerTokenSecret:
+          enabled: false
+      caCertFile: ""
+      certDir: ""
+      certFile: ""
+      enabled: true
+      forceHTTPSScheme: false
+      insecureSkipVerify: true
+      keyFile: ""
+      seLinuxOptions: {}
+      useServiceAccountCredentials: true
+    image:
+      repository: rancher/pushprox-client
+      tag: v0.1.5-rancher2-client
+    metrics:
+      enabled: false
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    port: 10011
+    proxyUrl: ""
+    rbac:
+      additionalRules: []
+    resources: {}
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-controller-manager
+  enabled: true
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  kubeVersionOverrides:
+  - constraint: < 1.22
+    values:
+      clients:
+        https:
+          enabled: false
+          insecureSkipVerify: false
+          useServiceAccountCredentials: false
+      metricsPort: 10252
+  metricsPort: 10257
+  namespaceOverride: ""
+  proxy:
+    command:
+    - pushprox-proxy
+    enabled: true
+    image:
+      repository: rancher/pushprox-proxy
+      tag: v0.1.5-rancher2-proxy
+    nodeSelector: {}
+    port: 8080
+    resources: {}
+    tolerations: []
+  service:
+    selector: {}
+  serviceMonitor:
+    enabled: true
+    endpoints:
+    - port: metrics
+rke2Etcd:
+  clients:
+    affinity: {}
+    command:
+    - pushprox-client
+    copyCertsImage:
+      repository: rancher/mirrored-library-busybox
+      tag: 1.37.0
+    deployment:
+      enabled: false
+      replicas: 0
+    enabled: true
+    https:
+      authenticationMethod:
+        authorization:
+          credentials:
+            key: token
+            optional: false
+          enabled: false
+          type: bearer
+        bearerTokenFile:
+          bearerTokenFilePath: /var/run/secrets/kubernetes.io/serviceaccount/token
+          enabled: false
+        bearerTokenSecret:
+          enabled: false
+      caCertFile: ""
+      certDir: ""
+      certFile: ""
+      enabled: false
+      forceHTTPSScheme: false
+      insecureSkipVerify: false
+      keyFile: ""
+      seLinuxOptions: {}
+      useServiceAccountCredentials: false
+    image:
+      repository: rancher/pushprox-client
+      tag: v0.1.5-rancher2-client
+    metrics:
+      enabled: false
+    nodeSelector:
+      node-role.kubernetes.io/etcd: "true"
+    port: 10014
+    proxyUrl: ""
+    rbac:
+      additionalRules: []
+    resources: {}
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-etcd
+  enabled: true
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  kubeVersionOverrides: []
+  metricsPort: 2381
+  namespaceOverride: ""
+  proxy:
+    command:
+    - pushprox-proxy
+    enabled: true
+    image:
+      repository: rancher/pushprox-proxy
+      tag: v0.1.5-rancher2-proxy
+    nodeSelector: {}
+    port: 8080
+    resources: {}
+    tolerations: []
+  service:
+    selector: {}
+  serviceMonitor:
+    enabled: true
+    endpoints:
+    - port: metrics
+rke2IngressNginx:
+  clients:
+    affinity: {}
+    command:
+    - pushprox-client
+    copyCertsImage:
+      repository: rancher/mirrored-library-busybox
+      tag: 1.37.0
+    deployment:
+      enabled: false
+      replicas: 0
+    enabled: false
+    https:
+      authenticationMethod:
+        authorization:
+          credentials:
+            key: token
+            optional: false
+          enabled: false
+          type: bearer
+        bearerTokenFile:
+          bearerTokenFilePath: /var/run/secrets/kubernetes.io/serviceaccount/token
+          enabled: false
+        bearerTokenSecret:
+          enabled: false
+      caCertFile: ""
+      certDir: ""
+      certFile: ""
+      enabled: false
+      forceHTTPSScheme: false
+      insecureSkipVerify: false
+      keyFile: ""
+      seLinuxOptions: {}
+      useServiceAccountCredentials: false
+    image:
+      repository: rancher/pushprox-client
+      tag: v0.1.5-rancher2-client
+    metrics:
+      enabled: false
+    nodeSelector: {}
+    port: 9369
+    proxyUrl: ""
+    rbac:
+      additionalRules: []
+    resources: {}
+    tolerations: []
+    useLocalhost: false
+  component: ingress-nginx
+  enabled: true
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  kubeVersionOverrides:
+  - constraint: < 1.21.0-0
+    values:
+      clients:
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - controller
+              namespaces:
+              - kube-system
+              topologyKey: kubernetes.io/hostname
+        deployment:
+          enabled: false
+        enabled: true
+        port: 10015
+        tolerations:
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+        useLocalhost: true
+      namespaceOverride: ""
+      proxy:
+        enabled: true
+      service:
+        selector: false
+  - constraint: '>= 1.21.0-0 < 1.22.12-0'
+    values:
+      clients:
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - controller
+              namespaces:
+              - kube-system
+              topologyKey: kubernetes.io/hostname
+        deployment:
+          enabled: true
+          replicas: 1
+        enabled: true
+        port: 10015
+        tolerations:
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+        useLocalhost: true
+      namespaceOverride: ""
+      proxy:
+        enabled: true
+      service:
+        selector: false
+  - constraint: '>= 1.23.0-0 < v1.23.9-0'
+    values:
+      clients:
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - controller
+              namespaces:
+              - kube-system
+              topologyKey: kubernetes.io/hostname
+        deployment:
+          enabled: true
+          replicas: 1
+        enabled: true
+        port: 10015
+        tolerations:
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+        useLocalhost: true
+      namespaceOverride: ""
+      proxy:
+        enabled: true
+      service:
+        selector: false
+  - constraint: '>= 1.24.0-0 < v1.24.3-0'
+    values:
+      clients:
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                  - controller
+              namespaces:
+              - kube-system
+              topologyKey: kubernetes.io/hostname
+        deployment:
+          enabled: true
+          replicas: 1
+        enabled: true
+        port: 10015
+        tolerations:
+        - effect: NoExecute
+          operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+        useLocalhost: true
+      namespaceOverride: ""
+      proxy:
+        enabled: true
+      service:
+        selector: false
+  metricsPort: 10254
+  namespaceOverride: kube-system
+  networkPolicy:
+    enabled: false
+  proxy:
+    command:
+    - pushprox-proxy
+    enabled: false
+    image:
+      repository: rancher/pushprox-proxy
+      tag: v0.1.5-rancher2-proxy
+    nodeSelector: {}
+    port: 8080
+    resources: {}
+    tolerations: []
+  service:
+    selector:
+      app.kubernetes.io/name: rke2-ingress-nginx
+  serviceMonitor:
+    enabled: true
+    endpoints:
+    - port: metrics
+rke2Proxy:
+  clients:
+    affinity: {}
+    command:
+    - pushprox-client
+    copyCertsImage:
+      repository: rancher/mirrored-library-busybox
+      tag: 1.37.0
+    deployment:
+      enabled: false
+      replicas: 0
+    enabled: true
+    https:
+      authenticationMethod:
+        authorization:
+          credentials:
+            key: token
+            optional: false
+          enabled: false
+          type: bearer
+        bearerTokenFile:
+          bearerTokenFilePath: /var/run/secrets/kubernetes.io/serviceaccount/token
+          enabled: false
+        bearerTokenSecret:
+          enabled: false
+      caCertFile: ""
+      certDir: ""
+      certFile: ""
+      enabled: false
+      forceHTTPSScheme: false
+      insecureSkipVerify: false
+      keyFile: ""
+      seLinuxOptions: {}
+      useServiceAccountCredentials: false
+    image:
+      repository: rancher/pushprox-client
+      tag: v0.1.5-rancher2-client
+    metrics:
+      enabled: false
+    nodeSelector: {}
+    port: 10013
+    proxyUrl: ""
+    rbac:
+      additionalRules: []
+    resources: {}
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-proxy
+  enabled: true
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  kubeVersionOverrides: []
+  metricsPort: 10249
+  namespaceOverride: ""
+  proxy:
+    command:
+    - pushprox-proxy
+    enabled: true
+    image:
+      repository: rancher/pushprox-proxy
+      tag: v0.1.5-rancher2-proxy
+    nodeSelector: {}
+    port: 8080
+    resources: {}
+    tolerations: []
+  service:
+    selector: {}
+  serviceMonitor:
+    enabled: true
+    endpoints:
+    - port: metrics
+rke2Scheduler:
+  clients:
+    affinity: {}
+    command:
+    - pushprox-client
+    copyCertsImage:
+      repository: rancher/mirrored-library-busybox
+      tag: 1.37.0
+    deployment:
+      enabled: false
+      replicas: 0
+    enabled: true
+    https:
+      authenticationMethod:
+        authorization:
+          credentials:
+            key: token
+            optional: false
+          enabled: false
+          type: bearer
+        bearerTokenFile:
+          bearerTokenFilePath: /var/run/secrets/kubernetes.io/serviceaccount/token
+          enabled: false
+        bearerTokenSecret:
+          enabled: false
+      caCertFile: ""
+      certDir: ""
+      certFile: ""
+      enabled: true
+      forceHTTPSScheme: false
+      insecureSkipVerify: true
+      keyFile: ""
+      seLinuxOptions: {}
+      useServiceAccountCredentials: true
+    image:
+      repository: rancher/pushprox-client
+      tag: v0.1.5-rancher2-client
+    metrics:
+      enabled: false
+    nodeSelector:
+      node-role.kubernetes.io/master: "true"
+    port: 10012
+    proxyUrl: ""
+    rbac:
+      additionalRules: []
+    resources: {}
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-scheduler
+  enabled: true
+  global:
+    cattle:
+      psp:
+        enabled: false
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  kubeVersionOverrides:
+  - constraint: < 1.22
+    values:
+      clients:
+        https:
+          enabled: false
+          insecureSkipVerify: false
+          useServiceAccountCredentials: false
+      metricsPort: 10251
+  metricsPort: 10259
+  namespaceOverride: ""
+  proxy:
+    command:
+    - pushprox-proxy
+    enabled: true
+    image:
+      repository: rancher/pushprox-proxy
+      tag: v0.1.5-rancher2-proxy
+    nodeSelector: {}
+    port: 8080
+    resources: {}
+    tolerations: []
+  service:
+    selector: {}
+  serviceMonitor:
+    enabled: true
+    endpoints:
+    - port: metrics
+rkeControllerManager:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    nodeSelector:
+      node-role.kubernetes.io/controlplane: "true"
+    port: 10011
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-controller-manager
+  enabled: false
+  kubeVersionOverrides:
+  - constraint: < 1.22
+    values:
+      clients:
+        https:
+          enabled: false
+          insecureSkipVerify: false
+          useServiceAccountCredentials: false
+      metricsPort: 10252
+  metricsPort: 10257
+rkeEtcd:
+  clients:
+    https:
+      caCertFile: kube-ca.pem
+      certDir: /etc/kubernetes/ssl
+      certFile: kube-etcd-*.pem
+      enabled: true
+      keyFile: kube-etcd-*-key.pem
+      seLinuxOptions:
+        type: rke_kubereader_t
+    nodeSelector:
+      node-role.kubernetes.io/etcd: "true"
+    port: 10014
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+  component: kube-etcd
+  enabled: false
+  metricsPort: 2379
+rkeIngressNginx:
+  clients:
+    nodeSelector:
+      node-role.kubernetes.io/worker: "true"
+    port: 10015
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: ingress-nginx
+  enabled: false
+  metricsPort: 10254
+rkeProxy:
+  clients:
+    port: 10013
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-proxy
+  enabled: false
+  metricsPort: 10249
+rkeScheduler:
+  clients:
+    https:
+      enabled: true
+      insecureSkipVerify: true
+      useServiceAccountCredentials: true
+    nodeSelector:
+      node-role.kubernetes.io/controlplane: "true"
+    port: 10012
+    tolerations:
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      operator: Exists
+    useLocalhost: true
+  component: kube-scheduler
+  enabled: false
+  kubeVersionOverrides:
+  - constraint: < 1.23
+    values:
+      clients:
+        https:
+          enabled: false
+          insecureSkipVerify: false
+          useServiceAccountCredentials: false
+      metricsPort: 10251
+  metricsPort: 10259
+thanosRuler:
+  annotations: {}
+  enabled: false
+  extraSecret:
+    annotations: {}
+    data: {}
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts: []
+    ingressClassName: ""
+    labels: {}
+    paths: []
+    tls: []
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+    unhealthyPodEvictionPolicy: AlwaysAllow
+  route:
+    main:
+      additionalRules: []
+      annotations: {}
+      apiVersion: gateway.networking.k8s.io/v1
+      enabled: false
+      filters: []
+      hostnames: []
+      httpsRedirect: false
+      kind: HTTPRoute
+      labels: {}
+      matches:
+      - path:
+          type: PathPrefix
+          value: /
+      parentRefs: []
+  service:
+    additionalPorts: []
+    annotations: {}
+    clusterIP: ""
+    enabled: true
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    ipDualStack:
+      enabled: false
+      ipFamilies:
+      - IPv6
+      - IPv4
+      ipFamilyPolicy: PreferDualStack
+    labels: {}
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort: 30905
+    port: 10902
+    targetPort: 10902
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  serviceMonitor:
+    additionalEndpoints: []
+    additionalLabels: {}
+    bearerTokenFile: null
+    interval: ""
+    labelLimit: 0
+    labelNameLengthLimit: 0
+    labelValueLengthLimit: 0
+    metricRelabelings: []
+    proxyUrl: ""
+    relabelings: []
+    sampleLimit: 0
+    scheme: ""
+    selfMonitor: true
+    targetLimit: 0
+    tlsConfig: {}
+  thanosRulerSpec:
+    additionalArgs: []
+    additionalConfig: {}
+    additionalConfigString: ""
+    affinity: {}
+    alertDropLabels: []
+    alertmanagersConfig:
+      existingSecret: {}
+      secret: {}
+    containers: []
+    evaluationInterval: ""
+    externalPrefix: null
+    image:
+      repository: rancher/mirrored-thanos-thanos
+      tag: v0.39.2
+    initContainers: []
+    labels: {}
+    listenLocal: false
+    logFormat: logfmt
+    logLevel: info
+    nodeSelector: {}
+    objectStorageConfig:
+      existingSecret: {}
+      secret: {}
+    paused: false
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    podMetadata: {}
+    portName: web
+    priorityClassName: ""
+    queryConfig:
+      existingSecret: {}
+      secret: {}
+    queryEndpoints: []
+    replicas: 1
+    resources: {}
+    retention: 24h
+    routePrefix: /
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
+    ruleSelectorNilUsesHelmValues: true
+    securityContext:
+      fsGroup: 2000
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    serviceName: null
+    storage: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    volumeMounts: []
+    volumes: []
+    web: {}
+upgrade:
+  enabled: true
+  image:
+    repository: rancher/kuberlr-kubectl
+    tag: v6.0.0
+windowsExporter:
+  affinity: {}
+  config: |-
+    collectors:
+      enabled: '[defaults],tcp,memory,container'
+  configmaps: []
+  daemonsetAnnotations: {}
+  dnsConfig: {}
+  env: {}
+  extraArgs: []
+  extraHostVolumeMounts: []
+  extraInitContainers: []
+  fullnameOverride: ""
+  global:
+    cattle:
+      systemDefaultRegistry: ""
+      windows:
+        enabled: false
+    disableProxyIPv6: false
+    imagePullSecrets: []
+    imageRegistry: docker.io
+    kubectl:
+      pullPolicy: IfNotPresent
+      repository: rancher/kuberlr-kubectl
+      tag: v6.0.0
+    rbac:
+      create: true
+      createAggregateClusterRoles: false
+      userRoles:
+        aggregateToDefaultRoles: true
+        create: true
+    seLinux:
+      enabled: false
+  hostNetwork: true
+  hostPID: true
+  image:
+    digest: ""
+    os: windows
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: rancher/mirrored-prometheus-windows-exporter
+    tag: 0.31.3
+  imagePullSecrets: []
+  livenessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      path: /health
+      scheme: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  nameOverride: ""
+  namespaceOverride: ""
+  nodeSelector:
+    kubernetes.io/os: windows
+  podAnnotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+  podLabels: {}
+  prometheus:
+    monitor:
+      additionalLabels: {}
+      apiVersion: ""
+      attachMetadata:
+        node: false
+      basicAuth: {}
+      bearerTokenFile: null
+      enabled: true
+      interval: ""
+      jobLabel: component
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      namespace: ""
+      podTargetLabels:
+      - component
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scheme: http
+      scrapeTimeout: 10s
+      selectorOverride: {}
+      targetLimit: 0
+      tlsConfig: {}
+    podMonitor:
+      additionalLabels: {}
+      apiVersion: ""
+      attachMetadata:
+        node: false
+      authorization: {}
+      basicAuth: {}
+      bearerTokenSecret: {}
+      enableHttp2: ""
+      enabled: false
+      filterRunning: ""
+      followRedirects: ""
+      honorLabels: true
+      honorTimestamps: true
+      interval: ""
+      jobLabel: ""
+      labelLimit: 0
+      labelNameLengthLimit: 0
+      labelValueLengthLimit: 0
+      metricRelabelings: []
+      namespace: ""
+      oauth2: {}
+      params: {}
+      path: /metrics
+      podTargetLabels: []
+      proxyUrl: ""
+      relabelings: []
+      sampleLimit: 0
+      scheme: http
+      scrapeTimeout: ""
+      selectorOverride: {}
+      targetLimit: 0
+      tlsConfig: {}
+  rbac:
+    create: true
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      httpHeaders: []
+      path: /health
+      scheme: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  releaseLabel: false
+  resources: {}
+  secrets: []
+  securityContext:
+    windowsOptions:
+      hostProcess: true
+      runAsUserName: NT AUTHORITY\system
+  service:
+    annotations: {}
+    nodePort: null
+    port: 9796
+    portName: windows-metrics
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: false
+    create: true
+    imagePullSecrets: []
+    name: null
+  sidecarHostVolumeMounts: []
+  sidecarVolumeMount: []
+  sidecars: []
+  tolerations:
+  - effect: NoSchedule
+    operator: Exists
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+windowsMonitoring:
+  enabled: false

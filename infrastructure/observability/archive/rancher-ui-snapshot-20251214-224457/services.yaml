@@ -1,0 +1,736 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-12-15T06:44:08Z"
+    labels:
+      managed-by: prometheus-operator
+      operated-alertmanager: "true"
+    name: alertmanager-operated
+    namespace: cattle-monitoring-system
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      kind: Alertmanager
+      name: rancher-monitoring-alertmanager
+      uid: 6ed931af-55a6-4610-a998-fdace61e2030
+    resourceVersion: "65950669"
+    uid: c8f40dbb-776b-4ab0-9de8-98318b83dee7
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9093
+      protocol: TCP
+      targetPort: http-web
+    - name: tcp-mesh
+      port: 9094
+      protocol: TCP
+      targetPort: mesh-tcp
+    - name: udp-mesh
+      port: 9094
+      protocol: UDP
+      targetPort: mesh-udp
+    publishNotReadyAddresses: true
+    selector:
+      app.kubernetes.io/name: alertmanager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-12-15T06:44:09Z"
+    labels:
+      managed-by: prometheus-operator
+      operated-prometheus: "true"
+    name: prometheus-operated
+    namespace: cattle-monitoring-system
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      kind: Prometheus
+      name: rancher-monitoring-prometheus
+      uid: 394513cb-0e00-4385-9b7a-34eaaa4a73ee
+    resourceVersion: "65950706"
+    uid: bba034b5-44a9-4cfc-a72d-e58c8898a048
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+      targetPort: http-web
+    selector:
+      app.kubernetes.io/name: prometheus
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950119"
+    uid: 5b775f16-a359-4ced-90ed-5f574c3f2276
+  spec:
+    clusterIP: 10.43.66.169
+    clusterIPs:
+    - 10.43.66.169
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+    selector:
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-client
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-controller-manager-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950115"
+    uid: 8205c077-a888-4a6c-9710-07533bbe9784
+  spec:
+    clusterIP: 10.43.231.102
+    clusterIPs:
+    - 10.43.231.102
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      component: kube-controller-manager
+      k8s-app: pushprox-kube-controller-manager-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950129"
+    uid: 63836be4-3a05-418c-b1ee-a5643c22a41e
+  spec:
+    clusterIP: 10.43.193.200
+    clusterIPs:
+    - 10.43.193.200
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 2381
+      protocol: TCP
+      targetPort: 2381
+    selector:
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-client
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-etcd-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950124"
+    uid: 62d3393d-8ea5-4eef-ab1f-0c3539aeea87
+  spec:
+    clusterIP: 10.43.209.240
+    clusterIPs:
+    - 10.43.209.240
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      component: kube-etcd
+      k8s-app: pushprox-kube-etcd-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950143"
+    uid: 0817766a-84a6-4275-95da-fcfc49a9bd4c
+  spec:
+    clusterIP: 10.43.209.157
+    clusterIPs:
+    - 10.43.209.157
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 10249
+      protocol: TCP
+      targetPort: 10249
+    selector:
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-client
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-proxy-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950138"
+    uid: a5503a06-c032-4821-aa81-ac7a677b47a4
+  spec:
+    clusterIP: 10.43.115.52
+    clusterIPs:
+    - 10.43.115.52
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      component: kube-proxy
+      k8s-app: pushprox-kube-proxy-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-client
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-client
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950154"
+    uid: c0be2f00-4289-4e63-98ce-5d8267334ae2
+  spec:
+    clusterIP: 10.43.224.92
+    clusterIPs:
+    - 10.43.224.92
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+    selector:
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-client
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    name: pushprox-kube-scheduler-proxy
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950149"
+    uid: c9e3656c-270f-457e-86ee-726457b95fb9
+  spec:
+    clusterIP: 10.43.179.180
+    clusterIPs:
+    - 10.43.179.180
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: pp-proxy
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      component: kube-scheduler
+      k8s-app: pushprox-kube-scheduler-proxy
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-alertmanager
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+      self-monitor: "true"
+    name: rancher-monitoring-alertmanager
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950162"
+    uid: a7bf14c8-c44e-4e29-b729-2f75244f4607
+  spec:
+    clusterIP: 10.43.197.180
+    clusterIPs:
+    - 10.43.197.180
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+      targetPort: reloader-web
+    selector:
+      alertmanager: rancher-monitoring-alertmanager
+      app.kubernetes.io/name: alertmanager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: grafana
+      app.kubernetes.io/version: 12.1.1
+      chart: grafana-10.0.0
+      helm.sh/chart: grafana-10.0.0
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-grafana
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950092"
+    uid: 543a698b-2c0a-4928-a7ab-49a685307d7f
+  spec:
+    clusterIP: 10.43.153.1
+    clusterIPs:
+    - 10.43.153.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: nginx-http
+      port: 80
+      protocol: TCP
+      targetPort: grafana
+    selector:
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/name: grafana
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/part-of: kube-state-metrics
+      app.kubernetes.io/version: 2.17.0
+      helm.sh/chart: kube-state-metrics-6.3.0
+      release: rancher-monitoring
+    name: rancher-monitoring-kube-state-metrics
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950100"
+    uid: ef38655c-c4a5-4eb8-880f-275255e74aa5
+  spec:
+    clusterIP: 10.43.8.174
+    clusterIPs:
+    - 10.43.8.174
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/name: kube-state-metrics
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-operator
+      app.kubernetes.io/component: prometheus-operator
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: rancher-monitoring-prometheus-operator
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+    name: rancher-monitoring-operator
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950169"
+    uid: 630c878c-0de7-4b48-b8d2-dd76a6730ee7
+  spec:
+    clusterIP: 10.43.17.212
+    clusterIPs:
+    - 10.43.17.212
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      app: rancher-monitoring-operator
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app: rancher-monitoring-prometheus
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: rancher-monitoring
+      app.kubernetes.io/version: v0.85.0
+      chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      helm.sh/chart: rancher-monitoring-108.0.0_up77.9.1-rancher.6
+      heritage: Helm
+      release: rancher-monitoring
+      self-monitor: "true"
+    name: rancher-monitoring-prometheus
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950173"
+    uid: d140175c-a476-487c-9674-31d95d024cf4
+  spec:
+    clusterIP: 10.43.215.117
+    clusterIPs:
+    - 10.43.215.117
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+      targetPort: 8081
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+      targetPort: reloader-web
+    selector:
+      app.kubernetes.io/name: prometheus
+      operator.prometheus.io/name: rancher-monitoring-prometheus
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-adapter
+      app.kubernetes.io/part-of: prometheus-adapter
+      app.kubernetes.io/version: v0.12.0
+      helm.sh/chart: prometheus-adapter-5.1.0
+    name: rancher-monitoring-prometheus-adapter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950107"
+    uid: 73591e4f-c818-49f6-a0e4-5e9843a39b4d
+  spec:
+    clusterIP: 10.43.250.32
+    clusterIPs:
+    - 10.43.250.32
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/name: prometheus-adapter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-node-exporter
+      app.kubernetes.io/part-of: prometheus-node-exporter
+      app.kubernetes.io/version: 1.9.1
+      helm.sh/chart: prometheus-node-exporter-4.47.3
+      jobLabel: node-exporter
+      release: rancher-monitoring
+    name: rancher-monitoring-prometheus-node-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950111"
+    uid: 14dad2ef-f051-4d6e-86f0-1b2e65f2480e
+  spec:
+    clusterIP: 10.43.91.77
+    clusterIPs:
+    - 10.43.91.77
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9796
+      protocol: TCP
+      targetPort: 9796
+    selector:
+      app.kubernetes.io/instance: rancher-monitoring
+      app.kubernetes.io/name: prometheus-node-exporter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: rancher-monitoring
+      meta.helm.sh/release-namespace: cattle-monitoring-system
+    creationTimestamp: "2025-12-15T06:44:06Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      component: windows-exporter
+      k8s-app: rancher-monitoring-windows-exporter
+      provider: kubernetes
+      release: rancher-monitoring
+    name: rancher-monitoring-windows-exporter
+    namespace: cattle-monitoring-system
+    resourceVersion: "65950158"
+    uid: 0a2f57a8-9b67-4d43-beb5-dbdf8f88989d
+  spec:
+    clusterIP: 10.43.197.195
+    clusterIPs:
+    - 10.43.197.195
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - appProtocol: http
+      name: windows-metrics
+      port: 9796
+      protocol: TCP
+      targetPort: 9796
+    selector:
+      component: windows-exporter
+      k8s-app: rancher-monitoring-windows-exporter
+      provider: kubernetes
+      release: rancher-monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

@@ -1,0 +1,17 @@
+global:
+  cattle:
+    clusterId: c-7rtn4
+    clusterName: cluster01
+    psp:
+      enabled: false
+    rkePathPrefix: ""
+    rkeWindowsPathPrefix: ""
+    systemDefaultRegistry: ""
+    systemProjectId: p-ktssc
+    url: https://rancher3.ltc.bcit.ca
+  systemDefaultRegistry: ""
+image:
+  repository: rancher/kuberlr-kubectl
+  tag: v6.0.0
+nodeSelector: {}
+tolerations: []

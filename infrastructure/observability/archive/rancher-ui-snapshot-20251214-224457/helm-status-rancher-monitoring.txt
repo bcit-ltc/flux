@@ -1,0 +1,20 @@
+NAME: rancher-monitoring
+LAST DEPLOYED: Mon Dec 15 06:43:49 2025
+NAMESPACE: cattle-monitoring-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+rancher-monitoring has been installed. Check its status by running:
+  kubectl --namespace cattle-monitoring-system get pods -l "release=rancher-monitoring"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace cattle-monitoring-system get secrets rancher-monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace cattle-monitoring-system get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=rancher-monitoring" -oname)
+  kubectl --namespace cattle-monitoring-system port-forward $POD_NAME 3000
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
