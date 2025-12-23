@@ -13,11 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
-        namespace: cattle-logging-system
-  install:
-    createNamespace: false
-  upgrade:
-    cleanupOnFail: true
+        namespace: cattle-monitoring-system
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -29,14 +25,6 @@ spec:
   dependsOn:
     - name: rancher-monitoring-crd
       namespace: cattle-monitoring-system
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    remediation:
-      retries: 3
-    crds: CreateReplace
   chart:
     spec:
       chart: rancher-monitoring
@@ -44,28 +32,20 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rancher-charts
-        namespace: cattle-logging-system
+        namespace: cattle-monitoring-system
   values:
     global:
       cattle:
         clusterId: c-7rtn4
         clusterName: cluster01
+        systemProjectId: p-ktssc
     grafana:
       additionalDataSources:
         - name: Loki
           type: loki
           access: proxy
-          url: http://loki.loki.svc.cluster.local:3100
-      persistence:
-        enabled: true
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: longhorn
-        size: 10Gi
-        subPath: null
-        type: pvc
-        annotations: null
-        finalizers: null
+          editable: true
+          url: http://loki.cattle-logging-system.svc.cluster.local
     prometheus:
       prometheusSpec:
         retention: 5d
@@ -80,6 +60,10 @@ spec:
     namespaceOverride: cattle-monitoring-system
     rke2IngressNginx:
       enabled: true
+      namespaceOverride: kube-system
+      service:
+        selector:
+          app.kubernetes.io/name: rke2-ingress-nginx
     rke2ControllerManager:
       enabled: false
     rke2Scheduler:

@@ -13,8 +13,6 @@ spec:
         kind: HelmRepository
         name: rancher-charts
         namespace: cattle-logging-system
-  upgrade:
-    cleanupOnFail: true
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -51,9 +49,6 @@ spec:
         limits:
           cpu: 200m
           memory: 256Mi
-      metrics:
-        serviceMonitor: false
-        prometheusRules: false
     fluentd:
       bufferStorageVolume:
         emptyDir:
@@ -65,9 +60,6 @@ spec:
         limits:
           cpu: "1"
           memory: 2Gi
-      metrics:
-        serviceMonitor: false
-        prometheusRules: false
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -103,29 +95,29 @@ spec:
         chunk_encoding: snappy
       querier:
         max_concurrent: 2
-      storage:
-        type: azure
-        azure:
-          # Name of the Azure Blob Storage account
-          accountName: <your-account-name>
-          # Key associated with the Azure Blob Storage account
-          accountKey: <your-account-key>
-          # Comprehensive connection string for Azure Blob Storage account (Can be used to replace endpoint, accountName, and accountKey)
-          connectionString: <your-connection-string>
-          # Flag indicating whether to use Azure Managed Identity for authentication
-          useManagedIdentity: false
-          # Flag indicating whether to use a federated token for authentication
-          useFederatedToken: false
-          # Client ID of the user-assigned managed identity (if applicable)
-          userAssignedId: <your-user-assigned-id>
-          # Timeout duration for requests made to the Azure Blob Storage account (in seconds)
-          requestTimeout: <your-request-timeout>
-          # Domain suffix of the Azure Blob Storage service endpoint (e.g., core.windows.net)
-          endpointSuffix: <your-endpoint-suffix>
-        bucketNames:
-          chunks: "chunks"
-          ruler: "ruler"
-          admin: "admin"
+      # storage:
+      #   type: azure
+      #   azure:
+      #     # Name of the Azure Blob Storage account
+      #     accountName: <your-account-name>
+      #     # Key associated with the Azure Blob Storage account
+      #     accountKey: <your-account-key>
+      #     # Comprehensive connection string for Azure Blob Storage account (Can be used to replace endpoint, accountName, and accountKey)
+      #     connectionString: <your-connection-string>
+      #     # Flag indicating whether to use Azure Managed Identity for authentication
+      #     useManagedIdentity: false
+      #     # Flag indicating whether to use a federated token for authentication
+      #     useFederatedToken: false
+      #     # Client ID of the user-assigned managed identity (if applicable)
+      #     userAssignedId: <your-user-assigned-id>
+      #     # Timeout duration for requests made to the Azure Blob Storage account (in seconds)
+      #     requestTimeout: <your-request-timeout>
+      #     # Domain suffix of the Azure Blob Storage service endpoint (e.g., core.windows.net)
+      #     endpointSuffix: <your-endpoint-suffix>
+      #   bucketNames:
+      #     chunks: "chunks"
+      #     ruler: "ruler"
+      #     admin: "admin"
     deploymentMode: SingleBinary
     singleBinary:
       resources:
