@@ -14,4 +14,4 @@ metadata:
   name: rancher-charts
 spec:
   interval: 24h
-  url: https://releases.rancher.com/server-charts/stable
+  url: https://charts.rancher.io
