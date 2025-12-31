@@ -20,7 +20,7 @@ resources:
   - ./longhorn
 
   # Observability: Rancher monitoring/logging + Grafana
-  - ./observability
+  # - ./observability
 
   # Obot
   # - ./obot
