@@ -89,6 +89,7 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
+
   - target:
       name: star-ltc-bcit-ca
     patch: |
@@ -129,6 +130,7 @@ replacements:
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
+          - name: tailscale-oauth
 
       # Add the environment as a suffix to the default connection
       - select:
@@ -148,7 +150,7 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Add the environment as a suffix to the global auth name
+      # Add the environment as a suffix to the postgres auth name
       - select:
           kind: VaultAuth
           name: postgres-vault-auth
@@ -208,3 +210,14 @@ replacements:
         options:
           delimiter: "."
           index: 1
+
+      # Update Tailscale's secret path
+      # - path should match {appName}/{environment}/{secretName}
+      - select:
+          kind: VaultAuth
+          name: tailscale-operator-vault-auth
+        fieldPaths:
+          - spec.kubernetes.role
+        options:
+          delimiter: "-"
+          index: 99

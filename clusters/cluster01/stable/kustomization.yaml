@@ -96,8 +96,8 @@ replacements:
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
-          - name: gh-private-oci-token
           - name: github-private-repo-token
+          - name: gh-private-oci-token
           - name: tailscale-oauth
 
       # Add the environment as a suffix to the default connection
@@ -116,7 +116,7 @@ replacements:
           - spec.vaultAuthGlobalRef.name
         options:
           delimiter: "-"
-          index: 99          
+          index: 99
 
       # Add the environment as a suffix to the postgres auth name
       - select:
@@ -128,6 +128,15 @@ replacements:
           delimiter: "-"
           index: 99
 
+      # Add the environment as a suffix to the postgres database
+      - select:
+          kind: Database
+        fieldPaths:
+          - spec.cluster.name
+        options:
+          delimiter: "-"
+          index: 99
+
       # Add the environment to VaultDynamicSecrets configs
       - select:
           kind: VaultDynamicSecret
@@ -135,6 +144,7 @@ replacements:
         fieldPaths:
           - spec.mount
           - spec.path
+          - metadata.annotations.app/db-host
         options:
           delimiter: "-"
           index: 2
