@@ -6,8 +6,8 @@ metadata:
   name: tailscale-operator
 spec:
   interval: 24h
-  releaseName: tailscale-operator
-  targetNamespace: tailscale
+  # releaseName: tailscale-operator
+  # targetNamespace: tailscale
   chart:
     spec:
       chart: tailscale/tailscale-operator
