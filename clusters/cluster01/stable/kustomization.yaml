@@ -144,7 +144,7 @@ replacements:
         fieldPaths:
           - spec.mount
           - spec.path
-          - metadata.annotations.app/db-host
+          # - metadata.annotations.app/db-host
         options:
           delimiter: "-"
           index: 2

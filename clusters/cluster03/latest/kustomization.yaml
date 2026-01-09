@@ -5,8 +5,8 @@ kind: Kustomization
 
 resources:
   - ../../../apps
-  - ../../../infrastructure
-  - cloudnative-pg.yaml
+  # - ../../../infrastructure
+  # - cloudnative-pg.yaml
 
 # Add this to all resources
 nameSuffix: -latest
@@ -176,7 +176,7 @@ replacements:
         fieldPaths:
           - spec.mount
           - spec.path
-          - metadata.annotations.app/db-host
+          # - metadata.annotations.app/db-host
         options:
           delimiter: "-"
           index: 2
