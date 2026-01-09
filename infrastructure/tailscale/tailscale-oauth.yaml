@@ -11,5 +11,5 @@ spec:
   mount: ltc-infrastructure
   path: tailscale/oauth-trust-credentials
   destination:
-    name: tailscale-oauth
+    name: operator-oauth
     create: true
