@@ -10,7 +10,7 @@ spec:
   # targetNamespace: tailscale
   chart:
     spec:
-      chart: tailscale/tailscale-operator
+      chart: tailscale-operator
       version: "*"
       sourceRef:
         kind: HelmRepository
