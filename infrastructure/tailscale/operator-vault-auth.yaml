@@ -5,7 +5,7 @@ metadata:
   name: tailscale-operator-vault-auth
 spec:
   kubernetes:
-    serviceAccount: operator
+    serviceAccount: tailscale-operator-oauth-sa
     role: tailscale-operator-vault-auth
   vaultAuthGlobalRef:
     name: vault-auth-global

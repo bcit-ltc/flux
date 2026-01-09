@@ -9,6 +9,7 @@ resources:
   - operator-vault-auth.yaml
   - tailscale-oauth.yaml
   - namespace.yaml
+  - tailscale-secret-service-account.yaml
 
 namespace: tailscale
 
