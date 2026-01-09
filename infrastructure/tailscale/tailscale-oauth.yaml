@@ -1,0 +1,15 @@
+# Generates a secret from Vault
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: tailscale-oauth
+spec:
+  type: kv-v2
+  vaultAuthRef: tailscale-operator-vault-auth
+  refreshAfter: 6h
+  mount: ltc-infrastructure
+  path: tailscale/oauth-trust-credentials
+  destination:
+    name: tailscale-oauth
+    create: true

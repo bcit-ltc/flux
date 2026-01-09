@@ -1,0 +1,14 @@
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: tailscale-operator-vault-auth
+spec:
+  kubernetes:
+    serviceAccount: operator
+    role: tailscale-operator-vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system
+    

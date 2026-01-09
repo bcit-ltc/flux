@@ -19,6 +19,9 @@ resources:
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   - ./longhorn
 
+  # Tailscale
+  - ./tailscale
+
   # Observability: Rancher monitoring/logging + Grafana
   # - ./observability
 

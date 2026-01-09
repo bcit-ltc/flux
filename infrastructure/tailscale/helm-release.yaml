@@ -1,0 +1,23 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tailscale-operator
+spec:
+  interval: 24h
+  releaseName: tailscale-operator
+  targetNamespace: tailscale
+  chart:
+    spec:
+      chart: tailscale/tailscale-operator
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: tailscale-operator
+      interval: 24h
+  values:
+    apiServerProxyConfig:
+      mode: true
+    operatorConfig:
+      hostname: tailscale-operator
