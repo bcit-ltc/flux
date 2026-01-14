@@ -9,7 +9,9 @@ resources:
   # - ../../../infrastructure
   - infrastructure.yaml
   - vault-secrets-operator.yaml
-  - cloudnative-pg.yaml
+  - ./cloudnative-pg/cnpg-operator.yaml
+  - ./cloudnative-pg/cnpg-cluster.yaml
+  - ./cloudnative-pg/app-databases.yaml
 
 # Add this to all resources
 nameSuffix: -latest

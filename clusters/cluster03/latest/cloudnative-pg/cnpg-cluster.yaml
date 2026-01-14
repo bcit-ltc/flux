@@ -1,0 +1,28 @@
+# Deploys cloudnative-pg operator & postgresql cluster
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-cluster
+  namespace: flux-system
+  labels:
+    environment: latest
+spec:
+  dependsOn:
+    - name: cnpg-operator
+
+  interval: 24h
+  wait: true
+  prune: true
+
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+  path: ./infrastructure/cloudnative-pg/cnpg-cluster
+
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-core
+      namespace: postgres
