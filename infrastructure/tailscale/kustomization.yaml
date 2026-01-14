@@ -10,6 +10,7 @@ resources:
   - tailscale-oauth.yaml
   - namespace.yaml
   - tailscale-secret-service-account.yaml
+  - clusterrolebinding.yaml
 
 namespace: tailscale
 
