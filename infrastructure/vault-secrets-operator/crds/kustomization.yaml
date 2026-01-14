@@ -1,0 +1,27 @@
+# Prepare resources for Vault Secrets Operator
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - vault-auth-global.yaml
+  - vault-connection.yaml
+
+namespace: vault-secrets-operator-system
+
+replacements:
+
+  - source:
+      name: vault-connection
+      fieldPath: metadata.namespace
+    targets:
+
+      # Prefix the default connection with namespace 
+      # https://developer.hashicorp.com/vault/docs/deploy/kubernetes/vso/api-reference#vaultauthglobalspec
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.vaultConnectionRef
+        options:
+          delimiter: "/"
+          index: -1

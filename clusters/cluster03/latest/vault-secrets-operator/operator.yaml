@@ -19,5 +19,5 @@ spec:
     kind: GitRepository
     name: flux-system
 
-  path: ./infrastructure/vault-secrets-operator
+  path: ./infrastructure/vault-secrets-operator/operator
 

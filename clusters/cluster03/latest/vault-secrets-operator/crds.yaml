@@ -1,0 +1,23 @@
+# Deploys vault-secrets-operator
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: vso-crds
+  namespace: flux-system
+  labels:
+    environment: latest
+spec:
+  dependsOn:
+    - name: vault-secrets-operator
+
+  interval: 24h
+  wait: true
+  prune: true
+
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+  path: ./infrastructure/vault-secrets-operator/crds
+

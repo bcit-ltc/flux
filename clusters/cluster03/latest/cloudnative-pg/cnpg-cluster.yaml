@@ -12,7 +12,7 @@ spec:
     - name: cnpg-operator
 
   interval: 24h
-  wait: true
+  wait: false
   prune: true
 
   sourceRef:

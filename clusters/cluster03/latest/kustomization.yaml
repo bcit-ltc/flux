@@ -8,7 +8,8 @@ resources:
   - apps.yaml
   # - ../../../infrastructure
   - infrastructure.yaml
-  - vault-secrets-operator.yaml
+  - ./vault-secrets-operator/operator.yaml
+  - ./vault-secrets-operator/crds.yaml
   - ./cloudnative-pg/cnpg-operator.yaml
   - ./cloudnative-pg/cnpg-cluster.yaml
   - ./cloudnative-pg/app-databases.yaml
