@@ -79,16 +79,16 @@ patches:
                       labels:
                         environment: latest
 
-  # # Patch resources with environment-specific values
-  # - target:
-  #     kind: VaultAuthGlobal
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/kubernetes/mount
-  #       value: kubernetes-latest
-  #     - op: replace
-  #       path: /spec/kubernetes/audiences
-  #       value: [latest]
+  # Patch resources with environment-specific values
+  - target:
+      kind: VaultAuthGlobal
+    patch: |-
+      - op: replace
+        path: /spec/kubernetes/mount
+        value: kubernetes-latest
+      - op: replace
+        path: /spec/kubernetes/audiences
+        value: [latest]
 
   # Remove all stable resources (this env should only emit latest resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
@@ -142,14 +142,14 @@ replacements:
           - name: gh-private-oci-token
           - name: tailscale-oauth
 
-      # # Add the environment as a suffix to the default connection
-      # - select:
-      #     kind: VaultAuthGlobal
-      #   fieldPaths:
-      #     - spec.vaultConnectionRef
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
+      # Add the environment as a suffix to the default connection
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.vaultConnectionRef
+        options:
+          delimiter: "-"
+          index: 99
 
       # Add the environment as a suffix to the global auth name
       - select:
