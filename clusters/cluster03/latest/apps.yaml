@@ -1,9 +1,9 @@
-# Deploys cloudnative-pg operator & postgresql cluster
+# Deploys apps
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudnative-pg
+  name: apps
   namespace: flux-system
   labels:
     environment: latest
@@ -19,10 +19,4 @@ spec:
     kind: GitRepository
     name: flux-system
 
-  path: ./infrastructure/cloudnative-pg
-
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-core
-      namespace: postgres
+  path: ./apps
