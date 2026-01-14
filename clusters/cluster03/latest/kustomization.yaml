@@ -4,15 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  # - ../../../apps
-  - apps.yaml
-  # - ../../../infrastructure
-  - infrastructure.yaml
-  - ./vault-secrets-operator/operator.yaml
-  - ./vault-secrets-operator/crds.yaml
-  - ./cloudnative-pg/cnpg-operator.yaml
-  - ./cloudnative-pg/cnpg-cluster.yaml
-  - ./cloudnative-pg/app-databases.yaml
+  - ../../../apps
+  - ../../../infrastructure
+  - cloudnative-pg.yaml
 
 # Add this to all resources
 nameSuffix: -latest
@@ -32,10 +26,6 @@ configMapGenerator:
     options:
       annotations:
         config.kubernetes.io/local-config: "true"
-
-# Teach kustomize how to update generated names
-configurations:
-  - kustomizeconfig.yaml
 
 patches:
 
