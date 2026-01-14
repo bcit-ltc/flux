@@ -6,6 +6,7 @@ kind: Kustomization
 resources:
   - ../../../apps
   - ../../../infrastructure
+  - vault-secrets-operator.yaml
   - cloudnative-pg.yaml
 
 # Add this to all resources
