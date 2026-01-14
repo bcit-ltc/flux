@@ -7,7 +7,7 @@ resources:
   - helm-release.yaml
   - helm-repository.yaml
   # - vault-auth-global.yaml
-  - vault-connection.yaml
+  # - vault-connection.yaml
 
 # Replace base Namespace name and add all resources to this namespace
 namespace: vault-secrets-operator-system
