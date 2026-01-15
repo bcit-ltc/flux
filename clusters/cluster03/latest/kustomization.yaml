@@ -7,6 +7,7 @@ resources:
   - ../../../apps
   - ../../../infrastructure
   - cloudnative-pg.yaml
+  - vault-secrets-operator.yaml
 
 # Add this to all resources
 nameSuffix: -latest
