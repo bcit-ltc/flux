@@ -63,16 +63,7 @@ patches:
                       labels:
                         environment: latest
 
-  # Patch resources with environment-specific values
-  - target:
-      kind: VaultAuthGlobal
-    patch: |-
-      - op: replace
-        path: /spec/kubernetes/mount
-        value: kubernetes-latest
-      - op: replace
-        path: /spec/kubernetes/audiences
-        value: [latest]
+
 
   # Remove all stable resources (this env should only emit latest resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
