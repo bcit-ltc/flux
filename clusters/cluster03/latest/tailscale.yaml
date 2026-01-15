@@ -1,9 +1,9 @@
-# Deploys vault-secrets-operator
+# Deploys tailscale
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: vault-secrets-operator-controller
+  name: tailscale-controller
   namespace: flux-system
 spec:
   interval: 24h
@@ -13,14 +13,14 @@ spec:
     kind: GitRepository
     name: flux-system
 
-  path: ./infrastructure/vault-secrets-operator/controller
+  path: ./infrastructure/tailscale/controller
   dependsOn:
-    - name: flux-system
+    - name: vault-secrets-operator-config
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: vault-secrets-operator-config
+  name: tailscale-config
   namespace: flux-system
 spec:
   interval: 24h
@@ -30,6 +30,6 @@ spec:
     kind: GitRepository
     name: flux-system
 
-  path: ./infrastructure/vault-secrets-operator/config
+  path: ./infrastructure/tailscale/config
   dependsOn:
-    - name: vault-secrets-operator-controller
+    - name: tailscale-controller

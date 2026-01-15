@@ -6,13 +6,9 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - helm-repository.yaml
+  - namespace.yaml
   - operator-vault-auth.yaml
   - tailscale-oauth.yaml
-  - namespace.yaml
   - tailscale-secret-service-account.yaml
-  - cluster-admin.yaml
 
 namespace: tailscale
-
-configurations:
-  - kustomizeconfig.yaml

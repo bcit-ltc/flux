@@ -8,6 +8,7 @@ resources:
   # - ../../../infrastructure
   # - cloudnative-pg.yaml
   - vault-secrets-operator.yaml
+  - tailscale.yaml
 
 labels:
 - includeSelectors: true
