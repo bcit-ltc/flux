@@ -14,7 +14,7 @@ resources:
   - ./flux
 
   # # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
-  - ./vault-secrets-operator/crds
+  # - ./vault-secrets-operator/crds
 
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   - ./longhorn
