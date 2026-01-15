@@ -27,6 +27,10 @@ configMapGenerator:
       annotations:
         config.kubernetes.io/local-config: "true"
 
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml
+
 patches:
 
   # Update oci repository ref selection to target latest chart images

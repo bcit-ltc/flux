@@ -6,7 +6,6 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - helm-repository.yaml
-  - crb-sa-vault-tokenauth.yaml
   - namespace.yaml
 
 # Replace base Namespace name and add all resources to this namespace
