@@ -11,8 +11,8 @@ spec:
     audiences:
     - environment
   mount: kubernetes
-  # vaultAuthGlobalRef:
-  #   name: vault-auth-global
-  #   allowDefault: true
-  #   namespace: vault-secrets-operator-system
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system
     
