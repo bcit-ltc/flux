@@ -13,4 +13,4 @@ spec:
     audiences:
     - environment
     tokenExpirationSeconds: 600
-  # vaultConnectionRef: default
+  vaultConnectionRef: vault-secrets-operator-system/vault-connection
