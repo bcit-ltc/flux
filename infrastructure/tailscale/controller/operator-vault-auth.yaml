@@ -4,13 +4,9 @@ kind: VaultAuth
 metadata:
   name: tailscale-operator-vault-auth
 spec:
-  method: kubernetes
   kubernetes:
     serviceAccount: tailscale-operator-oauth-sa
     role: tailscale-operator-vault-auth
-    audiences:
-    - environment
-  mount: kubernetes
   vaultAuthGlobalRef:
     name: vault-auth-global
     allowDefault: true
