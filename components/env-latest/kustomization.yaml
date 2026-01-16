@@ -150,8 +150,8 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Ensure the serviceaccount name matches the release name
-      - select:
-          kind: VaultAuth
-        fieldPaths:
-          - spec.kubernetes.serviceAccount
+      # # Ensure the serviceaccount name matches the release name
+      # - select:
+      #     kind: VaultAuth
+      #   fieldPaths:
+      #     - spec.kubernetes.serviceAccount
