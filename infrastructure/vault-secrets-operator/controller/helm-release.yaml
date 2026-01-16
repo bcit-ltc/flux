@@ -15,9 +15,9 @@ spec:
         kind: HelmRepository
         name: vault-secrets-operator
       interval: 24h
-  values:
-    defaultVaultConnection:
-      enabled: true
-      address: "https://vault.ltc.bcit.ca:8200"
-    defaultAuthMethod:
-      enabled: true
+  # values:
+  #   defaultVaultConnection:
+  #     enabled: true
+  #     address: "https://vault.ltc.bcit.ca:8200"
+  #   defaultAuthMethod:
+  #     enabled: true
