@@ -5,8 +5,8 @@ metadata:
   name: tailscale-operator-vault-auth
 spec:
   method: kubernetes
+  mount: kubernetes
   kubernetes:
-    mount: kubernetes
     serviceAccount: tailscale-operator-oauth-sa
     role: tailscale-operator-vault-auth
     audiences:
