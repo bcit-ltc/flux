@@ -10,6 +10,7 @@ spec:
     role: tailscale-operator-vault-auth
     audiences:
     - environment
+  mount: kubernetes
   # vaultAuthGlobalRef:
   #   name: vault-auth-global
   #   allowDefault: true

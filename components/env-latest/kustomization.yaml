@@ -11,7 +11,7 @@ patches:
       kind: VaultAuth
     patch: |-
       - op: replace
-        path: /spec/kubernetes/mount
+        path: /spec/mount
         value: kubernetes-latest
       - op: replace
         path: /spec/kubernetes/audiences
