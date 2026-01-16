@@ -6,6 +6,7 @@ metadata:
 spec:
   method: kubernetes
   mount: kubernetes
+  vaultConnectionRef: vault-secrets-operator-system/default
   kubernetes:
     serviceAccount: tailscale-operator-oauth-sa
     role: tailscale-operator-vault-auth
