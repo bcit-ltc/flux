@@ -8,7 +8,7 @@ patches:
 
   # Patch with environment-specific values
   - target:
-      kind: VaultAuthGlobal
+      kind: VaultAuth
     patch: |-
       - op: replace
         path: /spec/kubernetes/mount

@@ -8,8 +8,10 @@ spec:
   kubernetes:
     serviceAccount: tailscale-operator-oauth-sa
     role: tailscale-operator-vault-auth
-  vaultAuthGlobalRef:
-    name: vault-auth-global
-    allowDefault: true
-    namespace: vault-secrets-operator-system
+    audiences:
+    - environment
+  # vaultAuthGlobalRef:
+  #   name: vault-auth-global
+  #   allowDefault: true
+  #   namespace: vault-secrets-operator-system
     
