@@ -10,19 +10,19 @@ resources:
 
 namespace: vault-secrets-operator-system
 
-# replacements:
+replacements:
 
-#   - source:
-#       name: vault-connection
-#       fieldPath: metadata.namespace
-#     targets:
+  - source:
+      name: vault-connection
+      fieldPath: metadata.namespace
+    targets:
 
-#       # Prefix the default connection with namespace 
-#       # https://developer.hashicorp.com/vault/docs/deploy/kubernetes/vso/api-reference#vaultauthglobalspec
-#       - select:
-#           kind: VaultAuthGlobal
-#         fieldPaths:
-#           - spec.vaultConnectionRef
-#         options:
-#           delimiter: "/"
-#           index: -1
+      # Prefix the default connection with namespace 
+      # https://developer.hashicorp.com/vault/docs/deploy/kubernetes/vso/api-reference#vaultauthglobalspec
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.vaultConnectionRef
+        options:
+          delimiter: "/"
+          index: -1
