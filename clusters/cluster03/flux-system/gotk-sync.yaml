@@ -22,7 +22,6 @@ spec:
   interval: 10m0s
   path: ./clusters/cluster03
   prune: true
-  force: true
   sourceRef:
     kind: GitRepository
     name: flux-system
