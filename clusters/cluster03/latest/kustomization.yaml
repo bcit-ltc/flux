@@ -25,7 +25,10 @@ patches:
     patch: |-
       - op: add
         path: /spec/components
-        value: [../../../components/env-latest]
+        value:
+          - ../../../components/env-latest
+
+# - ../../../components/ssl-certificates
 
   # Add the environment label to all resources in the Helm chart
   - target:

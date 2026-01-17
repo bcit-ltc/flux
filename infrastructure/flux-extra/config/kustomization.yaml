@@ -33,7 +33,7 @@ configurations:
 components:
 
   # Add TLS certificates for ingress
-  - ../../components/ssl-certificates
+  - ../../../components/ssl-certificates
 
   # Add Vault authentication (role)
-  - ../../components/vault-auth
+  - ../../../components/vault-auth
