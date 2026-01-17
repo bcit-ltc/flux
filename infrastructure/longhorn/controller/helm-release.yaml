@@ -19,8 +19,6 @@ spec:
         name: helm-repository
       interval: 24h
   values:
-    defaultSettings:
-      storageMinimalAvailablePercentage: 10
-      upgradeChecker: false
-      backupTarget: https://rancherbki0sz5wd3.blob.core.windows.net/rancherbackup
-      backupTargetCredentialSecret: longhorn-azblob-secret
+    valuesFrom:
+    - kind: ConfigMap
+      name: values

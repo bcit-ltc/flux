@@ -5,9 +5,11 @@ kind: Kustomization
 #   - ./cronjobs
   # - service-account.yaml
   # - webhook-ingress.yaml
+  # - vault-token-renewal.yaml
+  # - clear-terminating-pods.yaml
 
 # Prefix all resources with this name
-namePrefix: flux-
+namePrefix: flux-extra-
 
 # Replace base Namespace name and add all resources to this namespace
 namespace: flux-system

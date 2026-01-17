@@ -9,7 +9,7 @@ metadata:
     environment: latest
 spec:
   dependsOn:
-    - name: flux-system
+    - name: longhorn-config
 
   interval: 24h
   wait: true

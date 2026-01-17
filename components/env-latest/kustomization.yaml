@@ -25,6 +25,34 @@ patches:
         path: /spec/values/operatorConfig/hostname
         value: tailscale-operator-latest
 
+  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  - target:
+      kind: Ingress
+      annotationSelector: "app=flux"
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: flux.latest.ltc.bcit.ca
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: flux.latest.ltc.bcit.ca
+
+  # Update oci repository ref selection to target latest chart images
+  - target:
+      kind: OCIRepository
+      annotationSelector: "config.fluxcd.io/workload-type=app"
+    patch: |-
+      - op: replace
+        path: /spec/ref
+        value: {"tag": "latest"}
+
+  - target:
+      kind: Ingress
+    patch: |
+      - op: replace
+        path: /spec/tls/0/secretName
+        value: star-latest-ltc-bcit-ca
+
 # Generate a re-usable environment variable for other resources
 configMapGenerator:
   - name: flux-env

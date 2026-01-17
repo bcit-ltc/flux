@@ -26,18 +26,22 @@ configMapGenerator:
       annotations:
         config.kubernetes.io/local-config: "true"
 
-# Source Chart Repo
-  # url: https://releases.rancher.com/server-charts/stable
+  - name: values
+    files:
+      - values.yaml=longhorn-values.yaml
 
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
 
-components:
+# Source Chart Repo
+  # url: https://releases.rancher.com/server-charts/stable
+
+# components:
   # - ../../components/generators/ssl-certificates
 
   # Update resources based on ConfigMap above
-  - ../../components/config-matcher
+  # - ../../components/config-matcher
 
   # Required for VaultAuth role and service accounts
   # - ../../components/generators/vault-auth
