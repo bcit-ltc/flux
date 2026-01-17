@@ -1,0 +1,20 @@
+# Serviceaccount and VaultAuth to retrieve Oauth secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: longhorn-azblob-sa
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: longhorn-azblob-vault-auth
+spec:
+  kubernetes:
+    serviceAccount: longhorn-azblob-sa
+    role: longhorn-azblob-vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system
+    

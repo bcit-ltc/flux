@@ -2,4 +2,4 @@ defaultSettings:
   storageMinimalAvailablePercentage: 10
   upgradeChecker: false
   backupTarget: https://rancherbki0sz5wd3.blob.core.windows.net/rancherbackup
-  backupTargetCredentialSecret: longhorn-azblob-secret
+  backupTargetCredentialSecret: longhorn-azblob-credentials

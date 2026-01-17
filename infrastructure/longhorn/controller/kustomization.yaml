@@ -6,26 +6,15 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - helm-repository.yaml
+  - longhorn-vault-auth.yaml
+  - longhorn-azblob-credentials.yaml
   - namespace.yaml
-  # - backupstore-azblob.enc.yaml (TODO: pull from Vault instead)
-
-# Prefix all resources with this name
-namePrefix: longhorn-
 
 # Replace base Namespace name and add all resources to this namespace
 namespace: longhorn-system
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
-  - name: release-name
-    literals:
-      - releaseName="longhorn"
-
-    # This config resource is not added to the cluster
-    options:
-      annotations:
-        config.kubernetes.io/local-config: "true"
-
   - name: values
     files:
       - values.yaml=values-override.yaml
@@ -33,16 +22,3 @@ configMapGenerator:
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
-
-# Source Chart Repo
-  # url: https://releases.rancher.com/server-charts/stable
-
-# components:
-  # - ../../components/generators/ssl-certificates
-
-  # Update resources based on ConfigMap above
-  # - ../../components/config-matcher
-
-  # Required for VaultAuth role and service accounts
-  # - ../../components/generators/vault-auth
-

@@ -37,6 +37,14 @@ patches:
       metadata:
         name: DOES NOT MATTER
 
+  - target:
+      kind: HelmRelease
+      name: tailscale-operator
+    patch: |-
+      - op: replace
+        path: /spec/values/operatorConfig/hostname
+        value: tailscale-operator-latest
+
 replacements:
   - sourceValue: "latest"
     targets:
@@ -54,15 +62,15 @@ replacements:
         fieldPaths:
           - spec.kubernetes.audiences.0
 
-      # Configure tailscale
-      - select:
-          kind: HelmRelease
-          namespace: tailscale
-        fieldPaths:
-          - spec.values.operatorConfig.hostname
-        options:
-          delimiter: "-"
-          index: 99
+      # # Configure tailscale
+      # - select:
+      #     kind: HelmRelease
+      #     namespace: tailscale
+      #   fieldPaths:
+      #     - spec.values.operatorConfig.hostname
+      #   options:
+      #     delimiter: "-"
+      #     index: 99
 
       # Replace the secrets's environment placeholder with the correct path
       # - path should match {appName}/{environment}/{secretName}

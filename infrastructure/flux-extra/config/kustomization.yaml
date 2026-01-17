@@ -14,17 +14,6 @@ namePrefix: flux-
 # Replace base Namespace name and add all resources to this namespace
 namespace: flux-system
 
-# Generate a re-usable name variable for other resources
-configMapGenerator:
-  - name: release-name
-    literals:
-      - releaseName="flux"
-
-    # Resource is not added to the cluster
-    options:
-      annotations:
-        config.kubernetes.io/local-config: "true"
-
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
@@ -38,4 +27,3 @@ components:
 
   # Add Vault authentication (role)
   - ../../../components/vault-auth
-

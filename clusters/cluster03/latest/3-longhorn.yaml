@@ -1,4 +1,9 @@
 # Deploys longhorn
+#
+# - test with:
+#   flux build kustomization longhorn-controller --path ./infrastructure/longhorn/controller --kustomization-file clusters/cluster03/latest/3-longhorn.yaml --dry-run
+#   flux build kustomization longhorn-config --path ./infrastructure/longhorn/config --kustomization-file clusters/cluster03/latest/3-longhorn.yaml --dry-run
+#
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -12,10 +17,12 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-
   path: ./infrastructure/longhorn/controller
   dependsOn:
     - name: vault-secrets-operator-config
+  # # test kustomization
+  # components:
+  #   - ../../../components/env-latest
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -29,7 +36,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-
   path: ./infrastructure/longhorn/config
   dependsOn:
     - name: longhorn-controller
+  # # test kustomization
+  # components:
+  #   - ../../../components/env-latest
