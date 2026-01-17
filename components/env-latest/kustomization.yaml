@@ -18,7 +18,7 @@ replacements:
   - sourceValue: "latest"
     targets:
 
-      # Add the environment to global auth
+      # Add the environment to Vault default auth
       - select:
           kind: VaultAuthGlobal
         fieldPaths:
@@ -34,17 +34,20 @@ replacements:
       # Configure tailscale
       - select:
           kind: VaultAuth
-          name: tailscale-operator-vault-auth
+          namespace: tailscale
         fieldPaths:
           - spec.kubernetes.role
         options:
           delimiter: "-"
           index: 99
       - select:
-          name: values
+          kind: HelmRelease
           namespace: tailscale
         fieldPaths:
-          - data.[values.yaml].operatorConfig.hostname
+          - spec.values.operatorConfig.hostname
+        options:
+          delimiter: "-"
+          index: 99
 
       # Replace the secrets's environment placeholder with the correct path
       # - path should match {appName}/{environment}/{secretName}
@@ -81,13 +84,6 @@ replacements:
         options:
           delimiter: "-"
           index: 99
-
-      # Update oci repository ref selection to target latest chart images
-      - select:
-          kind: OCIRepository
-          annotationSelector: "config.fluxcd.io/workload-type=app"
-        fieldPaths:
-          - spec.ref.tag
 
       # Add the environment as a suffix to the postgres database
       - select:
@@ -145,6 +141,13 @@ replacements:
       #     kind: VaultAuth
       #   fieldPaths:
       #     - spec.kubernetes.serviceAccount
+
+      # Update oci repository ref selection to target latest chart images
+      - select:
+          kind: OCIRepository
+          annotationSelector: "config.fluxcd.io/workload-type=app"
+        fieldPaths:
+          - spec.ref.tag
 
       # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
       - select:

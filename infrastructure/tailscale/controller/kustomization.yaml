@@ -12,10 +12,3 @@ resources:
 
 namespace: tailscale
 
-configMapGenerator:
-  - name: values
-    files:
-      - values.yaml=values-override.yaml
-
-configurations:
-  - kustomizeconfig.yaml

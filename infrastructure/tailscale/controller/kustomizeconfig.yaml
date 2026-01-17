@@ -1,9 +1,0 @@
-# This file is for teaching kustomize how to substitute names
----
-nameReference:
-
-- kind: ConfigMap
-  fieldSpecs:
- 
-    - kind: HelmRelease
-      path: spec/valuesFrom/name
