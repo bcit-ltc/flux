@@ -10,10 +10,10 @@ labels:
 
 resources:
   - 0-vault-secrets-operator.yaml
-  - 1-tailscale.yaml
+  # - 1-tailscale.yaml
   # - 2-flux-extra.yaml
-  - 3-longhorn.yaml
-  # - 4-cloudnative-pg.yaml
+  # - 3-longhorn.yaml
+  - 4-cloudnative-pg.yaml
   # - 5-apps.yaml
 
 # For testing only
@@ -51,18 +51,3 @@ patches:
                       name: placeholder
                       labels:
                         environment: latest
-
-  # Remove all stable resources (this env should only emit latest resources)
-  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-  - target:
-      name: ingress-stable
-    patch: |
-      $patch: delete
-      kind: Ingress
-      metadata:
-        name: DOES NOT MATTER
-
-
-
-
-

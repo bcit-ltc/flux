@@ -1,9 +1,9 @@
-# Bootstraps application database roles and privileges
+# Bootstraps new application database roles and privileges
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: bootstrap-app-privs
+  name: bootstrap-app-privileges
   namespace: postgres
 spec:
   activeDeadlineSeconds: 300
@@ -100,7 +100,7 @@ spec:
                 path: apps
         - name: sql
           configMap:
-            name: default-privs-sql
+            name: default-privileges
             items:
               - key: default-privs.sql
                 path: default-privs.sql

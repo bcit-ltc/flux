@@ -1,28 +1,68 @@
 # Deploys cloudnative-pg operator & postgresql cluster
+#
+# - test with:
+#   flux build kustomization cloudnative-pg-controller --path ./infrastructure/cloudnative-pg/controller --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run
+#   flux build kustomization cloudnative-pg-config --path ./infrastructure/cloudnative-pg/config --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run
+#   flux build kustomization cloudnative-pg-app-databases --path ./infrastructure/cloudnative-pg/app-databases --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run
+#
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudnative-pg
+  name: cloudnative-pg-controller
   namespace: flux-system
-  labels:
-    environment: latest
 spec:
-  dependsOn:
-    - name: longhorn-config
-
   interval: 24h
   wait: true
   prune: true
-
   sourceRef:
     kind: GitRepository
     name: flux-system
-
-  path: ./infrastructure/cloudnative-pg
-
-  # healthChecks:
-  #   - apiVersion: postgresql.cnpg.io/v1
-  #     kind: Cluster
-  #     name: pg-core
-  #     namespace: postgres
+  path: ./infrastructure/cloudnative-pg/controller
+  dependsOn:
+    - name: vault-secrets-operator-config
+  # # test kustomization
+  # components:
+  #   - ../../../components/env-latest
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg-config
+  namespace: flux-system
+spec:
+  interval: 24h
+  wait: true
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cloudnative-pg/config
+  dependsOn:
+    - name: cloudnative-pg-controller
+  # # test kustomization
+  # components:
+  #   - ../../../components/env-latest
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg-app-databases
+  namespace: flux-system
+spec:
+  interval: 24h
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/cloudnative-pg/app-databases
+  dependsOn:
+    - name: cloudnative-pg-controller
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: pg-core
+      namespace: postgres
+  # # test kustomization
+  # components:
+  #   - ../../../components/env-latest

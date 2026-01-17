@@ -14,8 +14,12 @@ resources:
   # - ./flux-extra/config
 
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
-  - ./longhorn/controller
+  # - ./longhorn/controller
   # - ./longhorn/config
+
+  # - ./cloudnative-pg/controller
+  # - ./cloudnative-pg/config
+  - ./cloudnative-pg/app-databases
 
   # - ./observability
 

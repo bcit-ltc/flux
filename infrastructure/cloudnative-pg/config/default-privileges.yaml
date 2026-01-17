@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: default-privs-sql
+  name: default-privileges
 data:
   default-privs.sql: |
     \set ON_ERROR_STOP 1

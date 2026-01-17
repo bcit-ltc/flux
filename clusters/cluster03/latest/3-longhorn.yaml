@@ -19,7 +19,7 @@ spec:
     name: flux-system
   path: ./infrastructure/longhorn/controller
   dependsOn:
-    - name: vault-secrets-operator-config
+    - name: tailscale-config
   # # test kustomization
   # components:
   #   - ../../../components/env-latest

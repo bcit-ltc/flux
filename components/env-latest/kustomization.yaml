@@ -29,6 +29,8 @@ patches:
         path: /spec/tls/0/secretName
         value: star-latest-ltc-bcit-ca
 
+  # Remove all stable resources (this env should only emit latest resources)
+  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
       name: star-ltc-bcit-ca
     patch: |
@@ -36,7 +38,15 @@ patches:
       kind: VaultStaticSecret
       metadata:
         name: DOES NOT MATTER
+  - target:
+      name: ingress-stable
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
 
+  # Add environment-suffix to tailscale operator hostname
   - target:
       kind: HelmRelease
       name: tailscale-operator
@@ -62,16 +72,6 @@ replacements:
         fieldPaths:
           - spec.kubernetes.audiences.0
 
-      # # Configure tailscale
-      # - select:
-      #     kind: HelmRelease
-      #     namespace: tailscale
-      #   fieldPaths:
-      #     - spec.values.operatorConfig.hostname
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
-
       # Replace the secrets's environment placeholder with the correct path
       # - path should match {appName}/{environment}/{secretName}
       - select:
@@ -91,55 +91,14 @@ replacements:
           - name: tailscale-oauth
 
       # Add the environment as a suffix to the postgres auth name
-      - select:
-          kind: VaultAuth
-          name: postgres-vault-auth
-        fieldPaths:
-          - spec.kubernetes.serviceAccount
-        options:
-          delimiter: "-"
-          index: 99
-
-      # Add the environment as a suffix to the postgres database
-      - select:
-          kind: Database
-        fieldPaths:
-          - spec.cluster.name
-        options:
-          delimiter: "-"
-          index: 99
-
-      # Add the environment to VaultDynamicSecrets configs
-      - select:
-          kind: VaultDynamicSecret
-          name: db-credentials
-        fieldPaths:
-          - spec.mount
-          - spec.path
-          # - metadata.annotations.app/db-host
-        options:
-          delimiter: "-"
-          index: 2
-
-      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
-      - select:
-          kind: Job
-        fieldPaths:
-          - spec.template.spec.containers.0.env.[name=PGHOST].value
-          - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
-          - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
-        options:
-          delimiter: "-"
-          index: 2
-
-      # Replace the placeholder environment in the postgres INIT_DB job configMap name
-      - select:
-          kind: Job
-        fieldPaths:
-          - spec.template.spec.volumes.[name=sql].configMap.name
-        options:
-          delimiter: "-"
-          index: 99
+      # - select:
+      #     kind: VaultAuth
+      #     name: postgres-vault-auth
+      #   fieldPaths:
+      #     - spec.kubernetes.serviceAccount
+      #   options:
+      #     delimiter: "-"
+      #     index: 99
 
       # # Ensure the serviceaccount name matches the release name
       # - select:
@@ -147,10 +106,51 @@ replacements:
       #   fieldPaths:
       #     - spec.kubernetes.serviceAccount
 
+      # Add the environment as a suffix to the postgres database
+      # - select:
+      #     kind: Database
+      #   fieldPaths:
+      #     - spec.cluster.name
+      #   options:
+      #     delimiter: "-"
+      #     index: 99
+
+      # # Add the environment to VaultDynamicSecrets configs
+      # - select:
+      #     kind: VaultDynamicSecret
+      #     name: db-credentials
+      #   fieldPaths:
+      #     - spec.mount
+      #     - spec.path
+      #     # - metadata.annotations.app/db-host
+      #   options:
+      #     delimiter: "-"
+      #     index: 2
+
+      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
+      # - select:
+      #     kind: Job
+      #   fieldPaths:
+      #     - spec.template.spec.containers.0.env.[name=PGHOST].value
+      #     - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
+      #     - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
+      #   options:
+      #     delimiter: "-"
+      #     index: 2
+
+      # Replace the placeholder environment in the postgres INIT_DB job configMap name
+      # - select:
+      #     kind: Job
+      #   fieldPaths:
+      #     - spec.template.spec.volumes.[name=sql].configMap.name
+      #   options:
+      #     delimiter: "-"
+      #     index: 99
+
       # Update oci repository ref selection to target latest chart images
-      - select:
-          kind: OCIRepository
-          annotationSelector: "config.fluxcd.io/workload-type=app"
-        fieldPaths:
-          - spec.ref.tag
+      # - select:
+      #     kind: OCIRepository
+      #     annotationSelector: "config.fluxcd.io/workload-type=app"
+      #   fieldPaths:
+      #     - spec.ref.tag
 

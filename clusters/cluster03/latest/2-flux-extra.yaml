@@ -19,6 +19,6 @@ spec:
   path: ./infrastructure/flux-extra/config
   dependsOn:
     - name: vault-secrets-operator-config
-  # to test kustomization
-  components:
-    - ../../../components/env-latest
+  # # to test kustomization
+  # components:
+  #   - ../../../components/env-latest

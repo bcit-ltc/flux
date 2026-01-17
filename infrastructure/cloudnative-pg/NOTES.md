@@ -11,4 +11,4 @@ Use the kubectl plugin to check the cluster health:
 
 ## Adding new app databases
 
-    kubectl apply -f fluxRoot/infrastructure/cloudnative-pg/bootstrap-app-privs-job.yaml
+    kubectl apply -f fluxRoot/infrastructure/cloudnative-pg/scripts/bootstrap-app-privs-job.yaml
