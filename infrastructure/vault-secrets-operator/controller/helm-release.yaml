@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: vault-secrets-operator
       interval: 24h
-  values:
-    valuesFrom:
-    - kind: ConfigMap
-      name: values
+      valuesFrom:
+      - kind: ConfigMap
+        name: values
