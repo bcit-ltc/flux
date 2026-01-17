@@ -47,28 +47,4 @@ spec:
   # # test kustomization
   # components:
   #   - ../../../components/env-latest
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cloudnative-pg-app-databases
-  namespace: flux-system
-  annotations:
-    fluxcd.io/workload: infrastructure
-spec:
-  interval: 24h
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./infrastructure/cloudnative-pg/app-databases
-  dependsOn:
-    - name: cloudnative-pg-controller
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: pg-core
-      namespace: postgres
-  # # test kustomization
-  # components:
-  #   - ../../../components/env-latest
+

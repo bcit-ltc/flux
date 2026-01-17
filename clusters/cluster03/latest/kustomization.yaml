@@ -12,8 +12,8 @@ resources:
   - ../../base
 
 # # For testing only
-#   - ../../../apps
-# # - ../../../infrastructure
+#   # - ../../../apps
+# - ../../../infrastructure
 # #
 # components:
 #   - ../../../components/env-latest
