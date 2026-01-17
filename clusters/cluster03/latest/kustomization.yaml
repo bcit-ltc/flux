@@ -11,14 +11,14 @@ labels:
 resources:
   - 0-vault-secrets-operator.yaml
   - 1-tailscale.yaml
-  # - 2-flux-extra.yaml
+  - 2-flux-extra.yaml
   - 3-longhorn.yaml
   - 4-cloudnative-pg.yaml
-  # - 5-apps.yaml
+  - 5-apps.yaml
 
-# For testing only
+# # For testing only
 #   - ../../../apps
-# - ../../../infrastructure
+# # - ../../../infrastructure
 # #
 # components:
 #   - ../../../components/env-latest
@@ -27,6 +27,16 @@ patches:
 
   - target:
       kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=apps"
+    patch: |-
+      - op: add
+        path: /spec/components
+        value:
+          - ../components/env-latest
+
+  - target:
+      kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=infrastructure"
     patch: |-
       - op: add
         path: /spec/components

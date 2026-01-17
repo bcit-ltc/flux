@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - latest.app.ltc.bcit.ca
+        - app.latest.ltc.bcit.ca
       secretName: star-ltc-bcit-ca
   rules:
-    - host: latest.app.ltc.bcit.ca
+    - host: app.latest.ltc.bcit.ca
       http:
         paths:
           - path: /

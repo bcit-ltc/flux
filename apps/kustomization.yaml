@@ -37,7 +37,7 @@ resources:
   # - ./legacy-soh-sonography
   # - ./legacy-sot
   - ./module-estimator
-  # - ./openlab-scheduler # vault: in apps_grouped
+  # - ./openlab-scheduler # grouped: in apps_grouped list in Vault
   # - ./ptracker
-  - ./qcon # vault: in apps_grouped
+  - ./qcon # grouped: in apps_grouped list in Vault
   - ./sugar-suite

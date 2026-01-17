@@ -11,6 +11,8 @@ kind: Kustomization
 metadata:
   name: cloudnative-pg-controller
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   wait: true
@@ -30,6 +32,8 @@ kind: Kustomization
 metadata:
   name: cloudnative-pg-config
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   wait: true
@@ -49,6 +53,8 @@ kind: Kustomization
 metadata:
   name: cloudnative-pg-app-databases
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   prune: true

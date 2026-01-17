@@ -9,6 +9,8 @@ kind: Kustomization
 metadata:
   name: flux-extra
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   wait: true

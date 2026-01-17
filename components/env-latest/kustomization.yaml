@@ -6,13 +6,15 @@ kind: Component
 
 patches:
 
-#   - target:
-#       kind: OCIRepository
-#       annotationSelector: "config.fluxcd.io/workload-type=app"
-#     patch: |-
-#       - op: replace
-#         path: /spec/ref
-#         value: {"tag": "latest"}
+  # Patches OCIRepository resources to use "latest" tag for chart images
+  # Problematic for OCIRepositories that are not apps
+  - target:
+      kind: OCIRepository
+      # annotationSelector: "config.fluxcd.io/workload-type=app"
+    patch: |-
+      - op: replace
+        path: /spec/ref
+        value: {"tag": "latest"}
 
   # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
   - target:
@@ -25,11 +27,16 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: flux.latest.ltc.bcit.ca
+
+  # Patches Ingress - this is problematic with Helm charts specifying alternate secrets
+  - target:
+      kind: Ingress
+    patch: |-
       - op: replace
         path: /spec/tls/0/secretName
         value: star-latest-ltc-bcit-ca
 
-  # Remove all stable resources (this env should only emit latest resources)
+  # Remove all stable resources (this env should only emit "latest" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
       name: star-ltc-bcit-ca
@@ -89,6 +96,7 @@ replacements:
           - name: github-private-repo-token
           - name: gh-private-oci-token
           - name: tailscale-oauth
+          - name: longhorn-azblob-credentials
 
       # Add the environment as a suffix to the postgres auth name
       # - select:
@@ -146,11 +154,3 @@ replacements:
       #   options:
       #     delimiter: "-"
       #     index: 99
-
-      # Update oci repository ref selection to target latest chart images
-      # - select:
-      #     kind: OCIRepository
-      #     annotationSelector: "config.fluxcd.io/workload-type=app"
-      #   fieldPaths:
-      #     - spec.ref.tag
-

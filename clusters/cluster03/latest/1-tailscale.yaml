@@ -10,6 +10,8 @@ kind: Kustomization
 metadata:
   name: tailscale-controller
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   wait: true
@@ -29,6 +31,8 @@ kind: Kustomization
 metadata:
   name: tailscale-config
   namespace: flux-system
+  annotations:
+    fluxcd.io/workload: infrastructure
 spec:
   interval: 24h
   wait: true

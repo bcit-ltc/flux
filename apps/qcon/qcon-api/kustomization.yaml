@@ -30,10 +30,11 @@ configMapGenerator:
 components:
 
   # Configure GitHub webhook for reconciling cluster resources when repo is updated
-  - ../../../components/notifications
+  # - ../../components/notifications
 
   # Add TLS certificates for ingress
-  - ../../../components/ssl-certificates
+  - ../../../components/ssl-star-latest-ltc-bcit-ca
+  - ../../../components/ssl-star-ltc-bcit-ca
 
   # Add Vault authentication (role and service accounts)
   - ../../../components/vault-auth

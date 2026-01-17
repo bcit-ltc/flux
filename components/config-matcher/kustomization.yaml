@@ -42,11 +42,14 @@ replacements:
           delimiter: "/"
           index: 0
         reject:
-          - name: star-ltc-bcit-ca
           - name: star-latest-ltc-bcit-ca
+          - name: star-ltc-bcit-ca
+          - name: vault-manager-secret
           - name: github-webhook-token
-          - name: gh-private-oci-token
           - name: github-private-repo-token
+          - name: gh-private-oci-token
+          - name: tailscale-oauth
+          - name: longhorn-azblob-credentials
       - select:
           kind: VaultDynamicSecret
         fieldPaths:
