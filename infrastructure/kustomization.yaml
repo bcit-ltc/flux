@@ -1,31 +1,22 @@
-# Kustomization for all infrastructure
-#
-# - deploy workloads by uncommenting resources below
+# This file is only for confirming infrastructure Kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-commonAnnotations:
-  config.fluxcd.io/workload-type: infrastructure
-
 resources:
 
-  # GitHub webhook receiver
-  # - ./flux
-
-  # # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
   # - ./vault-secrets-operator/controller
   # - ./vault-secrets-operator/config
 
-  # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
-  # - ./longhorn
-
-  # Tailscale
   # - ./tailscale/controller
-  - ./tailscale/config
+  # - ./tailscale/config
 
-  # Observability: Rancher monitoring/logging + Grafana
+  - ./flux-extra/config
+
+  # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
+  # - ./longhorn/controller
+  # - ./longhorn/config
+
   # - ./observability
 
-  # Obot
   # - ./obot

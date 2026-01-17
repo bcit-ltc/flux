@@ -1,4 +1,9 @@
 # Deploys tailscale
+#
+# - test with:
+#   flux build kustomization tailscale-controller --path ./infrastructure/tailscale/controller --kustomization-file clusters/cluster03/latest/1-tailscale.yaml --dry-run
+#   flux build kustomization tailscale-config --path ./infrastructure/tailscale/config --kustomization-file clusters/cluster03/latest/1-tailscale.yaml --dry-run
+#
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -12,11 +17,10 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-
   path: ./infrastructure/tailscale/controller
   dependsOn:
     - name: vault-secrets-operator-config
-  # # to test kustomization
+  # test kustomization
   # components:
   #   - ../../../components/env-latest
 ---
@@ -32,10 +36,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-
   path: ./infrastructure/tailscale/config
   dependsOn:
     - name: tailscale-controller
-  # # to test kustomization
+  # test kustomization
   # components:
   #   - ../../../components/env-latest

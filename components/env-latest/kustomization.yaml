@@ -4,7 +4,7 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-# patches:
+patches:
 
 #   - target:
 #       kind: OCIRepository
@@ -13,6 +13,29 @@ kind: Component
 #       - op: replace
 #         path: /spec/ref
 #         value: {"tag": "latest"}
+
+  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  - target:
+      kind: Ingress
+      annotationSelector: "app=flux"
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: flux.latest.ltc.bcit.ca
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: flux.latest.ltc.bcit.ca
+      - op: replace
+        path: /spec/tls/0/secretName
+        value: star-latest-ltc-bcit-ca
+
+  - target:
+      name: star-ltc-bcit-ca
+    patch: |
+      $patch: delete
+      kind: VaultStaticSecret
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "latest"
@@ -33,14 +56,6 @@ replacements:
 
       # Configure tailscale
       - select:
-          kind: VaultAuth
-          namespace: tailscale
-        fieldPaths:
-          - spec.kubernetes.role
-        options:
-          delimiter: "-"
-          index: 99
-      - select:
           kind: HelmRelease
           namespace: tailscale
         fieldPaths:
@@ -60,20 +75,12 @@ replacements:
           index: 1
         reject:
           - name: star-latest-ltc-bcit-ca
+          - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
           - name: tailscale-oauth
-
-      # # Add the environment as a suffix to the global auth name
-      # - select:
-      #     kind: VaultAuth
-      #   fieldPaths:
-      #     - spec.vaultAuthGlobalRef.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
 
       # Add the environment as a suffix to the postgres auth name
       - select:
@@ -126,16 +133,6 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # # Add the environment as a prefix to the ingress host
-      # - select:
-      #     kind: Ingress
-      #   fieldPaths:
-      #     - spec.rules.0.host
-      #     - spec.tls.0.hosts.0
-      #   options:
-      #     delimiter: "."
-      #     index: 1
-
       # # Ensure the serviceaccount name matches the release name
       # - select:
       #     kind: VaultAuth
@@ -148,22 +145,4 @@ replacements:
           annotationSelector: "config.fluxcd.io/workload-type=app"
         fieldPaths:
           - spec.ref.tag
-
-      # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-      - select:
-          kind: Ingress
-          annotationSelector: "app=flux"
-        fieldPaths:
-          - spec.rules.0.host
-          - spec.tls.0.hosts.0
-        options:
-          delimiter: "."
-          index: 1
-      - select:
-          kind: Ingress
-        fieldPaths:
-          - spec.tls.0.secretName
-        options:
-          delimiter: "-"
-          index: 2
 

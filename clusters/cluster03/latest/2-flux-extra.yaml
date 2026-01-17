@@ -1,4 +1,8 @@
 # Deploys flux-extra configuration
+#
+# - test with:
+#   flux build kustomization flux-extra --path ./infrastructure/flux-extra/config --kustomization-file clusters/cluster03/latest/2-flux-extra.yaml --dry-run
+#
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -12,7 +16,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-
   path: ./infrastructure/flux-extra/config
   dependsOn:
     - name: vault-secrets-operator-config
+  # to test kustomization
+  components:
+    - ../../../components/env-latest
