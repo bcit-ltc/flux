@@ -20,7 +20,7 @@ spec:
     name: flux-system
   path: ./infrastructure/cloudnative-pg/controller
   dependsOn:
-    - name: vault-secrets-operator-config
+    - name: longhorn-config
   # # test kustomization
   # components:
   #   - ../../../components/env-latest
