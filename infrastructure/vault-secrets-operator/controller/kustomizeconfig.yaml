@@ -6,4 +6,4 @@ nameReference:
   fieldSpecs:
  
     - kind: HelmRelease
-      path: spec/values/valuesFrom/name
+      path: spec/valuesFrom/name
