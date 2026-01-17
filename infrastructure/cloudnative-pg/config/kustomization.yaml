@@ -6,7 +6,6 @@ resources:
   - bootstrap-app-privileges.yaml              # bootstrap job to init DB
   - cluster.yaml                      # pg-core Cluster
   - default-privileges.yaml  # generic SQL used by bootstrap job
-  - namespace.yaml
   # - pgbouncer-pooler.yaml     # not yet used
 
 namespace: postgres
