@@ -9,12 +9,7 @@ labels:
     environment: latest
 
 resources:
-  - 0-vault-secrets-operator.yaml
-  - 1-tailscale.yaml
-  - 2-flux-extra.yaml
-  - 3-longhorn.yaml
-  - 4-cloudnative-pg.yaml
-  - 5-apps.yaml
+  - ../../base
 
 # # For testing only
 #   - ../../../apps

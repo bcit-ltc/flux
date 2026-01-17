@@ -1,6 +1,6 @@
 # Deploys apps
 #
-# - test with:
+# - test "latest" with:
 #   flux build kustomization apps --path ./apps --kustomization-file clusters/cluster03/latest/5-apps.yaml --dry-run
 #
 ---

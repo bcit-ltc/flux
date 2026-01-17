@@ -1,6 +1,6 @@
 # Deploys cloudnative-pg operator & postgresql cluster
 #
-# - test with:
+# - test "latest" with:
 #   flux build kustomization cloudnative-pg-controller --path ./infrastructure/cloudnative-pg/controller --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run
 #   flux build kustomization cloudnative-pg-config --path ./infrastructure/cloudnative-pg/config --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run
 #   flux build kustomization cloudnative-pg-app-databases --path ./infrastructure/cloudnative-pg/app-databases --kustomization-file clusters/cluster03/latest/4-cloudnative-pg.yaml --dry-run

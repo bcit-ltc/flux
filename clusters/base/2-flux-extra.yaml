@@ -1,6 +1,6 @@
 # Deploys flux-extra configuration
 #
-# - test with:
+# - test "latest" with:
 #   flux build kustomization flux-extra --path ./infrastructure/flux-extra/config --kustomization-file clusters/cluster03/latest/2-flux-extra.yaml --dry-run
 #
 ---

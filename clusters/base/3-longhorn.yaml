@@ -1,14 +1,14 @@
-# Deploys tailscale
+# Deploys longhorn
 #
-# - test with:
-#   flux build kustomization tailscale-controller --path ./infrastructure/tailscale/controller --kustomization-file clusters/cluster03/latest/1-tailscale.yaml --dry-run
-#   flux build kustomization tailscale-config --path ./infrastructure/tailscale/config --kustomization-file clusters/cluster03/latest/1-tailscale.yaml --dry-run
+# - test "latest" with:
+#   flux build kustomization longhorn-controller --path ./infrastructure/longhorn/controller --kustomization-file clusters/cluster03/latest/3-longhorn.yaml --dry-run
+#   flux build kustomization longhorn-config --path ./infrastructure/longhorn/config --kustomization-file clusters/cluster03/latest/3-longhorn.yaml --dry-run
 #
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: tailscale-controller
+  name: longhorn-controller
   namespace: flux-system
   annotations:
     fluxcd.io/workload: infrastructure
@@ -19,17 +19,17 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/tailscale/controller
+  path: ./infrastructure/longhorn/controller
   dependsOn:
-    - name: vault-secrets-operator-config
-  # test kustomization
+    - name: tailscale-config
+  # # test kustomization
   # components:
   #   - ../../../components/env-latest
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: tailscale-config
+  name: longhorn-config
   namespace: flux-system
   annotations:
     fluxcd.io/workload: infrastructure
@@ -40,9 +40,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/tailscale/config
+  path: ./infrastructure/longhorn/config
   dependsOn:
-    - name: tailscale-controller
-  # test kustomization
+    - name: longhorn-controller
+  # # test kustomization
   # components:
   #   - ../../../components/env-latest
