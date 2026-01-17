@@ -16,6 +16,6 @@ spec:
         name: vault-secrets-operator
       interval: 24h
   values:
-    defaultVaultConnection:
-      enabled: true
-      address: "https://vault.ltc.bcit.ca:8200"
+    valuesFrom:
+    - kind: ConfigMap
+      name: values

@@ -5,7 +5,7 @@ kind: Kustomization
 
 resources:
   - vault-auth-global.yaml
-  - vault-connection.yaml
+  # - vault-connection.yaml
   - crb-sa-vault-tokenauth.yaml
 
 namespace: vault-secrets-operator-system

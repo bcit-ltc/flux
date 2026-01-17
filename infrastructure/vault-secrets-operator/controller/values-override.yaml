@@ -1,0 +1,3 @@
+defaultVaultConnection:
+  enabled: true
+  address: "https://vault.ltc.bcit.ca:8200"

@@ -28,7 +28,7 @@ configMapGenerator:
 
   - name: values
     files:
-      - values.yaml=longhorn-values.yaml
+      - values.yaml=values-override.yaml
 
 # Teach kustomize how to update generated names
 configurations:
