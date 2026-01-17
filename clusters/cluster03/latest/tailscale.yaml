@@ -16,6 +16,9 @@ spec:
   path: ./infrastructure/tailscale/controller
   dependsOn:
     - name: vault-secrets-operator-config
+  # # to test kustomization
+  # components:
+  #   - ../../../components/env-latest
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -33,3 +36,6 @@ spec:
   path: ./infrastructure/tailscale/config
   dependsOn:
     - name: tailscale-controller
+  # # to test kustomization
+  # components:
+  #   - ../../../components/env-latest

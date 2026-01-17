@@ -4,7 +4,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: pg-core
-  namespace: postgres
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16
@@ -37,8 +36,8 @@ spec:
         login: true
         superuser: false
         createdb: true
-        # no passwordSecret: CNPG will manage the role internally; we don't need to log in as this user from K8s
-
+        # no passwordSecret: CNPG will manage the role internally
+  
   postgresql:
     # hostssl for external traffic; TLS is required.
     pg_hba:

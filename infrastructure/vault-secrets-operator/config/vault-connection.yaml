@@ -1,8 +1,0 @@
-# Default connection
----
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultConnection
-metadata:
-  name: vault-connection
-spec:
-  address: https://vault.ltc.bcit.ca:8200

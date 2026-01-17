@@ -18,6 +18,9 @@ labels:
   pairs:
     environment: latest
 
+# components:
+#   - ../../../components/env-latest
+
 patches:
 
   - target:
@@ -28,6 +31,7 @@ patches:
         value:
           - ../../../components/env-latest
 
+# - ../../../components/vault-auth
 # - ../../../components/ssl-certificates
 
   # Add the environment label to all resources in the Helm chart

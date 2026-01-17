@@ -1,3 +1,9 @@
+# Serviceaccount and VaultAuth to retrieve Oauth secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tailscale-operator-oauth-sa
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth

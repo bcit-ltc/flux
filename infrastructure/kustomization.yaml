@@ -8,19 +8,21 @@ kind: Kustomization
 commonAnnotations:
   config.fluxcd.io/workload-type: infrastructure
 
-# resources:
+resources:
 
   # GitHub webhook receiver
   # - ./flux
 
   # # vault secrets operator requires init; see `infrastructure/vault-secrets-operator/NOTES.md`
   # - ./vault-secrets-operator/controller
+  # - ./vault-secrets-operator/config
 
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   # - ./longhorn
 
   # Tailscale
-  # - ./tailscale
+  # - ./tailscale/controller
+  - ./tailscale/config
 
   # Observability: Rancher monitoring/logging + Grafana
   # - ./observability

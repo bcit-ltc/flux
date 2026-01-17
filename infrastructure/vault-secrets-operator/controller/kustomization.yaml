@@ -8,20 +8,9 @@ resources:
   - helm-repository.yaml
   - namespace.yaml
 
-# Replace base Namespace name and add all resources to this namespace
 namespace: vault-secrets-operator-system
 
-# Generate a re-usable name variable for other resources
 configMapGenerator:
-  - name: release-name
-    literals:
-      - releaseName="vault-secrets-operator"
-
-    # This config resource is not added to the cluster
-    options:
-      annotations:
-        config.kubernetes.io/local-config: "true"
-
   - name: values
     files:
       - values.yaml=values-override.yaml
@@ -29,12 +18,3 @@ configMapGenerator:
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
-
-# Source Chart Repo
-  # url: https://github.com/hashicorp/vault-secrets-operator/tree/main/chart
-
-# Order matters!
-components:
-
-  # Update resources based on ConfigMap above
-  - ../../../components/config-matcher

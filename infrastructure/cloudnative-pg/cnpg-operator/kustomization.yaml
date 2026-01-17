@@ -10,5 +10,3 @@ resources:
 
 namespace: cnpg-system
 
-configurations:
-  - kustomizeconfig.yaml

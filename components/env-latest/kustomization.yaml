@@ -4,72 +4,47 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-patches:
+# patches:
 
-  # Patch with environment-specific values
-  - target:
-      kind: VaultAuthGlobal
-    patch: |-
-      - op: replace
-        path: /spec/kubernetes/mount
-        value: kubernetes-latest
-      - op: replace
-        path: /spec/kubernetes/audiences
-        value: [latest]
-
-  - target:
-      kind: HelmRelease
-      name: tailscale-operator
-    patch: |-
-      - op: replace
-        path: /spec/values/operatorConfig/hostname
-        value: tailscale-operator-latest
-
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-  - target:
-      kind: Ingress
-      annotationSelector: "app=flux"
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: flux.latest.ltc.bcit.ca
-      - op: replace
-        path: /spec/tls/0/hosts/0
-        value: flux.latest.ltc.bcit.ca
-
-  # Update oci repository ref selection to target latest chart images
-  - target:
-      kind: OCIRepository
-      annotationSelector: "config.fluxcd.io/workload-type=app"
-    patch: |-
-      - op: replace
-        path: /spec/ref
-        value: {"tag": "latest"}
-
-  - target:
-      kind: Ingress
-    patch: |
-      - op: replace
-        path: /spec/tls/0/secretName
-        value: star-latest-ltc-bcit-ca
-
-# Generate a re-usable environment variable for other resources
-configMapGenerator:
-  - name: flux-env
-    literals:
-      - fluxEnv="latest"
-
-    # This config resource is not added to the cluster
-    options:
-      annotations:
-        config.kubernetes.io/local-config: "true"
+#   - target:
+#       kind: OCIRepository
+#       annotationSelector: "config.fluxcd.io/workload-type=app"
+#     patch: |-
+#       - op: replace
+#         path: /spec/ref
+#         value: {"tag": "latest"}
 
 replacements:
-  - source:
-      kind: ConfigMap
-      name: flux-env
-      fieldPath: data.fluxEnv
+  - sourceValue: "latest"
     targets:
+
+      # Add the environment to global auth
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.kubernetes.mount
+        options:
+          delimiter: "-"
+          index: 99
+      - select:
+          kind: VaultAuthGlobal
+        fieldPaths:
+          - spec.kubernetes.audiences.0
+
+      # Configure tailscale
+      - select:
+          kind: VaultAuth
+          name: tailscale-operator-vault-auth
+        fieldPaths:
+          - spec.kubernetes.role
+        options:
+          delimiter: "-"
+          index: 99
+      - select:
+          name: values
+          namespace: tailscale
+        fieldPaths:
+          - data.[values.yaml].operatorConfig.hostname
 
       # Replace the secrets's environment placeholder with the correct path
       # - path should match {appName}/{environment}/{secretName}
@@ -87,15 +62,6 @@ replacements:
           - name: github-private-repo-token
           - name: gh-private-oci-token
           - name: tailscale-oauth
-
-      # Add the environment as a suffix to the default connection
-      # - select:
-      #     kind: VaultAuthGlobal
-      #   fieldPaths:
-      #     - spec.vaultConnectionRef
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
 
       # # Add the environment as a suffix to the global auth name
       # - select:
@@ -115,6 +81,13 @@ replacements:
         options:
           delimiter: "-"
           index: 99
+
+      # Update oci repository ref selection to target latest chart images
+      - select:
+          kind: OCIRepository
+          annotationSelector: "config.fluxcd.io/workload-type=app"
+        fieldPaths:
+          - spec.ref.tag
 
       # Add the environment as a suffix to the postgres database
       - select:
@@ -157,29 +130,37 @@ replacements:
           delimiter: "-"
           index: 99
 
-      # Add the environment as a prefix to the ingress host
-      - select:
-          kind: Ingress
-        fieldPaths:
-          - spec.rules.0.host
-          - spec.tls.0.hosts.0
-        options:
-          delimiter: "."
-          index: 1
-
-      # Update Tailscale's secret path
-      # - path should match {appName}/{environment}/{secretName}
-      - select:
-          kind: VaultAuth
-          name: tailscale-operator-vault-auth
-        fieldPaths:
-          - spec.kubernetes.role
-        options:
-          delimiter: "-"
-          index: 99
+      # # Add the environment as a prefix to the ingress host
+      # - select:
+      #     kind: Ingress
+      #   fieldPaths:
+      #     - spec.rules.0.host
+      #     - spec.tls.0.hosts.0
+      #   options:
+      #     delimiter: "."
+      #     index: 1
 
       # # Ensure the serviceaccount name matches the release name
       # - select:
       #     kind: VaultAuth
       #   fieldPaths:
       #     - spec.kubernetes.serviceAccount
+
+      # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+      - select:
+          kind: Ingress
+          annotationSelector: "app=flux"
+        fieldPaths:
+          - spec.rules.0.host
+          - spec.tls.0.hosts.0
+        options:
+          delimiter: "."
+          index: 1
+      - select:
+          kind: Ingress
+        fieldPaths:
+          - spec.tls.0.secretName
+        options:
+          delimiter: "-"
+          index: 2
+

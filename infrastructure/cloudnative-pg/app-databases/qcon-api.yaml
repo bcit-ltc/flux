@@ -3,7 +3,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
   name: qcon-api
-  namespace: postgres
 spec:
   cluster:
     name: pg-core
@@ -17,7 +16,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db-vars
-  namespace: postgres
 data:
   DB_NAME: qcon_api
   OWNER_ROLE: db_root_owner
