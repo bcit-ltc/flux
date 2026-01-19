@@ -1,0 +1,28 @@
+# Kustomization for all Apps
+#
+# - deploy workloads by uncommenting resources below
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonAnnotations:
+  config.fluxcd.io/workload-type: app
+
+resources:
+  - ./legacy-html
+  # - ./legacy-multimedia
+  # - ./legacy-multimedia-php
+  # - ./legacy-sob
+  # - ./legacy-sob-php
+  # - ./legacy-soc
+  # - ./legacy-soc-php
+  # - ./legacy-soc-royaloak
+  # - ./legacy-socas
+  # - ./legacy-soe
+  # - ./legacy-soh
+  # - ./legacy-soh-3dassessmentsim
+  # - ./legacy-soh-3dbirth
+  # - ./legacy-soh-3dheart
+  # - ./legacy-soh-nser-8600-assessmentsim
+  # - ./legacy-soh-sonography
+  # - ./legacy-sot

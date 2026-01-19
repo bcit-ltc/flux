@@ -18,24 +18,6 @@ resources:
   - ./distribution-game
   # - ./heme-analyzer-app
   - ./infrastructure-documentation
-  - ./legacy-html
-  - ./legacy-ltc
-  # - ./legacy-multimedia
-  # - ./legacy-multimedia-php
-  # - ./legacy-sob
-  # - ./legacy-sob-php
-  # - ./legacy-soc
-  # - ./legacy-soc-php
-  # - ./legacy-soc-royaloak
-  # - ./legacy-socas
-  # - ./legacy-soe
-  # - ./legacy-soh
-  # - ./legacy-soh-3dassessmentsim
-  # - ./legacy-soh-3dbirth
-  # - ./legacy-soh-3dheart
-  # - ./legacy-soh-nser-8600-assessmentsim
-  # - ./legacy-soh-sonography
-  # - ./legacy-sot
   - ./module-estimator
   # - ./openlab-scheduler # grouped: in apps_grouped list in Vault
   # - ./ptracker
