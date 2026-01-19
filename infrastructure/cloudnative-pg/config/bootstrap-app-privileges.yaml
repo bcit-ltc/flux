@@ -6,7 +6,7 @@ metadata:
   name: bootstrap-app-privileges
   namespace: postgres
 spec:
-  activeDeadlineSeconds: 300
+  activeDeadlineSeconds: 420
   ttlSecondsAfterFinished: 600
   template:
     spec:
