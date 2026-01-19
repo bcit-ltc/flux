@@ -123,17 +123,17 @@ replacements:
       #     delimiter: "-"
       #     index: 99
 
-      # # Add the environment to VaultDynamicSecrets configs
-      # - select:
-      #     kind: VaultDynamicSecret
-      #     name: db-credentials
-      #   fieldPaths:
-      #     - spec.mount
-      #     - spec.path
-      #     # - metadata.annotations.app/db-host
-      #   options:
-      #     delimiter: "-"
-      #     index: 2
+      # Add the environment to VaultDynamicSecrets configs
+      - select:
+          kind: VaultDynamicSecret
+          name: db-credentials
+        fieldPaths:
+          - spec.mount
+          - spec.path
+          # - metadata.annotations.app/db-host
+        options:
+          delimiter: "-"
+          index: 2
 
       # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
       # - select:
