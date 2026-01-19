@@ -6,36 +6,6 @@ kind: Component
 
 patches:
 
-  # # Patches OCIRepository resources to use "latest" tag for chart images
-  # # Problematic for OCIRepositories that are not apps
-  # - target:
-  #     kind: OCIRepository
-  #     # annotationSelector: "config.fluxcd.io/workload-type=app"
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/ref
-  #       value: {"tag": "latest"}
-
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-  # - target:
-  #     kind: Ingress
-  #     annotationSelector: "app=flux"
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/rules/0/host
-  #       value: flux.latest.ltc.bcit.ca
-  #     - op: replace
-  #       path: /spec/tls/0/hosts/0
-  #       value: flux.latest.ltc.bcit.ca
-
-  # Patches Ingress - this is problematic with Helm charts specifying alternate secrets
-  # - target:
-  #     kind: Ingress
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/tls/0/secretName
-  #       value: star-latest-ltc-bcit-ca
-
   # Remove all stable resources (this env should only emit "latest" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
@@ -52,15 +22,6 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
-
-  # Add environment-suffix to tailscale operator hostname
-  - target:
-      kind: HelmRelease
-      name: tailscale-operator
-    patch: |-
-      - op: replace
-        path: /spec/values/operatorConfig/hostname
-        value: tailscale-operator-stable
 
 replacements:
   - sourceValue: "stable"
@@ -123,17 +84,17 @@ replacements:
       #     delimiter: "-"
       #     index: 99
 
-      # # Add the environment to VaultDynamicSecrets configs
-      # - select:
-      #     kind: VaultDynamicSecret
-      #     name: db-credentials
-      #   fieldPaths:
-      #     - spec.mount
-      #     - spec.path
-      #     # - metadata.annotations.app/db-host
-      #   options:
-      #     delimiter: "-"
-      #     index: 2
+      # Add the environment to VaultDynamicSecrets configs
+      - select:
+          kind: VaultDynamicSecret
+          name: db-credentials
+        fieldPaths:
+          - spec.mount
+          - spec.path
+          # - metadata.annotations.app/db-host
+        options:
+          delimiter: "-"
+          index: 2
 
       # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
       # - select:

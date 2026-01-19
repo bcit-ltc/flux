@@ -53,15 +53,6 @@ patches:
       metadata:
         name: DOES NOT MATTER
 
-  # Add environment-suffix to tailscale operator hostname
-  - target:
-      kind: HelmRelease
-      name: tailscale-operator
-    patch: |-
-      - op: replace
-        path: /spec/values/operatorConfig/hostname
-        value: tailscale-operator-latest
-
 replacements:
   - sourceValue: "latest"
     targets:

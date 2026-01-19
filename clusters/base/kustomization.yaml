@@ -5,8 +5,7 @@ kind: Kustomization
 
 resources:
   - 0-vault-secrets-operator.yaml
-  # - 1-tailscale.yaml  # disabled
-  - 2-flux-extra.yaml
-  - 3-longhorn.yaml
-  - 4-cloudnative-pg.yaml
-  - 5-apps.yaml
+  - 1-flux-extra.yaml
+  - 2-longhorn.yaml
+  - 3-cloudnative-pg.yaml
+  - 4-apps.yaml
