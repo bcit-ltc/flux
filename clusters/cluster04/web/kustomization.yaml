@@ -1,0 +1,59 @@
+# Kustomization for `web` environment
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+- includeSelectors: true
+  pairs:
+    environment: web
+
+resources:
+  - ../../base
+
+# # For testing only
+  # - ../../../apps
+  # - ../../../apps/legacy-apps
+# - ../../../infrastructure
+# #
+# components:
+#   - ../../../components/env-web
+
+patches:
+
+  - target:
+      kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=apps"
+    patch: |-
+      - op: add
+        path: /spec/components
+        value:
+          - ../components/env-web
+
+  - target:
+      kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=infrastructure"
+    patch: |-
+      - op: add
+        path: /spec/components
+        value:
+          - ../../../components/env-web
+
+  # Add the environment label to all resources in the Helm chart
+  - target:
+      kind: HelmRelease
+    patch: |-
+      - op: add
+        path: /spec/postRenderers
+        value:
+          - kustomize:
+              patches:
+                - target:
+                    kind: .*
+                  patch: |
+                    apiVersion: v1
+                    kind: ConfigMap   # placeholder; not used
+                    metadata:
+                      name: placeholder
+                      labels:
+                        environment: web

@@ -10,6 +10,7 @@ commonAnnotations:
 
 resources:
   - ./legacy-html
+  # - ./legacy-ltc
   # - ./legacy-multimedia
   # - ./legacy-multimedia-php
   # - ./legacy-sob
