@@ -51,6 +51,20 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
+  - target:
+      name: star-latest-ltc-bcit-ca
+    patch: |
+      $patch: delete
+      kind: VaultStaticSecret
+      metadata:
+        name: DOES NOT MATTER
+  - target:
+      name: ingress-latest
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "web"
@@ -79,6 +93,7 @@ replacements:
           index: 1
         reject:
           - name: star-web-ltc-bcit-ca
+          - name: star-latest-ltc-bcit-ca
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
