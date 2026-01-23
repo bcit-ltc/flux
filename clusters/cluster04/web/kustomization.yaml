@@ -27,7 +27,7 @@ patches:
       - op: replace
         path: /spec/components
         value:
-          - ../components/env-latest
+          - ../components/env-web
 
   - target:
       kind: Kustomization
