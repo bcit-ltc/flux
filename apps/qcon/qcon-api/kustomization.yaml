@@ -32,7 +32,7 @@ components:
   # - ../../components/notifications
 
   # Configure an ingress
-  - ../../components/ingress
+  - ../../../components/ingress
 
   # Add TLS certificates for ingress
   # - ../../../components/ssl-star-latest-ltc-bcit-ca
