@@ -1,4 +1,4 @@
-# scheduler-api kustomization
+# scheduler-web kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -7,10 +7,10 @@ resources:
   - ../../base
   - api-key.yaml
   - app-internal-credentials.yaml
-  - db-credentials.yaml     # Also see VaultDynamicSecret patch below
+  - db-credentials.yaml # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name
-namePrefix: scheduler-api-
+namePrefix: scheduler-web-
 
 # Replace base Namespace name and add all resources to this namespace
 namespace: openlab-scheduler
@@ -19,7 +19,7 @@ namespace: openlab-scheduler
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="scheduler-api"
+      - releaseName="scheduler-web"
 
     # Resource is not added to the cluster
     options:
@@ -28,12 +28,8 @@ configMapGenerator:
 
 # Order matters!
 components:
-
   # Configure GitHub webhook for reconciling cluster resources when repo is updated
   - ../../../components/notifications
-
-  # Add TLS certificates for ingress
-  - ../../../components/ssl-certificates
 
   # Add Vault authentication (role and service accounts)
   - ../../../components/vault-auth
@@ -42,11 +38,10 @@ components:
   - ../../../components/config-matcher
 
 patches:
-
   # Special patch for apps grouped under one namespace
   - target:
       kind: Namespace
-      name: scheduler-api
+      name: scheduler-web
     patch: |
       $patch: delete
       kind: Namespace
@@ -58,7 +53,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/path
-        value: creds/scheduler-api
+        value: creds/scheduler-web
       - op: replace
         path: /metadata/annotations/app~1db-name
-        value: scheduler_api
+        value: scheduler_web

@@ -1,4 +1,4 @@
-# corgi kustomization
+# dataset-retriever kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,16 +8,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: corgi-
+namePrefix: dataset-retriever-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: corgi
+namespace: dataset-retriever
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="corgi"
+      - releaseName="dataset-retriever"
 
     # Resource is not added to the cluster
     options:
@@ -26,13 +26,6 @@ configMapGenerator:
 
 # Order matters!
 components:
-
-  # Configure GitHub webhook for reconciling cluster resources when repo is updated
-  - ../../components/notifications
-
-  # Add TLS certificates for ingress
-  - ../../components/ssl-certificates
-
   # Add Vault authentication (role and service accounts)
   - ../../components/vault-auth
 

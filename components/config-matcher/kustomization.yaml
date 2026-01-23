@@ -47,7 +47,6 @@ replacements:
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
-          # - name: tailscale-oauth
           - name: longhorn-azblob-credentials
       - select:
           kind: VaultDynamicSecret
@@ -57,7 +56,7 @@ replacements:
           delimiter: "/"
           index: 0
 
-      # Append the release name to the Ingress host
+      # Replace the Ingress host with the release name
       - select:
           kind: Ingress
         fieldPaths:

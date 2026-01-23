@@ -15,26 +15,6 @@ patches:
         path: /spec/ref
         value: {"tag": "latest"}
 
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-  - target:
-      kind: Ingress
-      annotationSelector: "app=flux"
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: flux.web.ltc.bcit.ca
-      - op: replace
-        path: /spec/tls/0/hosts/0
-        value: flux.web.ltc.bcit.ca
-
-  # Patches Ingress - this is problematic with Helm charts specifying alternate secrets
-  # - target:
-  #     kind: Ingress
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/tls/0/secretName
-  #       value: star-web-ltc-bcit-ca
-
   # Remove all stable resources (this env should only emit "web" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   # - target:
@@ -44,27 +24,13 @@ patches:
   #     kind: VaultStaticSecret
   #     metadata:
   #       name: DOES NOT MATTER
-  # - target:
-  #     name: ingress-stable
-  #   patch: |
-  #     $patch: delete
-  #     kind: Ingress
-  #     metadata:
-  #       name: DOES NOT MATTER
-  # - target:
-  #     name: star-latest-ltc-bcit-ca
-  #   patch: |
-  #     $patch: delete
-  #     kind: VaultStaticSecret
-  #     metadata:
-  #       name: DOES NOT MATTER
-  # - target:
-  #     name: ingress-latest
-  #   patch: |
-  #     $patch: delete
-  #     kind: Ingress
-  #     metadata:
-  #       name: DOES NOT MATTER
+  - target:
+      name: ingress
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "web"
@@ -92,15 +58,31 @@ replacements:
           delimiter: "/"
           index: 1
         reject:
-          # - name: star-web-ltc-bcit-ca
-          # - name: star-latest-ltc-bcit-ca
+          - name: star-latest-ltc-bcit-ca
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
-          # - name: tailscale-oauth
           - name: longhorn-azblob-credentials
+
+      - select:
+          kind: Ingress
+          name: ingress-env
+        fieldPaths:
+          - spec.rules.*.host
+        options:
+          delimiter: "."
+          index: 1
+
+      - select:
+          kind: Ingress
+          annotationSelector: app=flux
+        fieldPaths:
+          - spec.tls.*.hosts.*
+        options:
+          delimiter: "."
+          index: 1
 
       # Add the environment as a suffix to the postgres auth name
       # - select:
@@ -111,12 +93,6 @@ replacements:
       #   options:
       #     delimiter: "-"
       #     index: 99
-
-      # # Ensure the serviceaccount name matches the release name
-      # - select:
-      #     kind: VaultAuth
-      #   fieldPaths:
-      #     - spec.kubernetes.serviceAccount
 
       # Add the environment as a suffix to the postgres database
       # - select:

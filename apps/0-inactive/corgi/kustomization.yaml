@@ -1,4 +1,4 @@
-# ptracker kustomization
+# corgi kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,16 +8,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: ptracker-
+namePrefix: corgi-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: ptracker
+namespace: corgi
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="ptracker"
+      - releaseName="corgi"
 
     # Resource is not added to the cluster
     options:
@@ -26,12 +26,8 @@ configMapGenerator:
 
 # Order matters!
 components:
-
   # Configure GitHub webhook for reconciling cluster resources when repo is updated
   - ../../components/notifications
-
-  # Add TLS certificates for ingress
-  - ../../components/ssl-certificates
 
   # Add Vault authentication (role and service accounts)
   - ../../components/vault-auth

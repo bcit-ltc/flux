@@ -39,7 +39,7 @@ spec:
 #   sourceRef:
 #     kind: GitRepository
 #     name: flux-system
-#   path: ./apps/legacy-apps
+#   path: ./apps/0-legacy-apps
 #   dependsOn:
 #     - name: apps
 #   # # to test kustomization

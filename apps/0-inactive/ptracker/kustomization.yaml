@@ -1,4 +1,4 @@
-# heme-analyzer-app kustomization
+# ptracker kustomization
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,16 +8,16 @@ resources:
   - namespace.yaml
 
 # Prefix all resources with this name
-namePrefix: heme-analyzer-app-
+namePrefix: ptracker-
 
 # Replace base Namespace name and add all resources to this namespace
-namespace: heme-analyzer-app
+namespace: ptracker
 
 # Generate a re-usable name variable for other resources
 configMapGenerator:
   - name: release-name
     literals:
-      - releaseName="heme-analyzer-app"
+      - releaseName="ptracker"
 
     # Resource is not added to the cluster
     options:
@@ -26,9 +26,8 @@ configMapGenerator:
 
 # Order matters!
 components:
-
-  # Add TLS certificates for ingress
-  - ../../components/ssl-certificates
+  # Configure GitHub webhook for reconciling cluster resources when repo is updated
+  - ../../components/notifications
 
   # Add Vault authentication (role and service accounts)
   - ../../components/vault-auth

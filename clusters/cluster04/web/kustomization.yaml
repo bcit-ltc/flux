@@ -11,11 +11,11 @@ labels:
 resources:
   - ../../base
 
-#   #   # For testing only
-#   # - ../../../apps
-#   # - ../../../apps/legacy-apps
+# For testing only
+#   - ../../../apps
+#   - ../../../apps/legacy-apps
 #   - ../../../infrastructure
-# #
+#
 # components:
 #   - ../../../components/env-web
 
@@ -24,10 +24,10 @@ patches:
       kind: Kustomization
       annotationSelector: "fluxcd.io/workload=apps"
     patch: |-
-      - op: add
+      - op: replace
         path: /spec/components
         value:
-          - ../components/env-web
+          - ../components/env-latest
 
   - target:
       kind: Kustomization
@@ -51,7 +51,7 @@ patches:
                     kind: .*
                   patch: |
                     apiVersion: v1
-                    kind: ConfigMap   # placeholder; not used
+                    kind: Namespace   # placeholder; not used
                     metadata:
                       name: placeholder
                       labels:
