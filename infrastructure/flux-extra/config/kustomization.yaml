@@ -4,9 +4,6 @@ kind: Kustomization
 resources:
   - service-account.yaml
   - storage-resource-quota.yaml
-  - webhook-ingress.yaml
-  # - clear-terminating-pods.yaml
-  # - vault-token-renewal.yaml
 
 # Prefix all resources with this name
 namePrefix: flux-
@@ -20,10 +17,35 @@ configurations:
 
 # Order matters!
 components:
-
   # Add TLS certificates for ingress
-  - ../../../components/ssl-star-latest-ltc-bcit-ca
   - ../../../components/ssl-star-ltc-bcit-ca
 
   # Add Vault authentication (role)
   - ../../../components/vault-auth
+
+  # Configure an ingress
+  - ../../../components/ingress
+
+# Adjust ingress with notification webhook details
+patches:
+  - target:
+      kind: Ingress
+    patch: |-
+      - op: replace
+        path: /spec
+        value:
+          tls:
+          - hosts:
+              - flux.ltc.bcit.ca
+            secretName: star-ltc-bcit-ca
+          rules:
+          - host: flux.ltc.bcit.ca
+            http:
+              paths:
+              - pathType: Prefix
+                path: /
+                backend:
+                  service:
+                    name: webhook-receiver
+                    port:
+                      number: 80

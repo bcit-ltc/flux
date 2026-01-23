@@ -1,7 +1,7 @@
 # Deploys apps
 #
 # - test "latest" with:
-#   flux build kustomization apps --path ./apps --kustomization-file clusters/base/4-apps.yaml --dry-run
+#   flux build kustomization apps --path ./apps --kustomization-file clusters/base/apps.yaml --dry-run
 #
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

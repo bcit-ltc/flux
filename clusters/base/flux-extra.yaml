@@ -1,7 +1,7 @@
 # Deploys flux-extra configuration
 #
 # - test "latest" with:
-#   flux build kustomization flux-extra --path ./infrastructure/flux-extra/config --kustomization-file clusters/cluster03/latest/2-flux-extra.yaml --dry-run
+#   flux build kustomization flux-extra --path ./infrastructure/flux-extra/config --kustomization-file clusters/base/flux-extra.yaml --dry-run
 #
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

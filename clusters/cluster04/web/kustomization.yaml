@@ -12,9 +12,9 @@ resources:
   - ../../base
 
 #   #   # For testing only
-#   - ../../../apps
+#   # - ../../../apps
 #   # - ../../../apps/legacy-apps
-#   # - ../../../infrastructure
+#   - ../../../infrastructure
 # #
 # components:
 #   - ../../../components/env-web

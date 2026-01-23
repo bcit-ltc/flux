@@ -4,8 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - 0-vault-secrets-operator.yaml
-  - 1-flux-extra.yaml
-  - 2-longhorn.yaml
-  - 3-cloudnative-pg.yaml
-  - 4-apps.yaml
+  - vault-secrets-operator.yaml
+  - flux-extra.yaml
+  - longhorn.yaml
+  - cloudnative-pg.yaml
+  - apps.yaml
