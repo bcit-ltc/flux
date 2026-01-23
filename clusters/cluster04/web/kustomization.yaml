@@ -11,7 +11,7 @@ labels:
 resources:
   - ../../base
 
-#   # For testing only
+#   #   # For testing only
 #   - ../../../apps
 #   # - ../../../apps/legacy-apps
 #   # - ../../../infrastructure

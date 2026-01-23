@@ -5,7 +5,6 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 patches:
-
   # Patches OCIRepository resources to use "latest" tag for chart images
   # Problematic for OCIRepositories that are not apps
   - target:
@@ -29,34 +28,33 @@ patches:
         value: flux.latest.ltc.bcit.ca
 
   # Patches Ingress - this is problematic with Helm charts specifying alternate secrets
-  - target:
-      kind: Ingress
-    patch: |-
-      - op: replace
-        path: /spec/tls/0/secretName
-        value: star-latest-ltc-bcit-ca
+  # - target:
+  #     kind: Ingress
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/tls/0/secretName
+  #       value: star-latest-ltc-bcit-ca
 
   # Remove all stable resources (this env should only emit "latest" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-  - target:
-      name: star-ltc-bcit-ca
-    patch: |
-      $patch: delete
-      kind: VaultStaticSecret
-      metadata:
-        name: DOES NOT MATTER
-  - target:
-      name: ingress-stable
-    patch: |
-      $patch: delete
-      kind: Ingress
-      metadata:
-        name: DOES NOT MATTER
+  # - target:
+  #     name: star-ltc-bcit-ca
+  #   patch: |
+  #     $patch: delete
+  #     kind: VaultStaticSecret
+  #     metadata:
+  #       name: DOES NOT MATTER
+  # - target:
+  #     name: ingress-stable
+  #   patch: |
+  #     $patch: delete
+  #     kind: Ingress
+  #     metadata:
+  #       name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "latest"
     targets:
-
       # Add the environment to Vault default auth
       - select:
           kind: VaultAuthGlobal
@@ -80,13 +78,13 @@ replacements:
           delimiter: "/"
           index: 1
         reject:
-          - name: star-latest-ltc-bcit-ca
+          # - name: star-latest-ltc-bcit-ca
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
-          - name: tailscale-oauth
+          # - name: tailscale-oauth
           - name: longhorn-azblob-credentials
 
       # Add the environment as a suffix to the postgres auth name

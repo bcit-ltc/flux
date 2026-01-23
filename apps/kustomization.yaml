@@ -9,17 +9,17 @@ commonAnnotations:
   config.fluxcd.io/workload-type: app
 
 resources:
-  - ./common
-  - ./conversion-guide
-  # - ./corgi
-  - ./course-production-site
-  - ./course-workload-estimator
-  # - ./dataset-retriever
-  - ./distribution-game
-  # - ./heme-analyzer-app
-  - ./infrastructure-documentation
-  - ./module-estimator
-  # - ./openlab-scheduler # grouped: in apps_grouped list in Vault
-  # - ./ptracker
+  # - ./common
+  # - ./conversion-guide
+  # # - ./corgi
+  # - ./course-production-site
+  # - ./course-workload-estimator
+  # # - ./dataset-retriever
+  # - ./distribution-game
+  # # - ./heme-analyzer-app
+  # - ./infrastructure-documentation
+  # - ./module-estimator
+  # # - ./openlab-scheduler # grouped: in apps_grouped list in Vault
+  # # - ./ptracker
   - ./qcon # grouped: in apps_grouped list in Vault
-  - ./sugar-suite
+  # - ./sugar-suite

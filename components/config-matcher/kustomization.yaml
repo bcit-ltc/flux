@@ -10,7 +10,6 @@ replacements:
       name: release-name
       fieldPath: data.releaseName
     targets:
-
       # Append the release name to the OCIRepository URL
       - select:
           kind: OCIRepository
@@ -42,13 +41,13 @@ replacements:
           delimiter: "/"
           index: 0
         reject:
-          - name: star-latest-ltc-bcit-ca
-          - name: star-ltc-bcit-ca
+          # - name: star-latest-ltc-bcit-ca
+          # - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
-          - name: tailscale-oauth
+          # - name: tailscale-oauth
           - name: longhorn-azblob-credentials
       - select:
           kind: VaultDynamicSecret
@@ -62,9 +61,9 @@ replacements:
       - select:
           kind: Ingress
         fieldPaths:
-          - spec.rules.0.host
-          - spec.tls.0.hosts.0
-          - spec.rules.0.http.paths.0.backend.service.name
+          - spec.rules.*.host
+          - spec.rules.*.http.paths.0.backend.service.name
+          # - spec.tls.0.hosts.0
         options:
           delimiter: "."
           index: 0

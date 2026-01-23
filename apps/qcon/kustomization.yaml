@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
   - ./qcon-api
-  - ./qcon-web
-  - ./qcon-guide
+  # - ./qcon-web
+  # - ./qcon-guide
   - namespace.yaml
-  
+
 # components:
-  # Vault token to decrypt secrets
-  # - ../../../components/sops-vault-token
+# Vault token to decrypt secrets
+# - ../../../components/sops-vault-token

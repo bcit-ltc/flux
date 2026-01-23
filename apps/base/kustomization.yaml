@@ -5,9 +5,9 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - oci-repository.yaml
-  - ingress-latest.yaml
-  - ingress-web.yaml
-  - ingress-stable.yaml
+  # - ingress-latest.yaml
+  # - ingress-web.yaml
+  # - ingress-stable.yaml
 
 # Teach kustomize how to update generated names
 configurations:

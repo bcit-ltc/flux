@@ -7,7 +7,7 @@ resources:
   - ../../base
   - api-key.yaml
   - app-internal-credentials.yaml
-  - db-credentials.yaml     # Also see VaultDynamicSecret patch below
+  - db-credentials.yaml # Also see VaultDynamicSecret patch below
 
 # Prefix all resources with this name
 namePrefix: qcon-api-
@@ -28,13 +28,12 @@ configMapGenerator:
 
 # Order matters!
 components:
-
   # Configure GitHub webhook for reconciling cluster resources when repo is updated
   # - ../../components/notifications
 
   # Add TLS certificates for ingress
-  - ../../../components/ssl-star-latest-ltc-bcit-ca
-  - ../../../components/ssl-star-ltc-bcit-ca
+  # - ../../../components/ssl-star-latest-ltc-bcit-ca
+  # - ../../../components/ssl-star-ltc-bcit-ca
 
   # Add Vault authentication (role and service accounts)
   - ../../../components/vault-auth
@@ -43,7 +42,6 @@ components:
   - ../../../components/config-matcher
 
 patches:
-
   # Special patch for apps grouped under one namespace
   - target:
       kind: Namespace
@@ -54,6 +52,7 @@ patches:
       metadata:
         name: DOES NOT MATTER
 
+  # Special patch for apps with dynamic secrets
   - target:
       kind: VaultDynamicSecret
     patch: |-
