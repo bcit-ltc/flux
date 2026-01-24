@@ -42,6 +42,6 @@ spec:
   path: ./apps/0-legacy-apps
   dependsOn:
     - name: apps
-  # to test kustomization
-  components:
-    - ../../components/env-latest
+  # # to test kustomization
+  # components:
+  #   - ../../components/env-latest
