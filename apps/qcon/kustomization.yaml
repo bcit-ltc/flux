@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ./qcon-api
-  # - ./qcon-web
+  - ./qcon-web
   - ./qcon-guide
   - namespace.yaml
 
