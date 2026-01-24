@@ -11,10 +11,10 @@ labels:
 resources:
   - ../../base
 
-#   # For testing only
-#   - ../../../apps
-#   # - ../../../apps/legacy-apps
-#   # - ../../../infrastructure
+  # For testing only
+  # - ../../../apps
+  # - ../../../apps/legacy-apps
+  # - ../../../infrastructure
 
 # components:
 #   - ../../../components/env-web

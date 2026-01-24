@@ -21,9 +21,9 @@ spec:
   path: ./apps
   dependsOn:
     - name: cloudnative-pg-config
-  # # to test kustomization
-  # components:
-  #   - ../components/env-latest
+# # to test kustomization
+# components:
+#   - ../components/env-latest
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -42,6 +42,6 @@ spec:
   path: ./apps/0-legacy-apps
   dependsOn:
     - name: apps
-  # # to test kustomization
-  # components:
-  #   - ../components/env-latest
+  # to test kustomization
+  components:
+    - ../../components/env-latest
