@@ -15,17 +15,17 @@ patches:
         path: /spec/ref
         value: {"tag": "latest"}
 
-  # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
-  - target:
-      kind: Ingress
-      annotationSelector: "app=flux"
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: flux.latest.ltc.bcit.ca
-      - op: replace
-        path: /spec/tls/0/hosts/0
-        value: flux.latest.ltc.bcit.ca
+  # # Patches Fluxcd "GitLab Webhook" ingress to facilitate reconciliation
+  # - target:
+  #     kind: Ingress
+  #     annotationSelector: "app=flux"
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/rules/0/host
+  #       value: flux.latest.ltc.bcit.ca
+  #     - op: replace
+  #       path: /spec/tls/0/hosts/0
+  #       value: flux.latest.ltc.bcit.ca
 
   # Remove all stable resources (this env should only emit "web" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
@@ -82,6 +82,7 @@ replacements:
           name: ingress-env
         fieldPaths:
           - spec.rules.*.host
+          - spec.tls.*.hosts.*
         options:
           delimiter: "."
           index: 1

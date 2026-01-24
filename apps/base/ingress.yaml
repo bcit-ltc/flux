@@ -5,6 +5,10 @@ kind: Ingress
 metadata:
   name: ingress
 spec:
+  tls:
+    - hosts:
+        - app.ltc.bcit.ca
+      secretName: star-ltc-bcit-ca
   rules:
     - host: app.ltc.bcit.ca
       http:
