@@ -35,19 +35,21 @@ replacements:
       # - this field also gets updated by the environment replacement in `clusters/cluster0X/{environment}`
       - select:
           kind: VaultStaticSecret
+          annotationSelector: config.fluxcd.io/app-secret=true
         fieldPaths:
           - spec.path
         options:
           delimiter: "/"
           index: 0
-        reject:
-          # - name: star-latest-ltc-bcit-ca
-          - name: star-ltc-bcit-ca
-          - name: vault-manager-secret
-          - name: github-webhook-token
-          - name: github-private-repo-token
-          - name: gh-private-oci-token
-          - name: longhorn-azblob-credentials
+        # reject:
+        #   # - name: star-latest-ltc-bcit-ca
+        #   - name: star-ltc-bcit-ca
+        #   - name: vault-manager-secret
+        #   - name: github-webhook-token
+        #   - name: github-private-repo-token
+        #   - name: gh-private-oci-token
+        #   - name: longhorn-azblob-credentials
+
       - select:
           kind: VaultDynamicSecret
         fieldPaths:
