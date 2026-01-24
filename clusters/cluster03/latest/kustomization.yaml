@@ -12,12 +12,12 @@ resources:
   - ../../base
 
   # For testing only
-  - ../../../apps
+  # - ../../../apps
   # - ../../../apps/legacy-apps
   # - ../../../infrastructure
-#
-components:
-  - ../../../components/env-latest
+# #
+# components:
+#   - ../../../components/env-latest
 
 patches:
   - target:
