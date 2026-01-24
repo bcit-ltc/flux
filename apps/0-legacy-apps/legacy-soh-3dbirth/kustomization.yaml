@@ -30,14 +30,14 @@ components:
   # - ../../components/notifications
 
   # Add GitHub tokens for private repos/packages
-  - ../../components/github-private-tokens
+  - ../../../components/github-private-tokens
 
   # Add TLS certificates for ingress
-  - ../../components/ssl-star-latest-ltc-bcit-ca
-  - ../../components/ssl-star-ltc-bcit-ca
+  - ../../../components/ssl-star-latest-ltc-bcit-ca
+  - ../../../components/ssl-star-ltc-bcit-ca
 
   # Add Vault authentication (role and service accounts)
-  - ../../components/vault-auth
+  - ../../../components/vault-auth
 
   # Update resources based on release name (ConfigMap above)
-  - ../../components/config-matcher
+  - ../../../components/config-matcher
