@@ -26,12 +26,11 @@ configMapGenerator:
 
 # Order matters!
 components:
+  # Configure GitHub webhook for reconciling cluster resources when repo is updated
+  # - ../../components/notifications
 
   # Add GitHub tokens for private repos/packages
   - ../../components/github-private-tokens
-
-  # Configure GitHub webhook for reconciling cluster resources when repo is updated
-  # - ../../components/notifications
 
   # Add TLS certificates for ingress
   - ../../components/ssl-star-latest-ltc-bcit-ca

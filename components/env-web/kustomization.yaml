@@ -17,13 +17,13 @@ patches:
 
   # Remove all stable resources (this env should only emit "web" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-  # - target:
-  #     name: star-ltc-bcit-ca
-  #   patch: |
-  #     $patch: delete
-  #     kind: VaultStaticSecret
-  #     metadata:
-  #       name: DOES NOT MATTER
+  - target:
+      name: star-ltc-bcit-ca
+    patch: |
+      $patch: delete
+      kind: VaultStaticSecret
+      metadata:
+        name: DOES NOT MATTER
   - target:
       name: ingress
     patch: |
@@ -59,6 +59,7 @@ replacements:
           index: 1
         reject:
           - name: star-ltc-bcit-ca
+          - name: star-latest-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
