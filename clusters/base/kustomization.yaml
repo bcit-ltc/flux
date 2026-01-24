@@ -9,3 +9,4 @@ resources:
   - longhorn.yaml
   - cloudnative-pg.yaml
   - apps.yaml
+  - legacy-apps.yaml

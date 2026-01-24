@@ -13,7 +13,7 @@ resources:
 
   # For testing only
   # - ../../../apps
-  # - ../../../apps/legacy-apps
+  # - ../../../apps/0-legacy-apps
   # - ../../../infrastructure
 # #
 # components:
@@ -28,6 +28,15 @@ patches:
         path: /spec/components
         value:
           - ../components/env-latest
+
+  - target:
+      kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=legacy-apps"
+    patch: |-
+      - op: add
+        path: /spec/components
+        value:
+          - ../../components/env-latest
 
   - target:
       kind: Kustomization

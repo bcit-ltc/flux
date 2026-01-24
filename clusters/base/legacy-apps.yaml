@@ -1,0 +1,26 @@
+# Deploys apps
+#
+# - test "latest" with:
+#   flux build kustomization legacy-apps --path ./apps/0-legacy-apps --kustomization-file clusters/base/legacy-apps.yaml --dry-run
+#
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: legacy-apps
+  namespace: flux-system
+  annotations:
+    fluxcd.io/workload: legacy-apps
+spec:
+  interval: 24h
+  wait: true
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./apps/0-legacy-apps
+  dependsOn:
+    - name: apps
+  # # to test kustomization
+  # components:
+  #   - ../../components/env-latest
