@@ -7,6 +7,10 @@ resources:
   - ./qcon-guide
   - namespace.yaml
 
-# components:
-# Vault token to decrypt secrets
-# - ../../../components/sops-vault-token
+components:
+  # Vault token to decrypt secrets
+  # - ../../../components/sops-vault-token
+
+  # Add TLS certificates for ingress
+  - ../../components/ssl-star-latest-ltc-bcit-ca
+  - ../../components/ssl-star-ltc-bcit-ca
