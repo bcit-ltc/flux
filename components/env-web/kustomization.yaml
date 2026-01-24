@@ -58,7 +58,6 @@ replacements:
           delimiter: "/"
           index: 1
         reject:
-          - name: star-latest-ltc-bcit-ca
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token

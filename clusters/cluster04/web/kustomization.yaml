@@ -24,7 +24,7 @@ patches:
       kind: Kustomization
       annotationSelector: "fluxcd.io/workload=apps"
     patch: |-
-      - op: replace
+      - op: add
         path: /spec/components
         value:
           - ../components/env-web
@@ -51,8 +51,17 @@ patches:
                     kind: .*
                   patch: |
                     apiVersion: v1
-                    kind: Namespace   # placeholder; not used
+                    kind: ConfigMap   # placeholder; not used
                     metadata:
                       name: placeholder
                       labels:
                         environment: web
+
+  # Don't add legacy apps to this cluster
+  - target:
+      name: legacy-apps
+    patch: |
+      $patch: delete
+      kind: Kustomization
+      metadata:
+        name: DOES NOT MATTER

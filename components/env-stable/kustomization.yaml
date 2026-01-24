@@ -4,24 +4,23 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-# patches:
-
-# Remove all stable resources (this env should only emit "latest" resources)
-#   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
-# - target:
-#     name: star-latest-ltc-bcit-ca
-#   patch: |
-#     $patch: delete
-#     kind: VaultStaticSecret
-#     metadata:
-#       name: DOES NOT MATTER
-# - target:
-#     name: ingress-latest
-#   patch: |
-#     $patch: delete
-#     kind: Ingress
-#     metadata:
-#       name: DOES NOT MATTER
+patches:
+  # Remove all stable resources (this env should only emit "latest" resources)
+  #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
+  # - target:
+  #     name: star-latest-ltc-bcit-ca
+  #   patch: |
+  #     $patch: delete
+  #     kind: VaultStaticSecret
+  #     metadata:
+  #       name: DOES NOT MATTER
+  - target:
+      name: ingress-env
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "stable"
@@ -49,13 +48,11 @@ replacements:
           delimiter: "/"
           index: 1
         reject:
-          # - name: star-latest-ltc-bcit-ca
           - name: star-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token
           - name: gh-private-oci-token
-          # - name: tailscale-oauth
           - name: longhorn-azblob-credentials
 
       # Add the environment as a suffix to the postgres auth name
@@ -67,12 +64,6 @@ replacements:
       #   options:
       #     delimiter: "-"
       #     index: 99
-
-      # # Ensure the serviceaccount name matches the release name
-      # - select:
-      #     kind: VaultAuth
-      #   fieldPaths:
-      #     - spec.kubernetes.serviceAccount
 
       # Add the environment as a suffix to the postgres database
       # - select:
