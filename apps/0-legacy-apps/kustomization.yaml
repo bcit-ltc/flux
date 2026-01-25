@@ -15,7 +15,7 @@ resources:
   # - ./legacy-multimedia-php
   # - ./legacy-sob
   # - ./legacy-sob-php
-  # - ./legacy-soc
+  - ./legacy-soc
   # - ./legacy-soc-php
   # - ./legacy-soc-royaloak
   # - ./legacy-socas

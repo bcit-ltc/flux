@@ -10,7 +10,7 @@ spec:
   enableSuperuserAccess: true
 
   storage:
-    size: 5Gi
+    size: 20Gi
 
   managed:
     services:
@@ -28,7 +28,6 @@ spec:
                   nodePort: 31432
 
     roles:
-
       # Shared owner role for all application databases
       # (DBs and schemas are owned by this role; app roles get privileges)
       - name: db_root_owner
@@ -37,11 +36,10 @@ spec:
         superuser: false
         createdb: true
         # no passwordSecret: CNPG will manage the role internally
-  
+
   postgresql:
     # hostssl for external traffic; TLS is required.
     pg_hba:
-
       # In-cluster apps (example pod CIDR for RKE2; adjust to your cluster)
       - host    all  all  10.42.0.0/16      scram-sha-256
 

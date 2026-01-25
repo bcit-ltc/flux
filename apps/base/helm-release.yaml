@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: helm-release
 spec:
-  interval: 18h
+  interval: 48h
   releaseName: helm-release
   chartRef:
     kind: OCIRepository

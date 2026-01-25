@@ -1,5 +1,15 @@
 # Longhorn
 
+## Install shim
+
+1. Add the following to `/etc/multipath.conf`
+
+```
+blacklist {
+    devnode "^sd[a-z0-9]+"
+}
+```
+
 ## Uninstalling
 
 Longhorn uninstall requires a patch and removal of CRD's.
