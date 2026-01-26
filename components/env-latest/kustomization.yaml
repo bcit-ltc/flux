@@ -31,6 +31,13 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
+  - target:
+      name: primary-ingress
+    patch: |
+      $patch: delete
+      kind: Ingress
+      metadata:
+        name: DOES NOT MATTER
 
 replacements:
   - sourceValue: "latest"

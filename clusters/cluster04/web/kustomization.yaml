@@ -13,7 +13,7 @@ resources:
 
   # For testing only
   # - ../../../apps
-  # - ../../../apps/legacy-apps
+  # - ../../../apps/0-legacy-apps
   # - ../../../infrastructure
 
 # components:

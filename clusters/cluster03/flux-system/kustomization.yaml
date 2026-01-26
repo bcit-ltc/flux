@@ -6,7 +6,6 @@ resources:
 
 # Kustomize flux controllers
 patches:
-
   # Increases flux git repository interval to 24 hours
   - target:
       kind: GitRepository

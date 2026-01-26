@@ -5,6 +5,8 @@ kind: Ingress
 metadata:
   name: primary-ingress
   namespace: qcon
+  annotations:
+    fluxcd.io/primary-ingress: "true"
 spec:
   tls:
     - hosts:
@@ -18,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app
+                name: qcon-web
                 port:
                   number: 8080
