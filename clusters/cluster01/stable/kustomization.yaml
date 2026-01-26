@@ -31,6 +31,15 @@ patches:
 
   - target:
       kind: Kustomization
+      annotationSelector: "fluxcd.io/workload=legacy-apps"
+    patch: |-
+      - op: add
+        path: /spec/components
+        value:
+          - ../../components/env-stable
+
+  - target:
+      kind: Kustomization
       annotationSelector: "fluxcd.io/workload=infrastructure"
     patch: |-
       - op: add

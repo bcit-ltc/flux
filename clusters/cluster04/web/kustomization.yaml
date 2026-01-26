@@ -29,6 +29,15 @@ patches:
         value:
           - ../components/env-web
 
+  # Don't add legacy apps to this cluster
+  - target:
+      name: legacy-apps
+    patch: |
+      $patch: delete
+      kind: Kustomization
+      metadata:
+        name: DOES NOT MATTER
+
   - target:
       kind: Kustomization
       annotationSelector: "fluxcd.io/workload=infrastructure"
@@ -56,12 +65,3 @@ patches:
                       name: placeholder
                       labels:
                         environment: web
-
-  # Don't add legacy apps to this cluster
-  - target:
-      name: legacy-apps
-    patch: |
-      $patch: delete
-      kind: Kustomization
-      metadata:
-        name: DOES NOT MATTER

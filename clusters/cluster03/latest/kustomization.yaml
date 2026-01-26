@@ -17,7 +17,7 @@ resources:
   # - ../../../infrastructure
 # #
 # components:
-#   - ../../../components/env-latest
+# - ../../../components/env-latest
 
 patches:
   - target:

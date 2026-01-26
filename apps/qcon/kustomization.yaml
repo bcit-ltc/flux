@@ -5,4 +5,5 @@ resources:
   - ./qcon-api
   - ./qcon-web
   - ./qcon-guide
+  - primary-ingress.yaml
   - namespace.yaml
