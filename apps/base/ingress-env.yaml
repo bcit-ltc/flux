@@ -8,7 +8,7 @@ spec:
   tls:
     - hosts:
         - app.env.ltc.bcit.ca
-      secretName: star-ltc-bcit-ca
+      secretName: star-latest-ltc-bcit-ca
   rules:
     - host: app.env.ltc.bcit.ca
       http:

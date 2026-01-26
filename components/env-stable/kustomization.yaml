@@ -56,25 +56,6 @@ replacements:
           - name: gh-private-oci-token
           - name: longhorn-azblob-credentials
 
-      # Add the environment as a suffix to the postgres auth name
-      # - select:
-      #     kind: VaultAuth
-      #     name: postgres-vault-auth
-      #   fieldPaths:
-      #     - spec.kubernetes.serviceAccount
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
-
-      # Add the environment as a suffix to the postgres database
-      # - select:
-      #     kind: Database
-      #   fieldPaths:
-      #     - spec.cluster.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
-
       # Add the environment to VaultDynamicSecrets configs
       - select:
           kind: VaultDynamicSecret
@@ -86,23 +67,3 @@ replacements:
         options:
           delimiter: "-"
           index: 2
-
-      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
-      # - select:
-      #     kind: Job
-      #   fieldPaths:
-      #     - spec.template.spec.containers.0.env.[name=PGHOST].value
-      #     - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
-      #     - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 2
-
-      # Replace the placeholder environment in the postgres INIT_DB job configMap name
-      # - select:
-      #     kind: Job
-      #   fieldPaths:
-      #     - spec.template.spec.volumes.[name=sql].configMap.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99

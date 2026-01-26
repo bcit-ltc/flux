@@ -42,16 +42,6 @@ components:
   - ../../../components/config-matcher
 
 patches:
-  # Special patch for apps grouped under one namespace
-  - target:
-      kind: Namespace
-      name: qcon-api
-    patch: |
-      $patch: delete
-      kind: Namespace
-      metadata:
-        name: DOES NOT MATTER
-
   # Special patch for apps with dynamic secrets
   - target:
       kind: VaultDynamicSecret

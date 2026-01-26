@@ -4,8 +4,8 @@ Adds workloads to be deployed by Flux.
 
 ## Requirements
 
-- app container in GitHub Packages (eg. ghcr.io/bcit-ltc/infrastructure-documentation:latest)
-- OCI container (helm chart) in GitHub Packages (oci://ghcr.io/bcit-ltc/oci/infrastructure-documentation:latest)
+- app container in GitHub Packages (ghcr.io/{orgName})
+- OCI container (helm chart) in GitHub Packages (oci://ghcr.io/{orgName/oci/appName{tag})
 - Flux CLI for manual reconciliation
 - Kubernetes CLI & cluster connection
 - Terraform

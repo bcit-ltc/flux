@@ -5,16 +5,6 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 patches:
-  # Patches OCIRepository resources to use "latest" tag for chart images
-  # Problematic for OCIRepositories that are not apps
-  - target:
-      kind: OCIRepository
-      # annotationSelector: "config.fluxcd.io/workload-type=app"
-    patch: |-
-      - op: replace
-        path: /spec/ref
-        value: {"tag": "latest"}
-
   # Remove all stable resources (this env should only emit "web" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
@@ -38,6 +28,16 @@ patches:
       kind: Ingress
       metadata:
         name: DOES NOT MATTER
+
+  # Patches OCIRepository resources to use "latest" tag for chart images
+  # - problematic for OCIRepositories that are not apps
+  - target:
+      kind: OCIRepository
+      # annotationSelector: "config.fluxcd.io/workload-type=app"
+    patch: |-
+      - op: replace
+        path: /spec/ref
+        value: {"tag": "latest"}
 
 replacements:
   - sourceValue: "latest"
@@ -73,6 +73,7 @@ replacements:
           - name: gh-private-oci-token
           - name: longhorn-azblob-credentials
 
+      # For ingresses with "env" placeholders, update values
       - select:
           kind: Ingress
           name: ingress-env
@@ -82,7 +83,6 @@ replacements:
         options:
           delimiter: "."
           index: 1
-
       - select:
           kind: Ingress
           annotationSelector: app=flux
@@ -91,25 +91,6 @@ replacements:
         options:
           delimiter: "."
           index: 1
-
-      # Add the environment as a suffix to the postgres auth name
-      # - select:
-      #     kind: VaultAuth
-      #     name: postgres-vault-auth
-      #   fieldPaths:
-      #     - spec.kubernetes.serviceAccount
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
-
-      # Add the environment as a suffix to the postgres database
-      # - select:
-      #     kind: Database
-      #   fieldPaths:
-      #     - spec.cluster.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99
 
       # Add the environment to VaultDynamicSecrets configs
       - select:
@@ -122,23 +103,3 @@ replacements:
         options:
           delimiter: "-"
           index: 2
-
-      # Replace the placeholder environment in the postgres GRANT_PRIVILEGES job
-      # - select:
-      #     kind: Job
-      #   fieldPaths:
-      #     - spec.template.spec.containers.0.env.[name=PGHOST].value
-      #     - spec.template.spec.containers.0.env.[name=PGUSER].valueFrom.secretKeyRef.name
-      #     - spec.template.spec.containers.0.env.[name=PGPASSWORD].valueFrom.secretKeyRef.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 2
-
-      # Replace the placeholder environment in the postgres INIT_DB job configMap name
-      # - select:
-      #     kind: Job
-      #   fieldPaths:
-      #     - spec.template.spec.volumes.[name=sql].configMap.name
-      #   options:
-      #     delimiter: "-"
-      #     index: 99

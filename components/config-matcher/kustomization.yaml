@@ -19,7 +19,7 @@ replacements:
           delimiter: "/"
           index: 5
 
-      # Ensure the release name matches
+      # Ensure the release name matches the Helm releaseName
       - select:
           kind: HelmRelease
         fieldPaths:
@@ -32,7 +32,7 @@ replacements:
           - spec.kubernetes.serviceAccount
 
       # Prefix the secret's path with the release name
-      # - this field also gets updated by the environment replacement in `clusters/cluster0X/{environment}`
+      # - this field also gets updated by the environment replacement kustomization
       - select:
           kind: VaultStaticSecret
           annotationSelector: config.fluxcd.io/app-secret=true
@@ -41,15 +41,6 @@ replacements:
         options:
           delimiter: "/"
           index: 0
-        # reject:
-        #   # - name: star-latest-ltc-bcit-ca
-        #   - name: star-ltc-bcit-ca
-        #   - name: vault-manager-secret
-        #   - name: github-webhook-token
-        #   - name: github-private-repo-token
-        #   - name: gh-private-oci-token
-        #   - name: longhorn-azblob-credentials
-
       - select:
           kind: VaultDynamicSecret
         fieldPaths:

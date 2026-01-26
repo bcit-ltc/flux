@@ -11,7 +11,3 @@ resources:
 # Teach kustomize how to update generated names
 configurations:
   - kustomizeconfig.yaml
-
-# components:
-#   # Add TLS certificates for ingress
-#   - ../../components/ssl-star-ltc-bcit-ca

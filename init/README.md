@@ -71,14 +71,14 @@ Flux should now be installed. 🎉
     # Kustomize flux controllers
     patches:
 
-    # Increases flux git repository interval to 8 hours
+    # Increases flux git repository interval to 1 day
     - target:
         kind: GitRepository
         name: flux-system
         patch: |-
         - op: replace
             path: /spec/interval
-            value: 8h
+            value: 24h
 
     # Increases flux kustomization interval to 2 days
     - target:
@@ -104,77 +104,15 @@ The `stable|latest` flux configurations are decoupled from the underlying cluste
 
 To apply a flux config to a new/different cluster, move or copy a `stable`/`latest`/etc... folder to a new/different cluster folder (`cluster01`/`cluster02`/etc...).
 
-Uncomment the resources in `infrastructure/kustomization.yaml` first. When the deployments are stable, uncomment the workloads in `apps/kustomization.yaml`.
+Test a cluster's `kustomization` by uncommenting resource entries in the `cluster0x/{env}/kustomization.yaml` and the `/infrastructure|/apps` `kustomization.yaml`.
 
 ## Secrets
 
 [Vault](https://developer.hashicorp.com/vault/docs) and [SOPS](https://getsops.io/docs/) can be used to encode Kubernetes secrets:
 
-```bash
-sops --hc-vault-transit $VAULT_ADDR/v1/sops/keys/gitops-key --encrypt \
---encrypted-regex '^(data|stringData)$' file.yaml > file.enc.yaml
-```
-
-- YAML manifests must have `stringData` to be used with SOPS
-
-Tokens can be encoded in a similar way:
-
-```bash
-printf 'my-secret-token' | sops --hc-vault-transit $VAULT_ADDR/v1/sops/keys/gitops-key \
---encrypt /dev/stdin > my-secret-token.encrypted
-```
-
-To have Flux automatically decrypt SOPS secrets when they are applied to a cluster, configure the flux controllers:
-
-1. Retrieve or create a SOPS token
-
-    **Retrieve existing token**
-
-    ```bash
-    SOPS_TOKEN=$(vault kv get -mount="ltc-infrastructure" -field="sops.vault-token" "flux/sops-vault-token") \
-    && echo ${SOPS_TOKEN}
-    ```
-
-    **Create new token**
-
-    ```bash
-    SOPS_TOKEN=$(vault token create -role=use-transit-gitops-key -format=json | jq -r '.auth.client_token') \
-    && echo ${SOPS_TOKEN}
-    ```
-
-1. Create the `sops-vault-token` secret in the `flux-system` namespace
-
-    ```bash
-    echo ${SOPS_TOKEN} | kubectl create secret generic sops-vault-token \
-    -n flux-system --from-file=sops.vault-token=/dev/stdin
-    ```
-
-1. Adjust the flux controllers by adding a patch to the `flux-system/kustomization.yaml` file
-
-    ```bash
-    # Kustomize flux controllers
-    patches:
-
-    # Adds global decryption strategy to `flux-system` Kustomization
-    - target:
-        kind: Kustomization
-        patch: |-
-        - op: add
-            path: /spec/decryption
-            value: { provider: sops, secretRef: { name: sops-vault-token }}
-    ```
-
-## Pulling images from a private registry
-
-Flux kustomization can configure a `dockerconfig.json` credential to pull images. See `components/registry-credentials`.
+See the [Flux SOPS guide](https://fluxcd.io/flux/guides/mozilla-sops/) for information.
 
 ## Upgrading Flux
-
-1. Update the `flux` binary
-
-    ```bash
-    https://developer.hashicorp.com/vault/install
-    ```
 
 1. Re-run the flux bootstrap command above to upgrade Flux.
 

@@ -1,1 +1,0 @@
-# SOPS Vault Token

@@ -14,7 +14,6 @@ spec:
     semverFilter: '^\d+\.\d+\.\d+$'
 
 # Not quite ready for prime time: https://fluxcd.io/flux/cheatsheets/oci-artifacts/#signing-and-verification
-#
 # verify:
 #   provider: cosign
 #   matchOIDCIdentity:

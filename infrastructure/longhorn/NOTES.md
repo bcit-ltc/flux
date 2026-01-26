@@ -1,6 +1,6 @@
 # Longhorn
 
-## Install shim
+## Install shim to prevent node disk errors
 
 1. Add the following to `/etc/multipath.conf`
 

@@ -7,7 +7,7 @@ resources:
   - helm-release.yaml
   - helm-repository.yaml
   - longhorn-vault-auth.yaml
-  - longhorn-azblob-credentials.yaml
+  - longhorn-azblob-secret.yaml
   - namespace.yaml
 
 # Replace base Namespace name and add all resources to this namespace

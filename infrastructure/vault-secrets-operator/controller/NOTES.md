@@ -2,4 +2,4 @@
 
 A service account token is required for the Vault Kubernetes auth configuration.
 
-Follow the steps in the `vault` repo [notes](modules/kubernetes-auth/NOTES.md) file.
+Follow the steps in the `vault` repo [notes](modules/kubernetes-auth/NOTES.md) file to complete the integration.

@@ -15,11 +15,14 @@ spec:
         kind: HelmRepository
         name: helm-repository
       interval: 24h
+
+  # This is one way to adjust default chart values
   values:
     hostname: "rancher3.ltc.bcit.ca"
     replicas: "-1"
 
-    # sets ingress secret to `tls-rancher-ingress`
+    # Sets ingress secret to `tls-rancher-ingress`.
+    # - see https://ranchermanager.docs.rancher.com/v2.10/getting-started/installation-and-upgrade/resources/add-tls-secrets
     ingress:
       tls:
         source: "secret"

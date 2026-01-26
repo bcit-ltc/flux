@@ -15,7 +15,6 @@ resources:
   # - ../../../apps
   # - ../../../apps/0-legacy-apps
   # - ../../../infrastructure
-# #
 # components:
 # - ../../../components/env-stable
 

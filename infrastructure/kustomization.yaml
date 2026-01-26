@@ -3,15 +3,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  # - ./vault-secrets-operator/controller
-  # - ./vault-secrets-operator/config
+# resources:
+# - ./vault-secrets-operator/controller
+# - ./vault-secrets-operator/config
 
-  - ./flux-extra/config
+# - ./flux-extra/config
 
-  # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
-  # - ./longhorn/controller
-  # - ./longhorn/config
+# longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
+# - ./longhorn/controller
+# - ./longhorn/config
 
-  # - ./cloudnative-pg/controller
-  # - ./cloudnative-pg/config
+# - ./cloudnative-pg/controller
+# - ./cloudnative-pg/config
