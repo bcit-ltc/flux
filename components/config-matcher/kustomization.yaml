@@ -61,6 +61,7 @@ replacements:
       # Replace the Ingress host with the release name
       - select:
           kind: Ingress
+          name: ingress|ingress-env
         fieldPaths:
           - spec.rules.*.host
           - spec.rules.*.http.paths.0.backend.service.name

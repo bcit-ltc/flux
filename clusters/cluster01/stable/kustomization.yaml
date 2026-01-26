@@ -17,7 +17,7 @@ resources:
   # - ../../../infrastructure
 # #
 # components:
-#   - ../../../components/env-stable
+# - ../../../components/env-stable
 
 patches:
   - target:
