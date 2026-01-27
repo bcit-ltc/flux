@@ -1,21 +1,8 @@
 defaultSettings:
   storageMinimalAvailablePercentage: 10
   upgradeChecker: false
-  taintToleration: "node-role.kubernetes.io/control-plane=true:NoSchedule"
   systemManagedComponentsNodeSelector: "node-role.kubernetes.io/control-plane:false"
 
 defaultBackupStore:
   backupTarget: azblob://longhornbackup@core.windows.net/ # requires / at end
   backupTargetCredentialSecret: longhorn-azblob-credentials
-
-longhornManager:
-  nodeSelector:
-    node-role.kubernetes.io/control-plane: "false"
-
-longhornDriver:
-  nodeSelector:
-    node-role.kubernetes.io/control-plane: "false"
-
-longhornUI:
-  nodeSelector:
-    node-role.kubernetes.io/control-plane: "false"
