@@ -22,6 +22,21 @@ spec:
     defaultSettings:
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
+      createDefaultDiskLabeledNodes: false
+      systemManagedComponentsNodeSelector: "rke2.io/node-type:manager"
     defaultBackupStore:
       backupTarget: azblob://longhornbackup@core.windows.net/env/ #env replaced by component
       backupTargetCredentialSecret: longhorn-azblob-credentials
+    longhornDriver:
+      nodeSelector:
+        rke2.io/node-type: manager
+    longhornManager:
+      nodeSelector:
+        rke2.io/node-type: manager
+    longhornUI:
+      nodeSelector:
+        rke2.io/node-type: manager
+    persistence:
+      defaultNodeSelector:
+        enable: true
+        selector: "!rke2.io/node-type"
