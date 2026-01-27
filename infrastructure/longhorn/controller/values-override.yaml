@@ -1,5 +1,6 @@
 defaultSettings:
   storageMinimalAvailablePercentage: 10
   upgradeChecker: false
-  backupTarget: https://longhornsyxuvhpm.blob.core.windows.net/longhornbackup/ # requires / at end
-  backupTargetCredentialSecret: longhorn-azblob-secret
+defaultBackupStore:
+  backupTarget: azblob://longhornbackup@core.windows.net/ # requires / at end
+  backupTargetCredentialSecret: longhorn-azblob-credentials
