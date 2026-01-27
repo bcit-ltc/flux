@@ -14,10 +14,10 @@ resources:
 namespace: longhorn-system
 
 # Generate a re-usable name variable for other resources
-configMapGenerator:
-  - name: values
-    files:
-      - values.yaml=values-override.yaml
+# configMapGenerator:
+#   - name: values
+#     files:
+#       - values.yaml=values-override.yaml
 
 # Teach kustomize how to update generated names
 configurations:

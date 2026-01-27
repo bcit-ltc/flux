@@ -67,3 +67,13 @@ replacements:
         options:
           delimiter: "-"
           index: 2
+
+      # Add the environment to Longhorn HelmRelease value override
+      - select:
+          kind: HelmRelease
+          name: longhorn
+        fieldPaths:
+          - spec.values.defaultBackupStore.backupTarget
+        options:
+          delimiter: "/"
+          index: 3

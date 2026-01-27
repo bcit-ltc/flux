@@ -13,12 +13,15 @@ spec:
       # Set version here
       #   - caveat: requires patch
       #     `kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag`
-      version: "1.9.1"
+      version: "1.10.1"
       sourceRef:
         kind: HelmRepository
         name: longhorn
       interval: 24h
   values:
-    valuesFrom:
-      - kind: ConfigMap
-        name: values
+    defaultSettings:
+      storageMinimalAvailablePercentage: 10
+      upgradeChecker: false
+    defaultBackupStore:
+      backupTarget: azblob://longhornbackup@core.windows.net/env/ #env replaced by component
+      backupTargetCredentialSecret: longhorn-azblob-credentials
