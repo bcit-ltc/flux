@@ -39,4 +39,4 @@ spec:
     persistence:
       defaultNodeSelector:
         enable: true
-        selector: "!rke2.io/node-type"
+        selector: "rke2.io/node-type:worker"
