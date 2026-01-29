@@ -16,7 +16,7 @@ resources:
   # - ../../../apps/0-legacy-apps
   # - ../../../infrastructure
 # components:
-#   - ../../../components/env-web
+# - ../../../components/env-web
 
 patches:
   - target:
@@ -46,6 +46,16 @@ patches:
         value:
           - ../../../components/env-web
 
+  # Only add specific apps for the web cluster
+  - target:
+      namespace: common|conversion-guide|course-production-site|course-workload-estimator|distribution-game|module-estimator|qcon|sugar-suite
+    patch: |
+      $patch: delete
+      # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
+      kind: .*
+      metadata:
+        name: DOES NOT MATTER
+
   # Add the environment label to all resources in the Helm chart
   - target:
       kind: HelmRelease
@@ -59,7 +69,7 @@ patches:
                     kind: .*
                   patch: |
                     apiVersion: v1
-                    kind: ConfigMap   # placeholder; not used
+                    kind: placeholder
                     metadata:
                       name: placeholder
                       labels:

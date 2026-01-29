@@ -4,5 +4,6 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - star-ltc-bcit-ca.yaml
-  
+  - ./star-ltc-bcit-ca
+  - ./star-latest-ltc-bcit-ca
+  - ./star-web-ltc-bcit-ca

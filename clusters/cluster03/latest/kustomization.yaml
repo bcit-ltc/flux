@@ -16,7 +16,7 @@ resources:
   # - ../../../apps/0-legacy-apps
   # - ../../../infrastructure
 # components:
-#   - ../../../components/env-latest
+# - ../../../components/env-latest
 
 patches:
   - target:
