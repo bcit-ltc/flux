@@ -74,6 +74,7 @@ replacements:
         reject:
           - name: star-ltc-bcit-ca
           - name: star-latest-ltc-bcit-ca
+          - name: star-web-ltc-bcit-ca
           - name: vault-manager-secret
           - name: github-webhook-token
           - name: github-private-repo-token

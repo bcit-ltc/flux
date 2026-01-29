@@ -20,7 +20,7 @@ configurations:
 # Order matters!
 components:
   # Add TLS certificates for ingress
-  - ../../../components/ssl-star-ltc-bcit-ca
+  - ../../../components/ssl-certificates
 
   # Add Vault authentication (role)
   - ../../../components/vault-auth
