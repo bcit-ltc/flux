@@ -1,6 +1,0 @@
-# Namespace resource; name is updated by kustomizations
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: action-test
