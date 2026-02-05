@@ -23,4 +23,3 @@ resources:
   # - ./ptracker
   - ./qcon # grouped: in apps_grouped list in Vault
   - ./sugar-suite
-  - ./action-test
