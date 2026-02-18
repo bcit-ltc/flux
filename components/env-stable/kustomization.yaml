@@ -15,7 +15,7 @@ patches:
       metadata:
         name: DOES NOT MATTER
   - target:
-      name: star-latest-ltc-bcit-ca
+      name: star-web-ltc-bcit-ca
     patch: |
       $patch: delete
       kind: VaultStaticSecret
