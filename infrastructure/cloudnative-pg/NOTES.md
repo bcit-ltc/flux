@@ -10,5 +10,3 @@ Use the kubectl plugin to check the cluster health:
     kubectl cnpg status pg-core -n postgres
 
 ## Adding new app databases
-
-    kubectl apply -f fluxRoot/infrastructure/cloudnative-pg/scripts/bootstrap-app-privs-job.yaml

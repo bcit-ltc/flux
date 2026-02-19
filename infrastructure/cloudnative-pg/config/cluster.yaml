@@ -28,14 +28,14 @@ spec:
                   nodePort: 31432
 
     roles:
-      # Shared owner role for all application databases
-      # (DBs and schemas are owned by this role; app roles get privileges)
-      - name: db_root_owner
+      # Shared app role used by all applications (single role for access/ownership)
+      - name: app_shared
         ensure: present
         login: true
         superuser: false
         createdb: true
-        # no passwordSecret: CNPG will manage the role internally
+        passwordSecret:
+          name: apps-shared-db-credentials
 
   postgresql:
     # hostssl for external traffic; TLS is required.

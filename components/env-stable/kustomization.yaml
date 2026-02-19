@@ -49,20 +49,21 @@ replacements:
       # - path should match {appName}/{environment}/{secretName}
       - select:
           kind: VaultStaticSecret
+          annotationSelector: config.fluxcd.io/app-secret=true
         fieldPaths:
           - spec.path
         options:
           delimiter: "/"
           index: 1
-        reject:
-          - name: star-ltc-bcit-ca
-          - name: star-latest-ltc-bcit-ca
-          - name: star-web-ltc-bcit-ca
-          - name: vault-manager-secret
-          - name: github-webhook-token
-          - name: github-private-repo-token
-          - name: gh-private-oci-token
-          - name: longhorn-azblob-credentials
+        # reject:
+        #   - name: star-ltc-bcit-ca
+        #   - name: star-latest-ltc-bcit-ca
+        #   - name: star-web-ltc-bcit-ca
+        #   - name: github-webhook-token
+        #   - name: github-private-repo-token
+        #   - name: gh-private-oci-token
+        #   - name: longhorn-azblob-credentials
+        #   # - name: apps-shared-db-credentials
 
       # Add the environment to VaultDynamicSecrets configs
       - select:

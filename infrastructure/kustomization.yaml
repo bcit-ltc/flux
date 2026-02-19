@@ -7,11 +7,11 @@ resources:
   # - ./vault-secrets-operator/controller
   # - ./vault-secrets-operator/config
 
-  - ./flux-extra/config
+  # - ./flux-extra/config
 
   # longhorn uninstall requires a patch; see `infrastructure/longhorn/NOTES.md`
   # - ./longhorn/controller
-# - ./longhorn/config
+  # - ./longhorn/config
 
-# - ./cloudnative-pg/controller
-# - ./cloudnative-pg/config
+  - ./cloudnative-pg/controller
+  - ./cloudnative-pg/config

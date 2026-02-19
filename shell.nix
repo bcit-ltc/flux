@@ -6,6 +6,7 @@ pkgs.mkShell {
     fluxcd
     kubectx
     kustomize
+    krew
     git
     jq
     vault

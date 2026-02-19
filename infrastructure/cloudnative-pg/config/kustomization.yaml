@@ -3,11 +3,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - bootstrap-app-privileges.yaml              # bootstrap job to init DB
-  - cluster.yaml                      # pg-core Cluster
-  - default-privileges.yaml  # generic SQL used by bootstrap job
+  - cluster.yaml # pg-core Cluster
   - namespace.yaml
+
+  - ./apps-shared-db-credentials.yaml
+  - ./cnpg-vault-auth.yaml
+
   - ../app-databases/
+
   # - pgbouncer-pooler.yaml     # not yet used
 
 namespace: postgres

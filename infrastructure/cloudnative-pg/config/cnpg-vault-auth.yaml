@@ -1,0 +1,19 @@
+# Serviceaccount and VaultAuth to retrieve Oauth secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cnpg-sa
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: cnpg-vault-auth
+spec:
+  kubernetes:
+    serviceAccount: cnpg-sa
+    role: cnpg-vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system

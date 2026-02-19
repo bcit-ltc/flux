@@ -7,16 +7,7 @@ spec:
   cluster:
     name: pg-core
   name: obot
-  owner: db_root_owner
+  owner: app_shared
   schemas:
     - name: obot
-      owner: db_root_owner
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: db-vars
-data:
-  DB_NAME: obot
-  OWNER_ROLE: db_root_owner
-  APP_ROLE: obot_app
+      owner: app_shared
