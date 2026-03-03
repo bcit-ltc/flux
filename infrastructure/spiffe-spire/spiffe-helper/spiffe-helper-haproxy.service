@@ -1,0 +1,26 @@
+[Unit]
+Description=SPIFFE Helper for HAProxy dataplane certs
+After=spire-agent.service
+Wants=spire-agent.service
+
+[Service]
+User=spiffe-helper
+Group=spiffe-helper
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 50); do test -S /run/spire/agent/api.sock && exit 0; sleep 0.2; done; exit 1'
+ExecStart=/usr/local/bin/spiffe-helper -config /etc/spiffe-helper/haproxy.conf
+Restart=on-failure
+RestartSec=3
+
+# (Optional) hardening similar to your agent unit:
+# NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/spiffe/haproxy /run/sudo
+
+# allow reading the workload API socket:
+ReadOnlyPaths=/run/spire/agent
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

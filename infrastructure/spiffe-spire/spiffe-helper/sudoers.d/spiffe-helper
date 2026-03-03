@@ -1,0 +1,1 @@
+spiffe-helper ALL=NOPASSWD: /bin/systemctl reload haproxy

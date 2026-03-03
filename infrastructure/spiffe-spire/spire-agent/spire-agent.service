@@ -1,0 +1,44 @@
+[Unit]
+Description=SPIRE Agent
+Documentation=https://spiffe.io/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=spire
+Group=spire
+
+ExecStart=/usr/bin/spire-agent run -config /etc/spire.d/agent.conf -trustBundle /etc/spire.d/bootstrap.bundle -trustBundleFormat pem
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictNamespaces=true
+
+# Allow agent to write its state and expose workload API socket (if configured there)
+ReadOnlyPaths=/etc/spire.d
+RuntimeDirectory=spire/agent
+RuntimeDirectoryMode=0755
+ReadWritePaths=/var/lib/spire/agent /run/spire/agent
+
+AmbientCapabilities=
+CapabilityBoundingSet=
+UMask=0077
+
+Restart=on-failure
+RestartSec=3s
+TimeoutStartSec=30s
+
+[Install]
+WantedBy=multi-user.target

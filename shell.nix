@@ -3,6 +3,7 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     kubectl
+    kubernetes-helm
     fluxcd
     kubectx
     kustomize
