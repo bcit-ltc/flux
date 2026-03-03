@@ -18,7 +18,7 @@ resources:
   - ./legacy-soc
   # - ./legacy-soc-php
   # - ./legacy-soc-royaloak
-  - ./legacy-socas
+  # - ./legacy-socas
   - ./legacy-soe
   - ./legacy-soh
   - ./legacy-soh-3dassessmentsim
