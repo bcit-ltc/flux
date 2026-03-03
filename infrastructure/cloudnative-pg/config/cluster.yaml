@@ -9,6 +9,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16
   enableSuperuserAccess: true
 
+  reusePVC: false
   storage:
     size: 20Gi
 
