@@ -23,4 +23,4 @@ spec:
   #   - name: cloudnative-pg-config
   # # to test kustomization
   components:
-    - ../components/env-web
+    - ../../components/env-web
