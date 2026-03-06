@@ -36,8 +36,9 @@ patches:
       metadata:
         name: DOES NOT MATTER
 
-  # Patches OCIRepository resources to use "web" tag for chart images
-  # Problematic for OCIRepositories that are not apps
+  # Patches OCIRepository resources to use "latest" tag for chart
+  # images because "web" tags are not created by GitHub action
+  #  - problematic for OCIRepositories that are not apps
   - target:
       kind: OCIRepository
       # annotationSelector: "config.fluxcd.io/workload-type=app"
@@ -91,14 +92,6 @@ replacements:
           - spec.tls.*.hosts.*
         options:
           delimiter: "."
-          index: 1
-      - select:
-          kind: Ingress
-          name: ingress-env
-        fieldPaths:
-          - spec.tls.*.secretName
-        options:
-          delimiter: "-"
           index: 1
       - select:
           kind: Ingress

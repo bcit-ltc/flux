@@ -10,7 +10,7 @@ metadata:
   name: apps
   namespace: flux-system
   annotations:
-    fluxcd.io/workload: apps
+    config.fluxcd.io/workload-type: app
 spec:
   interval: 24h
   wait: true

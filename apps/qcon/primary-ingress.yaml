@@ -6,7 +6,7 @@ metadata:
   name: primary-ingress
   namespace: qcon
   annotations:
-    fluxcd.io/primary-ingress: "true"
+    config.fluxcd.io/primary-ingress: "true"
 spec:
   tls:
     - hosts:

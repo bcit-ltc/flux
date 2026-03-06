@@ -6,7 +6,7 @@ metadata:
   name: primary-ingress
   namespace: course-production-site
   annotations:
-    fluxcd.io/primary-ingress: "true"
+    config.fluxcd.io/primary-ingress: "true"
 spec:
   tls:
     - hosts:

@@ -10,7 +10,7 @@ metadata:
   name: flux-extra
   namespace: flux-system
   annotations:
-    fluxcd.io/workload: infrastructure
+    config.fluxcd.io/workload-type: infrastructure
 spec:
   interval: 24h
   wait: true

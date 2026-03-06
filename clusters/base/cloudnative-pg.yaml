@@ -12,7 +12,7 @@ metadata:
   name: cloudnative-pg-controller
   namespace: flux-system
   annotations:
-    fluxcd.io/workload: infrastructure
+    config.fluxcd.io/workload-type: infrastructure
 spec:
   interval: 24h
   wait: true
@@ -33,7 +33,7 @@ metadata:
   name: cloudnative-pg-config
   namespace: flux-system
   annotations:
-    fluxcd.io/workload: infrastructure
+    config.fluxcd.io/workload-type: infrastructure
 spec:
   interval: 24h
   wait: true

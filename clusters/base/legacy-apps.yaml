@@ -10,7 +10,7 @@ metadata:
   name: legacy-apps
   namespace: flux-system
   annotations:
-    fluxcd.io/workload: legacy-apps
+    config.fluxcd.io/workload-type: legacy-app
 spec:
   interval: 24h
   wait: true

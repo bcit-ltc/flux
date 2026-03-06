@@ -21,7 +21,7 @@ resources:
 patches:
   - target:
       kind: Kustomization
-      annotationSelector: "fluxcd.io/workload=apps"
+      annotationSelector: "config.fluxcd.io/workload-type=app"
     patch: |-
       - op: add
         path: /spec/components
@@ -30,7 +30,7 @@ patches:
 
   - target:
       kind: Kustomization
-      annotationSelector: "fluxcd.io/workload=legacy-apps"
+      annotationSelector: "config.fluxcd.io/workload-type=legacy-app"
     patch: |-
       - op: add
         path: /spec/components
@@ -39,7 +39,7 @@ patches:
 
   - target:
       kind: Kustomization
-      annotationSelector: "fluxcd.io/workload=infrastructure"
+      annotationSelector: "config.fluxcd.io/workload-type=infrastructure"
     patch: |-
       - op: add
         path: /spec/components

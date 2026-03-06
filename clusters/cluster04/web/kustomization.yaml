@@ -11,17 +11,17 @@ labels:
 resources:
   - ../../base
 
-  # For testing only
-  # - ../../../apps
-  # - ../../../apps/0-legacy-apps
-  # - ../../../infrastructure
+#   # For testing only
+#   - ../../../apps
+#   - ../../../apps/0-legacy-apps
+#   - ../../../infrastructure
 # components:
-# - ../../../components/env-web
+#   - ../../../components/env-web
 
 patches:
   - target:
       kind: Kustomization
-      annotationSelector: "fluxcd.io/workload=apps"
+      annotationSelector: "config.fluxcd.io/workload-type=app"
     patch: |-
       - op: add
         path: /spec/components
@@ -39,16 +39,24 @@ patches:
 
   - target:
       kind: Kustomization
-      annotationSelector: "fluxcd.io/workload=infrastructure"
+      annotationSelector: "config.fluxcd.io/workload-type=infrastructure"
     patch: |-
       - op: add
         path: /spec/components
         value:
           - ../../../components/env-web
 
-  # Only add specific apps for the web cluster
+  # Remove resources so only specific apps get added to the web cluster
   - target:
-      namespace: common|conversion-guide|course-production-site|course-workload-estimator|distribution-game|module-estimator|qcon|sugar-suite
+      namespace: course-production-site|course-workload-estimator|distribution-game|module-estimator|qcon
+    patch: |
+      $patch: delete
+      # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
+      kind: .*
+      metadata:
+        name: DOES NOT MATTER
+  - target:
+      annotationSelector: "config.fluxcd.io/workload-type=legacy-app"
     patch: |
       $patch: delete
       # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
