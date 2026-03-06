@@ -21,6 +21,6 @@ spec:
   path: ./apps/infrastructure-documentation
   # dependsOn:
   #   - name: cloudnative-pg-config
-# # to test kustomization
-components:
-  - ../components/env-web
+  # # to test kustomization
+  components:
+    - ../components/env-web
