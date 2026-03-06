@@ -20,4 +20,4 @@ Longhorn uninstall requires a patch and removal of CRD's.
 
 1. Delete the CRD's manually
 
-   `./uninstall-crds.sh`
+   `./scripts/uninstall-crds.sh`

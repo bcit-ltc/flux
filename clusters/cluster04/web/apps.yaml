@@ -18,9 +18,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps
-  dependsOn:
-    - name: cloudnative-pg-config
-# # to test "latest" kustomization
-# components:
-#   - ../components/env-latest
+  path: ./apps/infrastructure-documentation
+  # dependsOn:
+  #   - name: cloudnative-pg-config
+# # to test kustomization
+components:
+  - ../components/env-web

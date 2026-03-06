@@ -9,76 +9,72 @@ labels:
       environment: web
 
 resources:
-  - ../../base
+  - ./apps.yaml
 
-#   # For testing only
-#   - ../../../apps
-#   - ../../../apps/0-legacy-apps
-#   - ../../../infrastructure
 # components:
 #   - ../../../components/env-web
 
-patches:
-  - target:
-      kind: Kustomization
-      annotationSelector: "config.fluxcd.io/workload-type=app"
-    patch: |-
-      - op: add
-        path: /spec/components
-        value:
-          - ../components/env-web
+# patches:
+#   - target:
+#       kind: Kustomization
+#       annotationSelector: "config.fluxcd.io/workload-type=app"
+#     patch: |-
+#       - op: add
+#         path: /spec/components
+#         value:
+#           - ../components/env-web
 
-  # Don't add legacy apps to this cluster
-  - target:
-      name: legacy-apps
-    patch: |
-      $patch: delete
-      kind: Kustomization
-      metadata:
-        name: DOES NOT MATTER
+#   # Don't add legacy apps to this cluster
+#   - target:
+#       name: legacy-apps
+#     patch: |
+#       $patch: delete
+#       kind: Kustomization
+#       metadata:
+#         name: DOES NOT MATTER
 
-  - target:
-      kind: Kustomization
-      annotationSelector: "config.fluxcd.io/workload-type=infrastructure"
-    patch: |-
-      - op: add
-        path: /spec/components
-        value:
-          - ../../../components/env-web
+#   - target:
+#       kind: Kustomization
+#       annotationSelector: "config.fluxcd.io/workload-type=infrastructure"
+#     patch: |-
+#       - op: add
+#         path: /spec/components
+#         value:
+#           - ../../../components/env-web
 
-  # Remove resources so only specific apps get added to the web cluster
-  - target:
-      namespace: course-production-site|course-workload-estimator|distribution-game|module-estimator|qcon
-    patch: |
-      $patch: delete
-      # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
-      kind: .*
-      metadata:
-        name: DOES NOT MATTER
-  - target:
-      annotationSelector: "config.fluxcd.io/workload-type=legacy-app"
-    patch: |
-      $patch: delete
-      # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
-      kind: .*
-      metadata:
-        name: DOES NOT MATTER
+#   # Remove resources so only specific apps get added to the web cluster
+#   - target:
+#       namespace: course-production-site|course-workload-estimator|distribution-game|module-estimator|qcon
+#     patch: |
+#       $patch: delete
+#       # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
+#       kind: .*
+#       metadata:
+#         name: DOES NOT MATTER
+#   - target:
+#       annotationSelector: "config.fluxcd.io/workload-type=legacy-app"
+#     patch: |
+#       $patch: delete
+#       # kind: Namespace|Kustomization|OCIRepository|Ingress|ServiceAccount
+#       kind: .*
+#       metadata:
+#         name: DOES NOT MATTER
 
-  # Add the environment label to all resources in the Helm chart
-  - target:
-      kind: HelmRelease
-    patch: |-
-      - op: add
-        path: /spec/postRenderers
-        value:
-          - kustomize:
-              patches:
-                - target:
-                    kind: .*
-                  patch: |
-                    apiVersion: v1
-                    kind: placeholder
-                    metadata:
-                      name: placeholder
-                      labels:
-                        environment: web
+#   # Add the environment label to all resources in the Helm chart
+#   - target:
+#       kind: HelmRelease
+#     patch: |-
+#       - op: add
+#         path: /spec/postRenderers
+#         value:
+#           - kustomize:
+#               patches:
+#                 - target:
+#                     kind: .*
+#                   patch: |
+#                     apiVersion: v1
+#                     kind: placeholder
+#                     metadata:
+#                       name: placeholder
+#                       labels:
+#                         environment: web

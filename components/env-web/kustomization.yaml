@@ -8,118 +8,119 @@ patches:
   # Remove all "stable" and "latest" resources (this env should only emit "web" resources)
   #   - delete patch taken from https://github.com/kubernetes-sigs/kustomize/issues/1593
   - target:
-      name: star-ltc-bcit-ca
+      name: .*
     patch: |
       $patch: delete
-      kind: VaultStaticSecret
-      metadata:
-        name: DOES NOT MATTER
-  - target:
-      name: star-latest-ltc-bcit-ca
-    patch: |
-      $patch: delete
-      kind: VaultStaticSecret
-      metadata:
-        name: DOES NOT MATTER
-  - target:
-      name: ingress
-    patch: |
-      $patch: delete
-      kind: Ingress
-      metadata:
-        name: DOES NOT MATTER
-  - target:
-      name: primary-ingress
-    patch: |
-      $patch: delete
-      kind: Ingress
+      kind: placeholder
       metadata:
         name: DOES NOT MATTER
 
-  # Patches OCIRepository resources to use "latest" tag for chart
-  # images because "web" tags are not created by GitHub action
-  #  - problematic for OCIRepositories that are not apps
-  - target:
-      kind: OCIRepository
-      # annotationSelector: "config.fluxcd.io/workload-type=app"
-    patch: |-
-      - op: replace
-        path: /spec/ref
-        value: {"tag": "latest"}
+#   - target:
+#       name: star-latest-ltc-bcit-ca
+#     patch: |
+#       $patch: delete
+#       kind: VaultStaticSecret
+#       metadata:
+#         name: DOES NOT MATTER
+#   - target:
+#       name: ingress
+#     patch: |
+#       $patch: delete
+#       kind: Ingress
+#       metadata:
+#         name: DOES NOT MATTER
+#   - target:
+#       name: primary-ingress
+#     patch: |
+#       $patch: delete
+#       kind: Ingress
+#       metadata:
+#         name: DOES NOT MATTER
 
-replacements:
-  - sourceValue: "web"
-    targets:
-      # Add the environment to Vault default auth
-      - select:
-          kind: VaultAuthGlobal
-        fieldPaths:
-          - spec.kubernetes.mount
-        options:
-          delimiter: "-"
-          index: 99
-      - select:
-          kind: VaultAuthGlobal
-        fieldPaths:
-          - spec.kubernetes.audiences.0
+#   # Patches OCIRepository resources to use "latest" tag for chart
+#   # images because "web" tags are not created by GitHub action
+#   #  - problematic for OCIRepositories that are not apps
+#   - target:
+#       kind: OCIRepository
+#       # annotationSelector: "config.fluxcd.io/workload-type=app"
+#     patch: |-
+#       - op: replace
+#         path: /spec/ref
+#         value: {"tag": "latest"}
 
-      # Replace the secrets's environment placeholder with the correct path
-      # - path should match {appName}/{environment}/{secretName}
-      - select:
-          kind: VaultStaticSecret
-          annotationSelector: config.fluxcd.io/app-secret=true
-        fieldPaths:
-          - spec.path
-        options:
-          delimiter: "/"
-          index: 1
-        # reject:
-        #   - name: star-ltc-bcit-ca
-        #   - name: star-latest-ltc-bcit-ca
-        #   - name: star-web-ltc-bcit-ca
-        #   - name: github-webhook-token
-        #   - name: github-private-repo-token
-        #   - name: gh-private-oci-token
-        #   - name: longhorn-azblob-credentials
-        #   - name: apps-shared-db-credentials
+# replacements:
+#   - sourceValue: "web"
+#     targets:
+#       # Add the environment to Vault default auth
+#       - select:
+#           kind: VaultAuthGlobal
+#         fieldPaths:
+#           - spec.kubernetes.mount
+#         options:
+#           delimiter: "-"
+#           index: 99
+#       - select:
+#           kind: VaultAuthGlobal
+#         fieldPaths:
+#           - spec.kubernetes.audiences.0
 
-      # For ingresses with "env" placeholders, update values
-      - select:
-          kind: Ingress
-          name: ingress-env
-        fieldPaths:
-          - spec.rules.*.host
-          - spec.tls.*.hosts.*
-        options:
-          delimiter: "."
-          index: 1
-      - select:
-          kind: Ingress
-          annotationSelector: app=flux
-        fieldPaths:
-          - spec.tls.*.hosts.*
-        options:
-          delimiter: "."
-          index: 1
+#       # Replace the secrets's environment placeholder with the correct path
+#       # - path should match {appName}/{environment}/{secretName}
+#       - select:
+#           kind: VaultStaticSecret
+#           annotationSelector: config.fluxcd.io/app-secret=true
+#         fieldPaths:
+#           - spec.path
+#         options:
+#           delimiter: "/"
+#           index: 1
+#         # reject:
+#         #   - name: star-ltc-bcit-ca
+#         #   - name: star-latest-ltc-bcit-ca
+#         #   - name: star-web-ltc-bcit-ca
+#         #   - name: github-webhook-token
+#         #   - name: github-private-repo-token
+#         #   - name: gh-private-oci-token
+#         #   - name: longhorn-azblob-credentials
+#         #   - name: apps-shared-db-credentials
 
-      # Add the environment to VaultDynamicSecrets configs
-      - select:
-          kind: VaultDynamicSecret
-          name: db-credentials
-        fieldPaths:
-          - spec.mount
-          - spec.path
-          # - metadata.annotations.app/db-host
-        options:
-          delimiter: "-"
-          index: 2
+#       # For ingresses with "env" placeholders, update values
+#       - select:
+#           kind: Ingress
+#           name: ingress-env
+#         fieldPaths:
+#           - spec.rules.*.host
+#           - spec.tls.*.hosts.*
+#         options:
+#           delimiter: "."
+#           index: 1
+#       - select:
+#           kind: Ingress
+#           annotationSelector: app=flux
+#         fieldPaths:
+#           - spec.tls.*.hosts.*
+#         options:
+#           delimiter: "."
+#           index: 1
 
-      # Add the environment to Longhorn HelmRelease value override
-      - select:
-          kind: HelmRelease
-          name: longhorn
-        fieldPaths:
-          - spec.values.defaultBackupStore.backupTarget
-        options:
-          delimiter: "/"
-          index: 3
+#       # Add the environment to VaultDynamicSecrets configs
+#       - select:
+#           kind: VaultDynamicSecret
+#           name: db-credentials
+#         fieldPaths:
+#           - spec.mount
+#           - spec.path
+#           # - metadata.annotations.app/db-host
+#         options:
+#           delimiter: "-"
+#           index: 2
+
+#       # Add the environment to Longhorn HelmRelease value override
+#       - select:
+#           kind: HelmRelease
+#           name: longhorn
+#         fieldPaths:
+#           - spec.values.defaultBackupStore.backupTarget
+#         options:
+#           delimiter: "/"
+#           index: 3
