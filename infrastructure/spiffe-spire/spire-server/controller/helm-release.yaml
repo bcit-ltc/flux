@@ -1,0 +1,40 @@
+# Deploys a chart release
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: spire-crds
+  namespace: spire-mgmt
+spec:
+  interval: 48h
+  releaseName: spire-crds
+  chart:
+    spec:
+      chart: spire-crds
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: spire
+      interval: 24h
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: spire
+  namespace: spire-mgmt
+spec:
+  interval: 48h
+  releaseName: spire
+  chart:
+    spec:
+      chart: spire
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: spire
+      interval: 24h
+
+  # This is one way to adjust default chart values
+  valuesFrom:
+    - kind: Secret
+      name: spire-server-values

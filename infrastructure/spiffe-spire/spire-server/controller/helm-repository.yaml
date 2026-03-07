@@ -1,0 +1,10 @@
+# Watches helm chart repositories for new versions
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: spire
+  namespace: spire-mgmt
+spec:
+  interval: 48h
+  url: https://spiffe.github.io/helm-charts-hardened/

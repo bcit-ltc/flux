@@ -1,0 +1,21 @@
+# Serviceaccount and VaultAuth to retrieve Oauth secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spire-sa
+  namespace: spire-mgmt
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: spire-vault-auth
+  namespace: spire-mgmt
+spec:
+  kubernetes:
+    serviceAccount: spire-sa
+    role: spire-vault-auth
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    allowDefault: true
+    namespace: vault-secrets-operator-system

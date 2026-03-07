@@ -1,0 +1,18 @@
+# Infrastructure kustomization
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonAnnotations:
+  config.fluxcd.io/workload-type: infrastructure
+
+resources:
+  - helm-release.yaml
+  - helm-repository.yaml
+  - spire-vault-auth.yaml
+  - spire-server-values.yaml
+  - namespace.yaml
+
+# Teach kustomize how to update generated names
+configurations:
+  - kustomizeconfig.yaml

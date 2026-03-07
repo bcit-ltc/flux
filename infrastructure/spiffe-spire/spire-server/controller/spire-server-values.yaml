@@ -1,0 +1,17 @@
+# Generates a secret from Vault
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: spire-server-values
+  namespace: spire-mgmt
+spec:
+  type: kv-v2
+  vaultAuthRef: spire-vault-auth
+  refreshAfter: 6h
+  mount: ltc-infrastructure
+  path: spire/spire-server
+  destination:
+    name: spire-server-values
+    create: true
+    overwrite: true
