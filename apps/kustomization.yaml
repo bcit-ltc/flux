@@ -18,6 +18,7 @@ resources:
   - ./distribution-game
   # - ./heme-analyzer-app
   - ./infrastructure-documentation
+  - ./open-data
   - ./module-estimator
   # - ./openlab-scheduler # grouped: in apps_grouped list in Vault
   # - ./ptracker
