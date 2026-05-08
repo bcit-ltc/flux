@@ -1,4 +1,10 @@
 <!-- SPDX-License-Identifier: MPL-2.0 -->
+# 🧊 This project has been migrated to [bcit-tlu/flux-fleet](https://github.com/bcit-tlu/flux-fleet).
+
+The code remains available for historic purposes.
+
+---
+
 # Flux GitOps system
 
 This project configures Kubernetes clusters to monitor and automatically deploy apps and services. See the [FluxCD documentation](https://fluxcd.io/flux/get-started/) for more information.
